@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-
-=======
 import 'dart:io';
 
 import 'package:cansingtone_front/userdata.dart';
@@ -22,15 +19,12 @@ class TimbreTestPage extends StatefulWidget {
 }
 
 class _TimbreTestPageState extends State<TimbreTestPage> {
-
   FlutterSoundRecorder _recorder = FlutterSoundRecorder();
   FlutterSoundPlayer _player = FlutterSoundPlayer();
   String _filePath = '';
   bool _isRecording = false;
   bool _isRecordingComplete = false;
   bool _hasShownInitialMessage = true;
-
-
 
   @override
   void initState() {
@@ -67,6 +61,7 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
       },
     );
   }
+
   void showCompleteDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -159,7 +154,8 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
                 builder: (BuildContext context) {
                   return AlertDialog(
                     title: Text('주의사항'),
-                    content: Text('1. 조용한 환경에서 진행해주세요.\n2. 녹음 시간은 30초를 넘지 않게 해주세요.\n   처리 시간이 길어집니다.'),
+                    content: Text(
+                        '1. 조용한 환경에서 진행해주세요.\n2. 녹음 시간은 30초를 넘지 않게 해주세요.\n   처리 시간이 길어집니다.'),
                     actions: [
                       TextButton(
                         onPressed: () {
@@ -189,11 +185,11 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
               },
               child: _isRecording
                   ? Image.asset(
-                'assets/pinkmic.png',
-              )
+                      'assets/pinkmic.png',
+                    )
                   : Image.asset(
-                'assets/mic.png',
-              ),
+                      'assets/mic.png',
+                    ),
             ),
             SizedBox(height: 20.0),
             if (_hasShownInitialMessage) ...[
@@ -208,53 +204,50 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
                 textAlign: TextAlign.center,
               ),
             ],
-            Text(
-                _isRecording ? '완료되었다면 \n마이크를 다시 한 번 터치해주세요.' : '',
+            Text(_isRecording ? '완료되었다면 \n마이크를 다시 한 번 터치해주세요.' : '',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
                 ),
-                textAlign: TextAlign.center
-            ),
+                textAlign: TextAlign.center),
             if (_isRecordingComplete) ...[
-              Text(
-                  _isRecording ? '':'다시 측정하고 싶으시다면 \n마이크를 다시 한 번 터치해주세요.',
+              Text(_isRecording ? '' : '다시 측정하고 싶으시다면 \n마이크를 다시 한 번 터치해주세요.',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
                   ),
-                  textAlign: TextAlign.center
-              ),
+                  textAlign: TextAlign.center),
               SizedBox(height: 10.0),
-              _isRecording ? Row(): Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: _playRecordedAudio,
-                    child: Text('들어보기'),
-                  ),
-
-                  SizedBox(width: 20.0),
-                  ElevatedButton(
-                    onPressed: () async{
-                      if (_filePath.isNotEmpty) {
-                        showLoadingDialog(context);
-                        File file = File(_filePath);
-                        AudioUploaderT audioUploader = AudioUploaderT();
-                        await audioUploader.uploadAudioFileT(file);
-                        //UserDataService.fetchAndSaveUserData(context, 7);
-                        Navigator.of(context).pop();
-                        showCompleteDialog(context);
-                      } else {
-                        print('No recorded file found');
-                      }
-                    },
-                    child: Text('이대로 보내기'),
-                  ),
-                ],
-              ),
+              _isRecording
+                  ? Row()
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: _playRecordedAudio,
+                          child: Text('들어보기'),
+                        ),
+                        SizedBox(width: 20.0),
+                        ElevatedButton(
+                          onPressed: () async {
+                            if (_filePath.isNotEmpty) {
+                              showLoadingDialog(context);
+                              File file = File(_filePath);
+                              AudioUploaderT audioUploader = AudioUploaderT();
+                              await audioUploader.uploadAudioFileT(file);
+                              //UserDataService.fetchAndSaveUserData(context, 7);
+                              Navigator.of(context).pop();
+                              showCompleteDialog(context);
+                            } else {
+                              print('No recorded file found');
+                            }
+                          },
+                          child: Text('이대로 보내기'),
+                        ),
+                      ],
+                    ),
             ],
           ],
         ),
@@ -262,4 +255,3 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
     );
   }
 }
->>>>>>> 8026ebe5392e9629693aec219da382b27c6f2528
