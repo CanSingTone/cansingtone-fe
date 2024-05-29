@@ -8,7 +8,7 @@ import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import './uploader.dart';
-import './tutorial.dart';
+import 'start/tutorial.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
 import 'getuserdata.dart';
@@ -61,10 +61,7 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
       },
     );
   }
-<<<<<<< HEAD
 
-=======
->>>>>>> 8026ebe5392e9629693aec219da382b27c6f2528
   void showCompleteDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -223,7 +220,6 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
                   ),
                   textAlign: TextAlign.center),
               SizedBox(height: 10.0),
-<<<<<<< HEAD
               _isRecording
                   ? Row()
                   : Row(
@@ -252,35 +248,6 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
                         ),
                       ],
                     ),
-=======
-              _isRecording ? Row(): Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: _playRecordedAudio,
-                    child: Text('들어보기'),
-                  ),
-
-                  SizedBox(width: 20.0),
-                  ElevatedButton(
-                    onPressed: () async{
-                      if (_filePath.isNotEmpty) {
-                        showLoadingDialog(context);
-                        File file = File(_filePath);
-                        AudioUploader audioUploader = AudioUploader();
-                        await audioUploader.uploadAudioFile(file);
-                        UserDataService.fetchAndSaveUserData(context, 8);
-                        Navigator.of(context).pop();
-                        showCompleteDialog(context);
-                      } else {
-                        print('No recorded file found');
-                      }
-                    },
-                    child: Text('이대로 보내기'),
-                  ),
-                ],
-              ),
->>>>>>> 8026ebe5392e9629693aec219da382b27c6f2528
             ],
           ],
         ),

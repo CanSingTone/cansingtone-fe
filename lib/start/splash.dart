@@ -1,6 +1,8 @@
-import './main.dart';
+import '../main.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+
+import 'login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -22,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   _navigateToHome() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => InitialPage()),
+      MaterialPageRoute(builder: (context) => LoginScreen()),
     );
   }
 
@@ -36,13 +38,9 @@ class _SplashScreenState extends State<SplashScreen> {
           children: [
             Image.asset('assets/title.png'),
             SizedBox(height: 16.0),
-
-
           ],
         ),
-
       ),
     );
   }
 }
-

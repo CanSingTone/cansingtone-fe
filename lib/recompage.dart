@@ -53,7 +53,7 @@ class recompage extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xFFa03de7),
+                          backgroundColor: Color(0xFFa03de7),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.0),
                           ),
@@ -73,7 +73,7 @@ class recompage extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xFFa03de7),
+                          backgroundColor: Color(0xFFa03de7),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.0),
                           ),
@@ -99,7 +99,7 @@ class recompage extends StatelessWidget {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xFFec6bae),
+                          backgroundColor: Color(0xFFec6bae),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.0),
                           ),
@@ -178,7 +178,7 @@ class recompage extends StatelessWidget {
                             ),
                           ),
                           style: ElevatedButton.styleFrom(
-                            primary: Color(0xFFa03de7),
+                            backgroundColor: Color(0xFFa03de7),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12.0),
                             ),

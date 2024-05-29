@@ -14,9 +14,9 @@ class AnimatedBarExample extends StatefulWidget {
 }
 
 class _AnimatedBarExampleState extends State<AnimatedBarExample> {
-  int selected = 0;
+  int selectedIndex = 0;
+  int pageIndex = 0; // Separate state for PageView index
   bool heart = false;
-  bool recommend = false;
 
   final controller = PageController();
 
@@ -29,9 +29,9 @@ class _AnimatedBarExampleState extends State<AnimatedBarExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true, //to make floating action button notch transparent
+      extendBody: true, // to make floating action button notch transparent
 
-      //to avoid the floating action button overlapping behavior,
+      // to avoid the floating action button overlapping behavior,
       // when a soft keyboard is displayed
       // resizeToAvoidBottomInset: false,
 
@@ -73,58 +73,58 @@ class _AnimatedBarExampleState extends State<AnimatedBarExample> {
             selectedColor: Colors.deepOrangeAccent,
             title: const Text('마이페이지'),
           ),
-          BottomBarItem(
-            icon: Icon(
-              recommend ? Icons.recommend_rounded : Icons.recommend,
-            ),
-            selectedColor: Colors.deepPurple,
-            title: const Text('추천'),
-          ),
         ],
         hasNotch: true,
         fabLocation: StylishBarFabLocation.end,
-        currentIndex: selected,
+        currentIndex: selectedIndex >= 0
+            ? selectedIndex
+            : 0, // Ensure currentIndex is valid
         notchStyle: NotchStyle.square,
         onTap: (index) {
-          if (index == selected) return;
           setState(() {
-            selected = index;
+            selectedIndex = index;
+            pageIndex = index;
+            controller
+                .jumpToPage(index); // Update to navigate using PageController
           });
         },
       ),
-     // floatingActionButton:
-     //      FloatingActionButton(
-     //   onPressed: () {
-     //     setState(() {
-     //       selected = 3;
-     //     });
-     //   },
-    //    backgroundColor: Colors.white,
-     //   child: Icon(
-    //      heart ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
-    //      color: Colors.red,
-     //   ),
-     // )
-     //     ,
-     // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            selectedIndex = -1; // Clear selection
+            pageIndex = 3; // Only update PageView index
+            controller.jumpToPage(3); // Navigate to the recompage tab
+          });
+        },
+        backgroundColor: Colors.white,
+        child: Icon(
+          Icons.recommend,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       body: SafeArea(
-        child: _getBody(selected),
+        child: PageView(
+          controller: controller,
+          onPageChanged: (index) {
+            setState(() {
+              pageIndex = index;
+              if (index < 3) {
+                // Update bottom bar only for valid indices
+                selectedIndex = index;
+              } else {
+                selectedIndex = -1; // Clear selection for invalid indices
+              }
+            });
+          },
+          children: [
+            mainpage(),
+            playlist(),
+            mypage(),
+            recompage(),
+          ],
+        ),
       ),
     );
-  }
-
-  Widget _getBody(int selected) {
-    switch (selected) {
-      case 0:
-        return mainpage();
-      case 1:
-        return playlist();
-      case 2:
-        return mypage();
-      case 3:
-        return recompage();
-      default:
-        return Container();
-    }
   }
 }

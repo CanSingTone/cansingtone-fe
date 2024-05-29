@@ -8,7 +8,7 @@ import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import './uploadert.dart';
-import './tutorial.dart';
+import 'start/tutorial.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
 import 'getuserdata.dart';

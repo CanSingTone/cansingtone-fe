@@ -1,9 +1,13 @@
-import './splash.dart';
+import 'package:cansingtone_front/start/login_screen.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
+
+import 'mainpage.dart';
+import 'start/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:flutter/cupertino.dart';
 import './bottombar.dart';
-import './tutorial.dart';
+import 'start/tutorial.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -11,6 +15,7 @@ import './userdata.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  KakaoSdk.init(nativeAppKey: 'eec662ba5e2f988d504a0da199dabf89');
   runApp(
     ChangeNotifierProvider(
       create: (context) => UserData(),
@@ -30,6 +35,14 @@ class MyApp extends StatelessWidget {
         fontFamily: 'NanumBarunGothic',
       ),
       home: SplashScreen(),
+      routes: {
+        '/splash': (context) => SplashScreen(),
+        '/login': (context) => LoginScreen(),
+        '/tutorial': (context) => TutorialPage(
+              onComplete: () {},
+            ),
+        '/home': (context) => mainpage(),
+      },
     );
   }
 }

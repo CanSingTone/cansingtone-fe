@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import './userdata.dart';
+import '../userdata.dart';
 import 'package:provider/provider.dart';
 
-import 'getuserdata.dart';
+import '../getuserdata.dart';
 
 class User {
   final String userId;
@@ -74,30 +74,32 @@ Future<http.Response> createUser(User user) async {
   );
 
   if (response.statusCode == 201 || response.statusCode == 200) {
-        return response;
+    return response;
   } else {
     throw Exception('Failed to create user');
   }
 }
+
 Future<bool> checkUserIdAvailability(int userId) async {
   final response = await http.get(
-    Uri.http('13.125.27.204:8080', '/users/exists', {'user_id': userId.toString()}),
+    Uri.http(
+        '13.125.27.204:8080', '/users/exists', {'user_id': userId.toString()}),
   );
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> data = jsonDecode(response.body);
     final bool isAvailable = data['result'];
     return isAvailable;
-  }
-   else {
+  } else {
     // 다른 오류가 발생한 경우
     throw Exception('Failed to check user ID availability');
   }
 }
+
 class TutorialPage extends StatefulWidget {
   final VoidCallback onComplete;
-
-  TutorialPage({required this.onComplete});
+  final String? userId;
+  TutorialPage({required this.onComplete, this.userId});
 
   @override
   _TutorialPageState createState() => _TutorialPageState();
@@ -109,7 +111,6 @@ class _TutorialPageState extends State<TutorialPage> {
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _agesController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
-
 
   List<String> _selectedChoices = [];
   final List<String> _choices = ['발라드', '댄스', 'R&B', '힙합', '락', '성인가요'];
@@ -127,6 +128,7 @@ class _TutorialPageState extends State<TutorialPage> {
       curve: Curves.easeIn,
     );
   }
+
   Future<void> _fetchAndSaveUserData(int userId) async {
     try {
       final response = await http.get(
@@ -139,15 +141,23 @@ class _TutorialPageState extends State<TutorialPage> {
         if (responseBody.isNotEmpty) {
           final Map<String, dynamic> userDataMap = jsonDecode(responseBody);
           context.read<UserData>().updateFromJson(userDataMap);
-          print('User ID: ${Provider.of<UserData>(context, listen: false).userId}');
-          print('Nickname: ${Provider.of<UserData>(context, listen: false).nickname}');
-          print('Gender: ${Provider.of<UserData>(context, listen: false).gender}');
+          print(
+              'User ID: ${Provider.of<UserData>(context, listen: false).userId}');
+          print(
+              'Nickname: ${Provider.of<UserData>(context, listen: false).nickname}');
+          print(
+              'Gender: ${Provider.of<UserData>(context, listen: false).gender}');
           print('Ages: ${Provider.of<UserData>(context, listen: false).ages}');
-          print('Preferred Genre 1: ${Provider.of<UserData>(context, listen: false).prefGenre1}');
-          print('Preferred Genre 2: ${Provider.of<UserData>(context, listen: false).prefGenre2}');
-          print('Preferred Genre 3: ${Provider.of<UserData>(context, listen: false).prefGenre3}');
-          print('Vocal Range High: ${Provider.of<UserData>(context, listen: false).vocalRangeHigh}');
-          print('Vocal Range Low: ${Provider.of<UserData>(context, listen: false).vocalRangeLow}');
+          print(
+              'Preferred Genre 1: ${Provider.of<UserData>(context, listen: false).prefGenre1}');
+          print(
+              'Preferred Genre 2: ${Provider.of<UserData>(context, listen: false).prefGenre2}');
+          print(
+              'Preferred Genre 3: ${Provider.of<UserData>(context, listen: false).prefGenre3}');
+          print(
+              'Vocal Range High: ${Provider.of<UserData>(context, listen: false).vocalRangeHigh}');
+          print(
+              'Vocal Range Low: ${Provider.of<UserData>(context, listen: false).vocalRangeLow}');
         } else {
           throw Exception('Empty response received');
         }
@@ -165,10 +175,9 @@ class _TutorialPageState extends State<TutorialPage> {
     final int ages = int.tryParse(_agesController.text) ?? 0;
     final int id = int.tryParse(_idController.text) ?? 0;
     UserDataService.fetchAndSaveUserData(context, 8);
-    if (nickname.isEmpty || gender.isEmpty || ages == 0 ) {
+    if (nickname.isEmpty || gender.isEmpty || ages == 0) {
       return;
     }
-
 
     int prefGenre1 = 0;
     int prefGenre2 = 0;
@@ -176,8 +185,10 @@ class _TutorialPageState extends State<TutorialPage> {
 
     if (_selectedChoices.isNotEmpty) {
       prefGenre1 = _choices.indexOf(_selectedChoices[0]) + 1;
-      if (_selectedChoices.length > 1) prefGenre2 = _choices.indexOf(_selectedChoices[1]) + 1;
-      if (_selectedChoices.length > 2) prefGenre3 = _choices.indexOf(_selectedChoices[2]) + 1;
+      if (_selectedChoices.length > 1)
+        prefGenre2 = _choices.indexOf(_selectedChoices[1]) + 1;
+      if (_selectedChoices.length > 2)
+        prefGenre3 = _choices.indexOf(_selectedChoices[2]) + 1;
     }
 
     User newUser = User(
@@ -198,11 +209,11 @@ class _TutorialPageState extends State<TutorialPage> {
         );
         widget.onComplete();
         Provider.of<UserData>(context, listen: false).updateNickname(nickname);
-        Provider.of<UserData>(context, listen: false).updateGender(gender == '남성' ? 1 : (gender == '여성' ? 2 : 3));
+        Provider.of<UserData>(context, listen: false)
+            .updateGender(gender == '남성' ? 1 : (gender == '여성' ? 2 : 3));
         Provider.of<UserData>(context, listen: false).updateAges(ages);
-        Provider.of<UserData>(context, listen: false).updatePrefGenres(prefGenre1,prefGenre2,prefGenre3);
-
-
+        Provider.of<UserData>(context, listen: false)
+            .updatePrefGenres(prefGenre1, prefGenre2, prefGenre3);
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -247,9 +258,7 @@ class _TutorialPageState extends State<TutorialPage> {
           TextField(
             controller: _idController,
             onChanged: (value) {
-              setState(() {
-
-              });
+              setState(() {});
             },
             decoration: InputDecoration(
               labelText: '아이디',
@@ -280,9 +289,7 @@ class _TutorialPageState extends State<TutorialPage> {
           TextField(
             controller: _nameController,
             onChanged: (value) {
-              setState(() {
-
-              });
+              setState(() {});
             },
             decoration: InputDecoration(
               labelText: '이름',
@@ -314,7 +321,9 @@ class _TutorialPageState extends State<TutorialPage> {
           ),
           SizedBox(height: 16),
           DropdownButtonFormField<String>(
-            value: _genderController.text.isNotEmpty ? _genderController.text : null,
+            value: _genderController.text.isNotEmpty
+                ? _genderController.text
+                : null,
             onChanged: (value) {
               setState(() {
                 _genderController.text = value!;
@@ -322,7 +331,7 @@ class _TutorialPageState extends State<TutorialPage> {
             },
             items: ['남성', '여성', '기타']
                 .map((gender) =>
-                DropdownMenuItem(value: gender, child: Text(gender)))
+                    DropdownMenuItem(value: gender, child: Text(gender)))
                 .toList(),
             decoration: InputDecoration(
               labelText: '성별',
@@ -338,8 +347,7 @@ class _TutorialPageState extends State<TutorialPage> {
                 child: Text('이전'),
               ),
               ElevatedButton(
-                onPressed:
-                _genderController.text.isNotEmpty ? _nextPage : null,
+                onPressed: _genderController.text.isNotEmpty ? _nextPage : null,
                 child: Text('다음'),
               ),
             ],
@@ -367,8 +375,7 @@ class _TutorialPageState extends State<TutorialPage> {
             controller: _agesController,
             keyboardType: TextInputType.number,
             onChanged: (value) {
-              setState(() {
-              });
+              setState(() {});
             },
             decoration: InputDecoration(
               labelText: '나이',
@@ -384,8 +391,7 @@ class _TutorialPageState extends State<TutorialPage> {
                 child: Text('이전'),
               ),
               ElevatedButton(
-               onPressed:
-                _agesController.text.isNotEmpty ? _nextPage : null,
+                onPressed: _agesController.text.isNotEmpty ? _nextPage : null,
                 child: Text('다음'),
               ),
             ],
@@ -394,7 +400,6 @@ class _TutorialPageState extends State<TutorialPage> {
       ),
     );
   }
-
 
   Widget _buildChoicesPage() {
     return Container(
@@ -433,12 +438,11 @@ class _TutorialPageState extends State<TutorialPage> {
                     },
                     child: Container(
                       padding:
-                      EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                          EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                       height: 10,
                       decoration: BoxDecoration(
-                        color: isSelected
-                            ? Color(0xFFC9D99B)
-                            : Colors.transparent,
+                        color:
+                            isSelected ? Color(0xFFC9D99B) : Colors.transparent,
                         border: Border.all(color: Color(0xFFC9D99B)),
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -446,7 +450,8 @@ class _TutorialPageState extends State<TutorialPage> {
                         child: Text(
                           choice,
                           style: TextStyle(
-                            color: isSelected ? Colors.black : Color(0xFFC9D99B),
+                            color:
+                                isSelected ? Colors.black : Color(0xFFC9D99B),
                             fontSize: 18,
                           ),
                           textAlign: TextAlign.center,
@@ -466,8 +471,7 @@ class _TutorialPageState extends State<TutorialPage> {
                   child: Text('이전'),
                 ),
                 ElevatedButton(
-                  onPressed:
-                  _selectedChoices.isNotEmpty ? _submitData : null,
+                  onPressed: _selectedChoices.isNotEmpty ? _submitData : null,
                   child: Text('완료'),
                 ),
               ],
@@ -478,5 +482,3 @@ class _TutorialPageState extends State<TutorialPage> {
     );
   }
 }
-
-
