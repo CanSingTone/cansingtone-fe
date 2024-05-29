@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
-const _API_PREFIX = "13.125.27.204:8080/users";
+const _API_PREFIX = "http://13.125.27.204:8080/users";
 
 class UsersApi with ChangeNotifier {
   Future<bool> userExists(String id) async {
