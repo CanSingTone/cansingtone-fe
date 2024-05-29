@@ -7,11 +7,11 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import './uploadert.dart';
-import 'start/tutorial.dart';
+import '../uploadert.dart';
+import '../start/tutorial.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
-import 'getuserdata.dart';
+import '../getuserdata.dart';
 
 class TimbreTestPage extends StatefulWidget {
   @override

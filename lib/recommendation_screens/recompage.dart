@@ -1,15 +1,19 @@
+import 'package:cansingtone_front/recommendation_screens/timbre_based_recom_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'vocalrangetest.dart';
 import 'timbretest.dart';
-import './usercard.dart';
+import '../usercard.dart';
 import 'package:provider/provider.dart';
-import './userdata.dart';
+import '../userdata.dart';
 
 class recompage extends StatelessWidget {
   const recompage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
     final userData = Provider.of<UserData>(context);
     return Scaffold(
       backgroundColor: Color(0xFF241D27),
@@ -31,18 +35,26 @@ class recompage extends StatelessWidget {
           onEditPressed: () {},
           isEditing: false,
         ),
+        SizedBox(height: height * 0.01),
         Card(
+          elevation: 5.0,
           color: Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  '음색기반추천',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TimbreBasedRecomScreen()),
+                    );
+                  },
+                  child: Image.asset(
+                    'assets/images/recommendation/timbre_based.png',
+                    height: height * 0.03,
                   ),
                 ),
                 SizedBox(height: 16.0),
@@ -51,7 +63,9 @@ class recompage extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 48.0),
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          print(await KakaoSdk.origin);
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFFa03de7),
                           shape: RoundedRectangleBorder(
@@ -88,37 +102,13 @@ class recompage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16.0),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 48.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => TimbreTestPage()),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFec6bae),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          padding: EdgeInsets.symmetric(vertical: 16.0),
-                        ),
-                        child: Center(
-                          child: Text(
-                            '음색 테스트 다시 하기',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ],
             ),
           ),
         ),
+        SizedBox(height: height * 0.01),
         Card(
           color: Colors.white,
           child: Padding(
@@ -126,13 +116,9 @@ class recompage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  '음역대기반추천',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Image.asset(
+                  'assets/images/recommendation/range_based.png',
+                  height: height * 0.03,
                 ),
                 SizedBox(height: 20.0),
                 Column(
@@ -178,7 +164,7 @@ class recompage extends StatelessWidget {
                             ),
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFFa03de7),
+                            backgroundColor: Color(0xFFB290E4),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12.0),
                             ),
