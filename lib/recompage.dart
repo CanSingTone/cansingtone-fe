@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'vocalrangetest.dart';
+import 'timbretest.dart';
 import './usercard.dart';
 import 'package:provider/provider.dart';
 import './userdata.dart';
@@ -24,99 +25,100 @@ class recompage extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Color(0xFF241D27),
       ),
-      body: ListView(
-        padding: EdgeInsets.all(16.0),
-        children: [
-          UserCard(
-            userData: userData,
-            onEditPressed: () {
-
-            },
-            isEditing: false,
-          ),
-      Card(
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                '음색기반추천',
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
+      body: ListView(padding: EdgeInsets.all(16.0), children: [
+        UserCard(
+          userData: userData,
+          onEditPressed: () {},
+          isEditing: false,
+        ),
+        Card(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  '음색기반추천',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              SizedBox(height: 16.0),
-              Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 48.0),
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFa03de7),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0),
+                SizedBox(height: 16.0),
+                Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 48.0),
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFa03de7),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: 16.0),
                         ),
-                        padding: EdgeInsets.symmetric(vertical: 16.0),
-                      ),
-                      child: Center(
-                        child: Text(
-                          '추천 내역 확인',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 16.0),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 48.0),
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFa03de7),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        padding: EdgeInsets.symmetric(vertical: 16.0),
-                      ),
-                      child: Center(
-                        child: Text(
-                          '추천 새로 받기',
-                          style: TextStyle(color: Colors.white),
+                        child: Center(
+                          child: Text(
+                            '추천 내역 확인',
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 16.0),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 48.0),
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFec6bae),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0),
+                    SizedBox(height: 16.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 48.0),
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFa03de7),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: 16.0),
                         ),
-                        padding: EdgeInsets.symmetric(vertical: 16.0),
-                      ),
-                      child: Center(
-                        child: Text(
-                          '음색 테스트 다시 하기',
-                          style: TextStyle(color: Colors.white),
+                        child: Center(
+                          child: Text(
+                            '추천 새로 받기',
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                    SizedBox(height: 16.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 48.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TimbreTestPage()),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFec6bae),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: 16.0),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '음색 테스트 다시 하기',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-
         Card(
           color: Colors.white,
           child: Padding(
@@ -164,7 +166,8 @@ class recompage extends StatelessWidget {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => VocalRangeTestPage()),
+                              MaterialPageRoute(
+                                  builder: (context) => VocalRangeTestPage()),
                             );
                           },
                           child: Text(
@@ -191,11 +194,7 @@ class recompage extends StatelessWidget {
             ),
           ),
         ),
-
-
-        ]
-    ),
-
+      ]),
     );
   }
 }
@@ -226,9 +225,7 @@ class TestSelectionPage extends StatelessWidget {
         children: [
           Expanded(
             child: InkWell(
-              onTap: () {
-
-              },
+              onTap: () {},
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(

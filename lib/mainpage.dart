@@ -45,6 +45,11 @@ class mainpage extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            centerTitle: true,
+            title: Image.asset(
+              'assets/cansingtone.png',
+              width: MediaQuery.of(context).size.width * 0.5,
+            ),
             backgroundColor: Color(0xFF241D27),
             floating: true,
             snap: true,
@@ -57,16 +62,15 @@ class mainpage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => DetailSearchPage()),
+                      MaterialPageRoute(
+                          builder: (context) => DetailSearchPage()),
                     );
                   },
-
                   color: Colors.white,
                 ),
               ),
             ],
           ),
-
           SliverToBoxAdapter(
             child: Container(
               height: 400.0,
@@ -88,14 +92,11 @@ class mainpage extends StatelessWidget {
                       ),
                     );
                   }),
-
             ),
           ),
-
           SliverPadding(
             padding: EdgeInsets.only(top: 50),
           ),
-
           SliverToBoxAdapter(
             child: Container(
               height: 400.0,
@@ -130,21 +131,25 @@ class mainpage extends StatelessWidget {
                             itemBuilder: (context, songIndex) {
                               var song = songLists[pageIndex][songIndex];
                               return ListTile(
-                                leading: Icon(Icons.music_note, color: Colors.black),
+                                leading:
+                                    Icon(Icons.music_note, color: Colors.black),
                                 title: Text(
                                   song['title']!,
-                                  style: TextStyle(color: Colors.black, fontSize: 18),
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 18),
                                 ),
                                 subtitle: Text(
                                   song['artist']!,
-                                  style: TextStyle(color: Colors.black, fontSize: 14),
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 14),
                                 ),
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => SongInfoPage(songId: songIndex+4)),
+                                    MaterialPageRoute(
+                                        builder: (context) => SongInfoPage(
+                                            songId: songIndex + 4)),
                                   );
-
                                 },
                               );
                             },
@@ -157,12 +162,13 @@ class mainpage extends StatelessWidget {
               ),
             ),
           ),
-
         ],
       ),
     );
   }
-}class SongDetailPage extends StatelessWidget {
+}
+
+class SongDetailPage extends StatelessWidget {
   final String title;
   final String artist;
 

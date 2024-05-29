@@ -19,15 +19,12 @@ class VocalRangeTestPage extends StatefulWidget {
 }
 
 class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
-
   FlutterSoundRecorder _recorder = FlutterSoundRecorder();
   FlutterSoundPlayer _player = FlutterSoundPlayer();
   String _filePath = '';
   bool _isRecording = false;
   bool _isRecordingComplete = false;
   bool _hasShownInitialMessage = true;
-
-
 
   @override
   void initState() {
@@ -41,6 +38,49 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
   void dispose() {
     _recorder.closeRecorder();
     super.dispose();
+  }
+
+  void showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(width: 16),
+                Text("측정중...  잠시만 기다려주세요..."),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void showCompleteDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("측정완료!"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+              child: Text("돌아가기"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> _startRecording() async {
@@ -114,7 +154,8 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
                 builder: (BuildContext context) {
                   return AlertDialog(
                     title: Text('주의사항'),
-                    content: Text('1. 조용한 환경에서 진행해주세요.\n2. 녹음 시간은 30초를 넘지 않게 해주세요.\n   처리 시간이 길어집니다.'),
+                    content: Text(
+                        '1. 조용한 환경에서 진행해주세요.\n2. 녹음 시간은 30초를 넘지 않게 해주세요.\n   처리 시간이 길어집니다.'),
                     actions: [
                       TextButton(
                         onPressed: () {
@@ -135,7 +176,7 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GestureDetector(
-            onTap: () {
+              onTap: () {
                 if (!_isRecording) {
                   _startRecording();
                 } else {
@@ -144,11 +185,11 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
               },
               child: _isRecording
                   ? Image.asset(
-                'assets/pinkmic.png',
-              )
+                      'assets/pinkmic.png',
+                    )
                   : Image.asset(
-                'assets/mic.png',
-              ),
+                      'assets/mic.png',
+                    ),
             ),
             SizedBox(height: 20.0),
             if (_hasShownInitialMessage) ...[
@@ -163,50 +204,50 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
                 textAlign: TextAlign.center,
               ),
             ],
-            Text(
-              _isRecording ? '완료되었다면 \n마이크를 다시 한 번 터치해주세요.' : '',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-              ),
-                textAlign: TextAlign.center
-            ),
+            Text(_isRecording ? '완료되었다면 \n마이크를 다시 한 번 터치해주세요.' : '',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center),
             if (_isRecordingComplete) ...[
-              Text(
-                  _isRecording ? '':'다시 측정하고 싶으시다면 \n마이크를 다시 한 번 터치해주세요.',
+              Text(_isRecording ? '' : '다시 측정하고 싶으시다면 \n마이크를 다시 한 번 터치해주세요.',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
                   ),
-                  textAlign: TextAlign.center
-              ),
+                  textAlign: TextAlign.center),
               SizedBox(height: 10.0),
-              _isRecording ? Row(): Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: _playRecordedAudio,
-                    child: Text('들어보기'),
-                  ),
-
-                  SizedBox(width: 20.0),
-                  ElevatedButton(
-                    onPressed: () async{
-                      if (_filePath.isNotEmpty) {
-                        File file = File(_filePath);
-                        AudioUploader audioUploader = AudioUploader();
-                        await audioUploader.uploadAudioFile(file);
-                        UserDataService.fetchAndSaveUserData(context, 7);
-                      } else {
-                        print('No recorded file found');
-                      }
-                    },
-                    child: Text('이대로 보내기'),
-                  ),
-                ],
-              ),
+              _isRecording
+                  ? Row()
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: _playRecordedAudio,
+                          child: Text('들어보기'),
+                        ),
+                        SizedBox(width: 20.0),
+                        ElevatedButton(
+                          onPressed: () async {
+                            if (_filePath.isNotEmpty) {
+                              showLoadingDialog(context);
+                              File file = File(_filePath);
+                              AudioUploader audioUploader = AudioUploader();
+                              await audioUploader.uploadAudioFile(file);
+                              UserDataService.fetchAndSaveUserData(context, 8);
+                              Navigator.of(context).pop();
+                              showCompleteDialog(context);
+                            } else {
+                              print('No recorded file found');
+                            }
+                          },
+                          child: Text('이대로 보내기'),
+                        ),
+                      ],
+                    ),
             ],
           ],
         ),

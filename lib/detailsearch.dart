@@ -16,7 +16,8 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('상세 검색',
+        title: Text(
+          '상세 검색',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -96,12 +97,10 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
             ),
             SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed: () {
-
-              },
+              onPressed: () {},
               child: Text('검색', style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
-                primary: Colors.lightGreen,
+                backgroundColor: Colors.lightGreen,
                 minimumSize: Size(double.infinity, 50),
               ),
             ),
@@ -110,7 +109,6 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
       ),
     );
   }
-
 
   List<Widget> _buildGenreToggleButtons() {
     List<String> genres = ['발라드', '댄스', 'R&B', '힙합', '락', '성인가요'];

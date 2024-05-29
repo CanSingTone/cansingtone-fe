@@ -10,23 +10,24 @@ import 'dart:convert';
 import './userdata.dart';
 import 'package:provider/provider.dart';
 
-
-
-
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (context) => UserData(),
-    child: MyApp(),
-  ),);
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => UserData(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: '',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        fontFamily: 'NanumBarunGothic',
       ),
       home: SplashScreen(),
     );
@@ -39,7 +40,7 @@ class InitialPage extends StatefulWidget {
 }
 
 class _InitialPageState extends State<InitialPage> {
-  bool _showTutorial = true;  // 튜토리얼 페이지를 보여줄지 여부를 결정하는 변수
+  bool _showTutorial = true; // 튜토리얼 페이지를 보여줄지 여부를 결정하는 변수
 
   @override
   void initState() {
