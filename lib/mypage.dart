@@ -29,6 +29,7 @@ class _MyPageState extends State<mypage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       backgroundColor: Color(0xFF241D27),
       appBar: AppBar(
         title: Text(
@@ -192,6 +193,7 @@ class RecomRecordPage extends StatelessWidget {
         child: Text(
           '추천 기록들',
           style: TextStyle(fontSize: 20.0, color: Colors.white),
+
         ),
       ),
     );

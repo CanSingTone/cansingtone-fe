@@ -48,6 +48,16 @@ class UserCard extends StatelessWidget {
   final Function() onEditPressed;
   final bool isEditing;
 
+  String getGenderText(int gender) {
+    switch (gender) {
+      case 1:
+        return "남성";
+      case 2:
+        return "여성";
+      default:
+        return "";
+    }
+  }
 
   const UserCard({
     required this.userData,
@@ -81,7 +91,7 @@ class UserCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '${userData.ages}세' + '${userData.gender}',
+                      '${userData.ages}세 ' + getGenderText(userData.gender),
                       style: TextStyle(
                         color: Colors.blueAccent,
                         fontSize: 10.0,

@@ -5,12 +5,12 @@ import 'package:path/path.dart';
 import './userdata.dart';
 import 'package:provider/provider.dart';
 
-class AudioUploader {
-  final String serverUrl = 'http://13.125.27.204:8080/test/vocal-range?';
+class AudioUploaderT {
+  final String serverUrl = 'http://13.125.27.204:8080/test/timbre?';
 
 
 
-  Future<void> uploadAudioFile(File audioFile) async {
+  Future<void> uploadAudioFileT(File audioFile) async {
     try {
       Dio dio = Dio();
 
