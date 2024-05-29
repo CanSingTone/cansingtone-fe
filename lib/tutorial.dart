@@ -4,6 +4,7 @@ import 'dart:convert';
 import './userdata.dart';
 import 'package:provider/provider.dart';
 
+import 'getuserdata.dart';
 
 class User {
   final String userId;
@@ -163,7 +164,7 @@ class _TutorialPageState extends State<TutorialPage> {
     final String gender = _genderController.text;
     final int ages = int.tryParse(_agesController.text) ?? 0;
     final int id = int.tryParse(_idController.text) ?? 0;
-
+    UserDataService.fetchAndSaveUserData(context, 8);
     if (nickname.isEmpty || gender.isEmpty || ages == 0 ) {
       return;
     }
@@ -180,7 +181,7 @@ class _TutorialPageState extends State<TutorialPage> {
     }
 
     User newUser = User(
-      userId: '7',
+      userId: '8',
       nickname: nickname,
       gender: gender == '남성' ? 1 : (gender == '여성' ? 2 : 3),
       ages: ages,
