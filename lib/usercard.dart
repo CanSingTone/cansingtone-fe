@@ -30,7 +30,18 @@ String midiNumberToNoteName(int midiNumber) {
   }
 
   List<String> notes = [
-    'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'
+    'A',
+    'A#',
+    'B',
+    'C',
+    'C#',
+    'D',
+    'D#',
+    'E',
+    'F',
+    'F#',
+    'G',
+    'G#'
   ];
 
   int octave = (midiNumber - 12) ~/ 12;
@@ -39,9 +50,6 @@ String midiNumberToNoteName(int midiNumber) {
   String noteName = notes[noteIndex] + octave.toString();
   return noteName;
 }
-
-
-
 
 class UserCard extends StatelessWidget {
   final UserData userData;
@@ -68,33 +76,32 @@ class UserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 4.0,
-      margin: EdgeInsets.only(bottom: 16.0),
-      color: Color(0xff453D48),
+      elevation: 5.0,
+      color: Color(0xffB290E4),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.fromLTRB(20, 10, 10, 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
                   children: [
                     Text(
-                      '${userData.nickname}',
+                      '@${userData.nickname}',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    SizedBox(width: 16.0),
                     Text(
                       '${userData.ages}세 ' + getGenderText(userData.gender),
                       style: TextStyle(
                         color: Colors.blueAccent,
-                        fontSize: 10.0,
+                        fontSize: 15.0,
                       ),
                     ),
                   ],
@@ -106,7 +113,7 @@ class UserCard extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 16.0),
+            SizedBox(height: 5.0),
             Column(
               children: [
                 Row(
@@ -114,7 +121,7 @@ class UserCard extends StatelessWidget {
                     Text(
                       '선호 장르',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontSize: 15.0,
                       ),
                     ),
@@ -122,16 +129,16 @@ class UserCard extends StatelessWidget {
                     Text(
                       '|',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontSize: 15.0,
                       ),
                     ),
                     SizedBox(width: 16.0),
                     if (userData.prefGenre1 != 0)
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(40),
+                        borderRadius: BorderRadius.circular(30),
                         child: Container(
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
                           color: Colors.black,
                           child: Center(
                             child: Text(
@@ -144,9 +151,9 @@ class UserCard extends StatelessWidget {
                     SizedBox(width: 8),
                     if (userData.prefGenre2 != 0)
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(40),
+                        borderRadius: BorderRadius.circular(30),
                         child: Container(
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
                           color: Colors.black,
                           child: Center(
                             child: Text(
@@ -159,9 +166,9 @@ class UserCard extends StatelessWidget {
                     SizedBox(width: 8),
                     if (userData.prefGenre3 != 0)
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(40),
+                        borderRadius: BorderRadius.circular(30),
                         child: Container(
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
                           color: Colors.black,
                           child: Center(
                             child: Text(
@@ -174,14 +181,14 @@ class UserCard extends StatelessWidget {
                     SizedBox(width: 8),
                   ],
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 5),
                 Row(
-                    children: [
+                  children: [
                     SizedBox(width: 18.0),
                     Text(
                       '음역대',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontSize: 15.0,
                       ),
                     ),
@@ -189,13 +196,15 @@ class UserCard extends StatelessWidget {
                     Text(
                       '|',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontSize: 15.0,
                       ),
                     ),
                     SizedBox(width: 16),
                     Text(
-                      showVocalRange(userData.vocalRangeLow) + ' - ' + showVocalRange(userData.vocalRangeHigh),
+                      showVocalRange(userData.vocalRangeLow) +
+                          ' - ' +
+                          showVocalRange(userData.vocalRangeHigh),
                       style: TextStyle(
                         color: Colors.red,
                         fontSize: 15.0,

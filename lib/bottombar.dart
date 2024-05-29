@@ -1,10 +1,10 @@
+import 'package:cansingtone_front/recommendation_screens/recompage.dart';
 import 'package:flutter/material.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:flutter/cupertino.dart';
 import './mainpage.dart';
 import './mypage.dart';
 import './playlist.dart';
-import './recompage.dart';
 
 class AnimatedBarExample extends StatefulWidget {
   const AnimatedBarExample({Key? key}) : super(key: key);
