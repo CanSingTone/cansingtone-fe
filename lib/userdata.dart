@@ -12,6 +12,11 @@ class UserData extends ChangeNotifier {
   int vocalRangeHigh = 42;
   int vocalRangeLow = 50;
 
+  void updateUserId(String newUserId) {
+    userId = newUserId;
+    notifyListeners();
+  }
+
   void updateNickname(String newNickname) {
     nickname = newNickname;
     notifyListeners();
