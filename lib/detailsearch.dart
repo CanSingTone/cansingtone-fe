@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class DetailSearchPage extends StatefulWidget {
   @override
@@ -6,11 +8,73 @@ class DetailSearchPage extends StatefulWidget {
 }
 
 class _DetailSearchPageState extends State<DetailSearchPage> {
-  // Variables to store user selections
   String? selectedCategory;
   List<String> selectedGenres = [];
-  RangeValues selectedRange = RangeValues(2, 4);
+  RangeValues selectedRange = RangeValues(21, 108);
   TextEditingController _searchController = TextEditingController();
+
+  bool isGenreEnabled = false;
+  bool isRangeEnabled = false;
+
+  List<dynamic> searchResults = [];
+
+  void _search() async {
+    List<int> genreIds = selectedGenres.map((genre) {
+      switch (genre) {
+        case '발라드':
+          return 1;
+        case '댄스':
+          return 2;
+        case 'R&B':
+          return 3;
+        case '힙합':
+          return 4;
+        case '락':
+          return 5;
+        case '성인가요':
+          return 6;
+        default:
+          return 0;
+      }
+    }).toList();
+
+    String genresQuery = genreIds.map((id) => 'genres=$id').join('&');
+
+    String keyword = _searchController.text;
+
+    int lowestNote = isRangeEnabled ? selectedRange.start.round() : -1;
+    int highestNote = isRangeEnabled ? selectedRange.end.round() : -1;
+
+    String url = 'http://13.125.27.204:8080/songs/search?'
+        '$genresQuery&'
+        'highest_note=$highestNote&'
+        'lowest_note=$lowestNote&'
+        'keyword=$keyword';
+
+    try {
+      final response = await http.get(Uri.parse(url), headers: {"Accept-Charset": "utf-8"});
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        if (responseData['result'] is List) {
+          setState(() {
+            searchResults = responseData['result'] ?? [];
+          });
+        } else if (responseData['result'] is Map) {
+          setState(() {
+            searchResults = [responseData['result']];
+          });
+        } else {
+          setState(() {
+            searchResults = [];
+          });
+        }
+      } else {
+        print('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Network error: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,41 +131,105 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
               ],
             ),
             SizedBox(height: 16.0),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('장르', style: TextStyle(color: Colors.white)),
-                SizedBox(height: 8.0),
-                Wrap(
-                  spacing: 8.0,
-                  children: _buildGenreToggleButtons(),
+                Checkbox(
+                  value: isGenreEnabled,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      isGenreEnabled = value ?? false;
+                      if (!isGenreEnabled) {
+                        selectedGenres.clear();
+                      }
+                    });
+                  },
                 ),
               ],
             ),
-            SizedBox(height: 16.0),
-            Text('음역대', style: TextStyle(color: Colors.white)),
-            RangeSlider(
-              values: selectedRange,
-              onChanged: (RangeValues values) {
-                setState(() {
-                  selectedRange = values;
-                });
-              },
-              min: 1,
-              max: 10,
-              divisions: 9,
-              labels: RangeLabels(
-                selectedRange.start.round().toString(),
-                selectedRange.end.round().toString(),
+            if (isGenreEnabled)
+              Wrap(
+                spacing: 8.0,
+                children: _buildGenreToggleButtons(),
               ),
+            SizedBox(height: 16.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('음역대', style: TextStyle(color: Colors.white)),
+                Checkbox(
+                  value: isRangeEnabled,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      isRangeEnabled = value ?? false;
+                      if (!isRangeEnabled) {
+                        selectedRange = RangeValues(21, 108);
+                      }
+                    });
+                  },
+                ),
+              ],
             ),
+            if (isRangeEnabled)
+              RangeSlider(
+                values: selectedRange,
+                onChanged: (RangeValues values) {
+                  if (values.start < 21) values = RangeValues(21, values.end);
+                  if (values.end > 108) values = RangeValues(values.start, 108);
+                  setState(() {
+                    selectedRange = values;
+                  });
+                },
+                min: 21,
+                max: 108,
+                divisions: 87,
+                labels: RangeLabels(
+                  midiNumberToNoteName(selectedRange.start.round()),
+                  midiNumberToNoteName(selectedRange.end.round()),
+                ),
+              ),
             SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: _search,
               child: Text('검색', style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.lightGreen,
                 minimumSize: Size(double.infinity, 50),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            Expanded(
+              child: ListView.builder(
+                itemCount: searchResults.length,
+                itemBuilder: (context, index) {
+                  var result = searchResults[index];
+                  return ListTile(
+                    leading: Image.network(
+                      result['albumImage'] ?? '',
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    ),
+                    title: Text(
+                      result['songTitle'] ?? 'Unknown title',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    subtitle: Text(
+                      result['artist'] ?? 'Unknown artist',
+                      style: TextStyle(color: Colors.grey[400]),
+                    ),
+                    tileColor: Color(0xFF3E3B47),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 8.0),
+                    onTap: () {
+                      // Handle song selection
+                    },
+                  );
+                },
               ),
             ),
           ],
@@ -137,5 +265,21 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
         }).toList(),
       );
     }).toList();
+  }
+
+  String midiNumberToNoteName(int midiNumber) {
+    if (midiNumber < 21 || midiNumber > 108) {
+      return '  ';
+    }
+
+    List<String> notes = [
+      'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'
+    ];
+
+    int octave = (midiNumber - 12) ~/ 12;
+    int noteIndex = (midiNumber - 21) % 12;
+
+    String noteName = notes[noteIndex] + octave.toString();
+    return noteName;
   }
 }
