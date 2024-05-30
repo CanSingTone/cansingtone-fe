@@ -125,7 +125,7 @@ class mainpage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Expanded(
+   /*                     Expanded(
                           child: ListView.builder(
                             itemCount: songLists[pageIndex].length,
                             itemBuilder: (context, songIndex) {
@@ -155,6 +155,7 @@ class mainpage extends StatelessWidget {
                             },
                           ),
                         ),
+                        */
                       ],
                     ),
                   );

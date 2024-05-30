@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 class SongInfoPage extends StatefulWidget {
   final int songId;
 
+
   const SongInfoPage({Key? key, required this.songId}) : super(key: key);
 
   @override
@@ -21,6 +22,9 @@ class _SongInfoPageState extends State<SongInfoPage> {
   }
 
 
+
+
+
   Future<void> _fetchSongInfo() async {
     try {
       final dio = Dio();
@@ -30,6 +34,8 @@ class _SongInfoPageState extends State<SongInfoPage> {
       if (response.statusCode == 200) {
         setState(() {
           _songInfo = response.data['result'];
+          final String title = _songInfo?['songTitle'];
+          final String artist = _songInfo?['artist'];
         });
       } else {
         throw Exception('Failed to load song info');
@@ -37,6 +43,10 @@ class _SongInfoPageState extends State<SongInfoPage> {
     } catch (e) {
       print('Error fetching song info: $e');
     }
+  }
+
+  String getSongTitle() {
+    return _songInfo?['songTitle'];
   }
 
   @override

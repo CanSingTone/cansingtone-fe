@@ -1,3 +1,5 @@
+import 'package:cansingtone_front/searchresultpage.dart';
+import 'package:cansingtone_front/songinfopage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -54,7 +56,7 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
     try {
       final response = await http.get(Uri.parse(url), headers: {"Accept-Charset": "utf-8"});
       if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
+        final responseData = jsonDecode(utf8.decode(response.bodyBytes));//한글 해결
         if (responseData['result'] is List) {
           setState(() {
             searchResults = responseData['result'] ?? [];
@@ -68,6 +70,12 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
             searchResults = [];
           });
         }
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SearchResultsPage(searchResults: searchResults),
+          ),
+        );
       } else {
         print('Error: ${response.statusCode}');
       }
@@ -196,40 +204,6 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.lightGreen,
                 minimumSize: Size(double.infinity, 50),
-              ),
-            ),
-            SizedBox(height: 16.0),
-            Expanded(
-              child: ListView.builder(
-                itemCount: searchResults.length,
-                itemBuilder: (context, index) {
-                  var result = searchResults[index];
-                  return ListTile(
-                    leading: Image.network(
-                      result['albumImage'] ?? '',
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                    ),
-                    title: Text(
-                      result['songTitle'] ?? 'Unknown title',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    subtitle: Text(
-                      result['artist'] ?? 'Unknown artist',
-                      style: TextStyle(color: Colors.grey[400]),
-                    ),
-                    tileColor: Color(0xFF3E3B47),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 8.0),
-                    onTap: () {
-                      // Handle song selection
-                    },
-                  );
-                },
               ),
             ),
           ],
