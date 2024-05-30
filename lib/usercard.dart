@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './userdata.dart';
+import './edituserdata.dart';
 
 String mapGenre(int genre) {
   switch (genre) {
@@ -108,7 +109,12 @@ class UserCard extends StatelessWidget {
                 ),
                 IconButton(
                   icon: isEditing ? Icon(Icons.save) : Icon(Icons.edit),
-                  onPressed: onEditPressed,
+                  onPressed:(){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditUserData()),
+                  );},
                   color: Colors.white,
                 ),
               ],
