@@ -5,6 +5,7 @@ import '../mainpage.dart';
 import '../userdata.dart';
 import 'package:provider/provider.dart';
 
+import '../bottombar.dart';
 import '../getuserdata.dart';
 
 class User {
@@ -223,7 +224,7 @@ class _TutorialPageState extends State<TutorialPage> {
         // 페이지 이동
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => mainpage()),
+          MaterialPageRoute(builder: (context) => AnimatedBarExample()),
         );
       }
     } catch (e) {
