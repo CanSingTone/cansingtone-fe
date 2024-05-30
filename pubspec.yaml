@@ -48,7 +48,11 @@ dependencies:
   shared_preferences: ^2.2.3
   kakao_flutter_sdk_user: ^1.4.2
   kakao_flutter_sdk: ^1.9.0
-  # flutter_inappwebview: ^6.0.0
+  flutter_inappwebview: ^6.0.0
+
+dependency_overrides:
+  webview_flutter_android: 3.16.1
+
 
 dev_dependencies:
   flutter_test:
