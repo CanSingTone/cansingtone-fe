@@ -1,10 +1,10 @@
 class Song {
-  final int songId;
+  final int? songId;
   final String songTitle;
   final String albumImage;
   final String artist;
-  final int genre;
-  final int artistGender;
+  final int? genre;
+  final int? artistGender;
   final String songVidUrl;
   final String mrVidUrl;
   final int highestNote;

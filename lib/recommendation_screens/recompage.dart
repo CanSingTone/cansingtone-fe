@@ -1,6 +1,9 @@
 import 'package:cansingtone_front/recommendation_screens/timbre_based_recom_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import '../models/recommendation.dart';
+import '../models/song.dart';
+import '../service/recom_api.dart';
 import 'vocalrangetest.dart';
 import 'timbretest.dart';
 import '../usercard.dart';
@@ -15,6 +18,7 @@ class recompage extends StatelessWidget {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     final userData = Provider.of<UserData>(context);
+    String userId = '7';
     return Scaffold(
       backgroundColor: Color(0xFF241D27),
       appBar: AppBar(
@@ -53,55 +57,51 @@ class recompage extends StatelessWidget {
                     );
                   },
                   child: Image.asset(
-                    'assets/images/recommendation/timbre_based.png',
+                    'assets/images/recommendation/to_timbre_based.png',
                     height: height * 0.03,
                   ),
                 ),
                 SizedBox(height: 16.0),
                 Column(
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 48.0),
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          print(await KakaoSdk.origin);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFa03de7),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          padding: EdgeInsets.symmetric(vertical: 16.0),
-                        ),
-                        child: Center(
-                          child: Text(
-                            '추천 내역 확인',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
+                    FutureBuilder<List<dynamic>>(
+                      future: recomApi
+                          .getTimbreBasedRecommendation(userData.userId),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text('오류 발생: ${snapshot.error}'));
+                        } else if (snapshot.hasData) {
+                          List<dynamic> recommendations = snapshot.data!;
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: 4,
+                            itemBuilder: (context, index) {
+                              var recommendation = recommendations[index];
+                              var songInfo = recommendation['songInfo'];
+                              return ListTile(
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 0.0, vertical: 1.0),
+                                leading: songInfo['albumImage'] != null
+                                    ? Image.network(songInfo['albumImage'])
+                                    : Icon(Icons.music_note),
+                                title: Text(songInfo['songTitle']),
+                                subtitle: Text(songInfo['artist']),
+                                trailing: songInfo['karaokeNum'] != null
+                                    ? Text(songInfo['karaokeNum'])
+                                    : null,
+                              );
+                            },
+                          );
+                        } else {
+                          return Center(child: Text('데이터 없음'));
+                        }
+                      },
                     ),
-                    SizedBox(height: 16.0),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 48.0),
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFa03de7),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          padding: EdgeInsets.symmetric(vertical: 16.0),
-                        ),
-                        child: Center(
-                          child: Text(
-                            '추천 새로 받기',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 16.0),
                   ],
                 ),
               ],
@@ -117,10 +117,10 @@ class recompage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Image.asset(
-                  'assets/images/recommendation/range_based.png',
+                  'assets/images/recommendation/to_range_based.png',
                   height: height * 0.03,
                 ),
-                SizedBox(height: 20.0),
+                SizedBox(height: height * 0.05),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -143,7 +143,7 @@ class recompage extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 10.0),
+                    SizedBox(height: height * 0.03),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 48.0),
                       child: SizedBox(
@@ -174,6 +174,7 @@ class recompage extends StatelessWidget {
                         ),
                       ),
                     ),
+                    SizedBox(height: height * 0.05),
                   ],
                 ),
               ],
