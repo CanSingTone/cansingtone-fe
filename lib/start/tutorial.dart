@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../mainpage.dart';
 import '../userdata.dart';
 import 'package:provider/provider.dart';
 
@@ -51,8 +52,6 @@ class User {
 }
 
 Future<http.Response> createUser(User user) async {
-
-
   final Map<String, dynamic> queryParams = {
     'user_id': user.userId,
     'nickname': user.nickname,
@@ -172,15 +171,13 @@ class _TutorialPageState extends State<TutorialPage> {
   }
 
   Future<void> _submitData() async {
-
-
     final String nickname = _nameController.text;
     final String gender = _genderController.text;
     final int ages = int.tryParse(_agesController.text) ?? 0;
 //
     final String userId = Provider.of<UserData>(context, listen: false).userId;
 
-    print(userId+'as');
+    print(userId + 'as');
 
     UserDataService.fetchAndSaveUserDataS(context, userId);
     if (nickname.isEmpty || gender.isEmpty || ages == 0) {
@@ -222,6 +219,12 @@ class _TutorialPageState extends State<TutorialPage> {
         Provider.of<UserData>(context, listen: false).updateAges(ages);
         Provider.of<UserData>(context, listen: false)
             .updatePrefGenres(prefGenre1, prefGenre2, prefGenre3);
+
+        // 페이지 이동
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => mainpage()),
+        );
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -456,8 +459,6 @@ class _TutorialPageState extends State<TutorialPage> {
                 ElevatedButton(
                   onPressed: _selectedChoices.isNotEmpty ? _submitData : null,
                   child: Text('완료'),
-
-
                 ),
               ],
             ),
