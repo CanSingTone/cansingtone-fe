@@ -119,18 +119,11 @@ class UserCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '선호 장르',
+                      '선호 장르  |',
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 15.0,
-                      ),
-                    ),
-                    SizedBox(width: 16.0),
-                    Text(
-                      '|',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(width: 16.0),
@@ -186,18 +179,11 @@ class UserCard extends StatelessWidget {
                   children: [
                     SizedBox(width: 18.0),
                     Text(
-                      '음역대',
+                      '음역대  |',
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 15.0,
-                      ),
-                    ),
-                    SizedBox(width: 16),
-                    Text(
-                      '|',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(width: 16),

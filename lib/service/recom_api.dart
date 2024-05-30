@@ -1,16 +1,26 @@
-import 'package:flutter/material.dart';
+// api_provider.dart
 import 'package:dio/dio.dart';
+import '../models/recommendation.dart';
 
-const _API_PREFIX = "13.125.27.204:8080/recommendations";
+const String _API_PREFIX = "http://13.125.27.204:8080/recommendations";
 
-class RecomApi with ChangeNotifier {
-  Future<Map<String, dynamic>> getTimbreBasedRecommendation(
-      String userId) async {
-    Response response;
-    Dio dio = new Dio();
-    response = await dio.get("$_API_PREFIX/{$userId}/timbre");
-    final result = (response.data)['result'];
-    return result;
+class RecomApi {
+  final Dio _dio = Dio();
+
+  Future<List<dynamic>> getTimbreBasedRecommendation(String userId) async {
+    try {
+      //Response response = await _dio.get("$_API_PREFIX/$userId/timbre");
+      Response response = await _dio.get("$_API_PREFIX/7/timbre");
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data['result'];
+        return data;
+      } else {
+        throw Exception('요청 실패: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('오류 발생: $e');
+    }
   }
 }
 
