@@ -51,6 +51,8 @@ class User {
 }
 
 Future<http.Response> createUser(User user) async {
+
+
   final Map<String, dynamic> queryParams = {
     'user_id': user.userId,
     'nickname': user.nickname,
@@ -170,11 +172,17 @@ class _TutorialPageState extends State<TutorialPage> {
   }
 
   Future<void> _submitData() async {
+
+
     final String nickname = _nameController.text;
     final String gender = _genderController.text;
     final int ages = int.tryParse(_agesController.text) ?? 0;
-    final int id = int.tryParse(_idController.text) ?? 0;
-    UserDataService.fetchAndSaveUserData(context, 8);
+//
+    final String userId = Provider.of<UserData>(context, listen: false).userId;
+
+    print(userId+'as');
+
+    UserDataService.fetchAndSaveUserDataS(context, userId);
     if (nickname.isEmpty || gender.isEmpty || ages == 0) {
       return;
     }
@@ -192,7 +200,7 @@ class _TutorialPageState extends State<TutorialPage> {
     }
 
     User newUser = User(
-      userId: '8',
+      userId: userId,
       nickname: nickname,
       gender: gender == '남성' ? 1 : (gender == '여성' ? 2 : 3),
       ages: ages,
@@ -255,31 +263,6 @@ class _TutorialPageState extends State<TutorialPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          TextField(
-            controller: _idController,
-            onChanged: (value) {
-              setState(() {});
-            },
-            decoration: InputDecoration(
-              labelText: '아이디',
-              border: OutlineInputBorder(),
-            ),
-          ),
-          SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () async {
-              final int id = int.tryParse(_idController.text) ?? 0;
-              if (id == 0) return;
-
-              final bool idAvailable = await checkUserIdAvailability(id);
-              if (idAvailable) {
-                await _fetchAndSaveUserData(id);
-                widget.onComplete();
-                return;
-              }
-            },
-            child: Text('다음'),
-          ),
           Text(
             '닉네임을 입력하세요',
             style: TextStyle(fontSize: 24, color: Colors.white),
@@ -473,6 +456,8 @@ class _TutorialPageState extends State<TutorialPage> {
                 ElevatedButton(
                   onPressed: _selectedChoices.isNotEmpty ? _submitData : null,
                   child: Text('완료'),
+
+
                 ),
               ],
             ),

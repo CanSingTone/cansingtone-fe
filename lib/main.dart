@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         '/tutorial': (context) => TutorialPage(
               onComplete: () {},
             ),
-        '/home': (context) => mainpage(),
+        '/home': (context) => AnimatedBarExample(),
       },
     );
   }

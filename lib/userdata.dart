@@ -9,8 +9,12 @@ class UserData extends ChangeNotifier {
   int prefGenre1 = 0;
   int prefGenre2 = 0;
   int prefGenre3 = 0;
-  int vocalRangeHigh = 42;
-  int vocalRangeLow = 50;
+  int vocalRangeHigh = 0;
+  int vocalRangeLow = 0;
+
+  String getUserId() {
+   return userId;
+  }
 
   void updateUserId(String newUserId) {
     userId = newUserId;
