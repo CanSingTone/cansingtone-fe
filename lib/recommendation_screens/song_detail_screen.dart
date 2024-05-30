@@ -26,7 +26,7 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
         initialVideoId: YoutubePlayer.convertUrlToId(songVidUrl)!,
         flags: const YoutubePlayerFlags(
           mute: false,
-          autoPlay: true,
+          autoPlay: false,
           disableDragSeek: false,
           loop: false,
           isLive: false,
@@ -46,13 +46,6 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
         _videoMetaData = _controller.metadata;
       });
     }
-  }
-
-  @override
-  void deactivate() {
-    // Pauses video while navigating to next page.
-    _controller.pause();
-    super.deactivate();
   }
 
   @override

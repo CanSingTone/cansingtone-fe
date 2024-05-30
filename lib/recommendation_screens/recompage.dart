@@ -1,3 +1,4 @@
+import 'package:cansingtone_front/recommendation_screens/song_detail_screen.dart';
 import 'package:cansingtone_front/recommendation_screens/timbre_based_recom_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
@@ -83,17 +84,29 @@ class recompage extends StatelessWidget {
                             itemBuilder: (context, index) {
                               var recommendation = recommendations[index];
                               var songInfo = recommendation['songInfo'];
-                              return ListTile(
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 0.0, vertical: 1.0),
-                                leading: songInfo['albumImage'] != null
-                                    ? Image.network(songInfo['albumImage'])
-                                    : Icon(Icons.music_note),
-                                title: Text(songInfo['songTitle']),
-                                subtitle: Text(songInfo['artist']),
-                                trailing: songInfo['karaokeNum'] != null
-                                    ? Text(songInfo['karaokeNum'])
-                                    : null,
+                              return GestureDetector(
+                                onTap: () {
+                                  // 곡 상세 정보 페이지로 이동하는 코드 추가
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          SongDetailScreen(songInfo: songInfo),
+                                    ),
+                                  );
+                                },
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 0.0, vertical: 1.0),
+                                  leading: songInfo['albumImage'] != null
+                                      ? Image.network(songInfo['albumImage'])
+                                      : Icon(Icons.music_note),
+                                  title: Text(songInfo['songTitle']),
+                                  subtitle: Text(songInfo['artist']),
+                                  trailing: songInfo['karaokeNum'] != null
+                                      ? Text(songInfo['karaokeNum'])
+                                      : null,
+                                ),
                               );
                             },
                           );

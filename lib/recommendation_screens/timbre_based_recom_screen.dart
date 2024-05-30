@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:cansingtone_front/recommendation_screens/song_detail_screen.dart';
 import 'package:cansingtone_front/recommendation_screens/timbretest.dart';
-import 'package:flutter/material.dart';
 import '../service/recom_api.dart'; // 예시에 맞게 서비스 임포트
 
 class TimbreBasedRecomScreen extends StatefulWidget {
@@ -26,8 +26,35 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TimbreTestPage()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(10.0), // 버튼의 모서리를 둥글게 만듦
+                      side: BorderSide(color: Colors.black), // 버튼의 테두리 색상 및 너비
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      vertical: 9.0,
+                      horizontal: width * 0.05,
+                    ), // 버튼의 내부 패딩
+                  ),
+                  child: Text(
+                    '추천 새로 받기',
+                    style: TextStyle(
+                      color: Color(0xFF1A0C0C), // 버튼 텍스트 색상
+                      fontSize: 16.0, // 버튼 텍스트 크기
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0),
                   child: ElevatedButton(
@@ -43,7 +70,7 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
                           Theme.of(context).scaffoldBackgroundColor,
                       shape: RoundedRectangleBorder(
                         borderRadius:
-                            BorderRadius.circular(20.0), // 버튼의 모서리를 둥글게 만듦
+                            BorderRadius.circular(10.0), // 버튼의 모서리를 둥글게 만듦
                         side:
                             BorderSide(color: Colors.black), // 버튼의 테두리 색상 및 너비
                       ),
@@ -121,18 +148,7 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
                                       ),
                                     );
                                   },
-                                  child: ListTile(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        horizontal: 16.0, vertical: 8.0),
-                                    leading: songInfo['albumImage'] != null
-                                        ? Image.network(songInfo['albumImage'])
-                                        : Icon(Icons.music_note),
-                                    title: Text(songInfo['songTitle']),
-                                    subtitle: Text(songInfo['artist']),
-                                    trailing: songInfo['karaokeNum'] != null
-                                        ? Text(songInfo['karaokeNum'])
-                                        : null,
-                                  ),
+                                  child: SongListTile(songInfo: songInfo),
                                 );
                               },
                             ),
@@ -148,6 +164,49 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class SongListTile extends StatefulWidget {
+  final dynamic songInfo;
+
+  const SongListTile({Key? key, required this.songInfo}) : super(key: key);
+
+  @override
+  _SongListTileState createState() => _SongListTileState();
+}
+
+class _SongListTileState extends State<SongListTile> {
+  bool isLiked = false;
+
+  @override
+  Widget build(BuildContext context) {
+    var songInfo = widget.songInfo;
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      leading: songInfo['albumImage'] != null
+          ? Image.network(songInfo['albumImage'])
+          : Icon(Icons.music_note),
+      title: Text(songInfo['songTitle']),
+      subtitle: Text(songInfo['artist']),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (songInfo['karaokeNum'] != null) Text(songInfo['karaokeNum']),
+          IconButton(
+            icon: Icon(
+              isLiked ? Icons.favorite : Icons.favorite_border,
+              color: isLiked ? Colors.red : null,
+            ),
+            onPressed: () {
+              setState(() {
+                isLiked = !isLiked;
+              });
+            },
+          ),
+        ],
       ),
     );
   }
