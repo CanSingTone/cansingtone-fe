@@ -35,14 +35,14 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'NanumBarunGothic',
       ),
-      home: recompage(),
+      home:  SplashScreen(),
       routes: {
         '/splash': (context) => SplashScreen(),
         '/login': (context) => LoginScreen(),
         '/tutorial': (context) => TutorialPage(
               onComplete: () {},
             ),
-        '/home': (context) => mainpage(),
+        '/home': (context) => AnimatedBarExample(),
       },
     );
   }
