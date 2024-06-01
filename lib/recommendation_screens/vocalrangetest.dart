@@ -129,6 +129,7 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
 
   @override
   Widget build(BuildContext context) {
+    final userId = Provider.of<UserData>(context).getUserId();
     return Scaffold(
       backgroundColor: Color(0xFF241D27),
       appBar: AppBar(
@@ -235,9 +236,9 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
                             if (_filePath.isNotEmpty) {
                               showLoadingDialog(context);
                               File file = File(_filePath);
-                              AudioUploader audioUploader = AudioUploader();
+                              AudioUploader audioUploader = AudioUploader(context);
                               await audioUploader.uploadAudioFile(file);
-                              UserDataService.fetchAndSaveUserData(context, 8);
+                              UserDataService.fetchAndSaveUserDataS(context,userId);
                               Navigator.of(context).pop();
                               showCompleteDialog(context);
                             } else {

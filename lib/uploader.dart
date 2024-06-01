@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:path/path.dart';
 
 import './userdata.dart';
@@ -7,16 +8,20 @@ import 'package:provider/provider.dart';
 
 class AudioUploader {
   final String serverUrl = 'http://13.125.27.204:8080/test/vocal-range?';
+  final BuildContext context;
+  final String userId;
 
+  AudioUploader(this.context)
+      : userId = Provider.of<UserData>(context, listen: false).getUserId();
 
 
   Future<void> uploadAudioFile(File audioFile) async {
     try {
       Dio dio = Dio();
-
+      final UserData userData;
       String fileName = basename(audioFile.path);
       FormData formData = FormData.fromMap({
-        'user_id': '8',
+        'user_id': userId,
         'voice_data': await MultipartFile.fromFile(
           audioFile.path,
           filename: fileName,

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 
 import './userdata.dart';
@@ -7,7 +8,11 @@ import 'package:provider/provider.dart';
 
 class AudioUploaderT {
   final String serverUrl = 'http://13.125.27.204:8080/test/timbre?';
+  final BuildContext context;
+  final String userId;
 
+  AudioUploaderT(this.context)
+      : userId = Provider.of<UserData>(context, listen: false).getUserId();
 
 
   Future<void> uploadAudioFileT(File audioFile) async {
@@ -16,7 +21,7 @@ class AudioUploaderT {
 
       String fileName = basename(audioFile.path);
       FormData formData = FormData.fromMap({
-        'user_id': '8',
+        'user_id': userId,
         'voice_data': await MultipartFile.fromFile(
           audioFile.path,
           filename: fileName,

@@ -1,6 +1,9 @@
+import 'package:cansingtone_front/userdata.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:cansingtone_front/recommendation_screens/song_detail_screen.dart';
 import 'package:cansingtone_front/recommendation_screens/timbretest.dart';
+import 'package:provider/provider.dart';
 import '../service/recom_api.dart'; // 예시에 맞게 서비스 임포트
 
 class TimbreBasedRecomScreen extends StatefulWidget {
@@ -181,6 +184,29 @@ class SongListTile extends StatefulWidget {
 class _SongListTileState extends State<SongListTile> {
   bool isLiked = false;
 
+  void _sendLikeRequest(int songId) async {
+    try {
+      // UserData 인스턴스에서 userId를 가져옵니다.
+      String userId = Provider.of<UserData>(context, listen: false).getUserId();
+
+      // 서버 URL을 구성합니다.
+      String url = 'http://13.125.27.204:8080/like?user_id=$userId&song_id=$songId';
+
+      // Dio 인스턴스를 생성하여 HTTP GET 요청을 보냅니다.
+      Dio dio = Dio();
+      Response response = await dio.post(url);
+
+      // 서버 응답 처리
+      if (response.statusCode == 200) {
+        print('Like request sent successfully');
+      } else {
+        print('Failed to send like request: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error sending like request: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var songInfo = widget.songInfo;
@@ -203,6 +229,8 @@ class _SongListTileState extends State<SongListTile> {
             onPressed: () {
               setState(() {
                 isLiked = !isLiked;
+                _sendLikeRequest(songInfo['songId']);
+                //좋아요 전송
               });
             },
           ),

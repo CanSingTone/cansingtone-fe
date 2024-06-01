@@ -129,6 +129,7 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
 
   @override
   Widget build(BuildContext context) {
+    final userId = Provider.of<UserData>(context).getUserId();
     return Scaffold(
       backgroundColor: Color(0xFF241D27),
       appBar: AppBar(
@@ -235,9 +236,9 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
                             if (_filePath.isNotEmpty) {
                               showLoadingDialog(context);
                               File file = File(_filePath);
-                              AudioUploaderT audioUploader = AudioUploaderT();
+                              AudioUploaderT audioUploader = AudioUploaderT(context);
                               await audioUploader.uploadAudioFileT(file);
-                              //UserDataService.fetchAndSaveUserData(context, 7);
+                              UserDataService.fetchAndSaveUserDataS(context, userId);
                               Navigator.of(context).pop();
                               showCompleteDialog(context);
                             } else {
