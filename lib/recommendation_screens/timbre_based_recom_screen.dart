@@ -185,11 +185,13 @@ class _SongListTileState extends State<SongListTile> {
   Widget build(BuildContext context) {
     var songInfo = widget.songInfo;
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      visualDensity: VisualDensity(vertical: 0, horizontal: 0),
+      contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 1.0),
       leading: songInfo['albumImage'] != null
           ? Image.network(songInfo['albumImage'])
           : Icon(Icons.music_note),
-      title: Text(songInfo['songTitle']),
+      title: Text(songInfo['songTitle'],
+          style: TextStyle(fontWeight: FontWeight.bold)),
       subtitle: Text(songInfo['artist']),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,

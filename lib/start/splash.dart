@@ -30,14 +30,25 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Color(0xFF241D27),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/title.png'),
-            SizedBox(height: 16.0),
+            Container(
+              width: width, // 원하는 너비 설정
+              height: height * 0.75, // 원하는 높이 설정
+              child: ClipRect(
+                child: FittedBox(
+                  fit: BoxFit.cover,
+                  child: Image.asset('assets/images/start/splash.png'),
+                ),
+              ),
+            ),
+            SizedBox(height: height * 0.1),
           ],
         ),
       ),

@@ -80,46 +80,57 @@ class UserCard extends StatelessWidget {
       elevation: 5.0,
       color: Color(0xffB290E4),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 10, 10, 10),
+        padding: const EdgeInsets.fromLTRB(20, 20, 10, 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Text(
-                      '@${userData.nickname}',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
+                // 프로필 사진용 하얀 동그라미 추가
+                CircleAvatar(
+                  radius: 30.0,
+                  backgroundColor: Colors.white,
+                  child: Icon(Icons.person, color: Colors.grey, size: 30.0),
+                  // 여기에 `backgroundImage`를 추가하여 프로필 사진을 설정할 수 있습니다.
+                  // backgroundImage: NetworkImage('프로필 이미지 URL'),
+                ),
+                SizedBox(width: 16.0),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '@${userData.nickname}',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 16.0),
-                    Text(
-                      '${userData.ages}세 ' + getGenderText(userData.gender),
-                      style: TextStyle(
-                        color: Colors.blueAccent,
-                        fontSize: 15.0,
+                      SizedBox(height: 4.0),
+                      Text(
+                        '${userData.ages}세 ' + getGenderText(userData.gender),
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15.0,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 IconButton(
                   icon: isEditing ? Icon(Icons.save) : Icon(Icons.edit),
-                  onPressed:(){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => EditUserData()),
-                  );},
-                  color: Colors.white,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => EditUserData()),
+                    );
+                  },
+                  color: Colors.black,
                 ),
               ],
             ),
-            SizedBox(height: 5.0),
+            SizedBox(height: 10.0),
             Column(
               children: [
                 Row(
@@ -128,11 +139,11 @@ class UserCard extends StatelessWidget {
                       '선호 장르  |',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 15.0,
+                        fontSize: 16.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(width: 16.0),
+                    SizedBox(width: 15.0),
                     if (userData.prefGenre1 != 0)
                       ClipRRect(
                         borderRadius: BorderRadius.circular(30),
@@ -180,7 +191,7 @@ class UserCard extends StatelessWidget {
                     SizedBox(width: 8),
                   ],
                 ),
-                SizedBox(height: 5),
+                SizedBox(height: 10),
                 Row(
                   children: [
                     SizedBox(width: 18.0),
@@ -188,7 +199,7 @@ class UserCard extends StatelessWidget {
                       '음역대  |',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 15.0,
+                        fontSize: 16.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -198,7 +209,7 @@ class UserCard extends StatelessWidget {
                           ' - ' +
                           showVocalRange(userData.vocalRangeHigh),
                       style: TextStyle(
-                        color: Colors.red,
+                        color: Colors.black,
                         fontSize: 15.0,
                       ),
                     ),
@@ -207,7 +218,7 @@ class UserCard extends StatelessWidget {
                       child: IconButton(
                         icon: Icon(Icons.help_outline),
                         onPressed: () {},
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                   ],
