@@ -7,14 +7,9 @@ class mainpage extends StatelessWidget {
   // const mainpage({Key? key}) : super(key: key);
 
   final List<String> imagePaths = [
-    'assets/bom.png',
-    'assets/iu.jpg',
-    'assets/iu1.jpg',
-    'assets/bom.png',
-    'assets/bom.png',
-    'assets/bom.png',
-    'assets/bom.png',
-    'assets/bom.png',
+    'assets/images/home/banner/gang.png',
+    'assets/images/home/banner/bubblegum.png',
+    'assets/images/home/banner/lovewinsall.png',
     'assets/bom.png',
     'assets/bom.png',
   ];
@@ -40,12 +35,13 @@ class mainpage extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Color(0xFF241D27),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            centerTitle: true,
             title: Image.asset(
               'assets/cansingtone.png',
               width: MediaQuery.of(context).size.width * 0.5,
@@ -71,41 +67,43 @@ class mainpage extends StatelessWidget {
               ),
             ],
           ),
+          SliverPadding(
+            padding: EdgeInsets.only(top: 10),
+          ),
           SliverToBoxAdapter(
             child: Container(
-              height: 400.0,
+              height: height * 0.18,
               child: PageView.builder(
-                  controller: PageController(viewportFraction: 0.9),
-                  itemCount: 10,
+                  controller: PageController(viewportFraction: 0.95),
+                  itemCount: 3,
                   itemBuilder: (context, index) {
                     return Container(
                       margin: EdgeInsets.symmetric(horizontal: 5.0),
-                      height: 400,
-                      width: 400,
+                      height: height * 0.3,
                       decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
                         image: DecorationImage(
                           image: AssetImage(imagePaths[index]),
                           fit: BoxFit.cover,
                         ),
-                        border: Border.all(color: Color(0xFFC9D99B)),
-                        borderRadius: BorderRadius.circular(20),
                       ),
                     );
                   }),
             ),
           ),
           SliverPadding(
-            padding: EdgeInsets.only(top: 50),
+            padding: EdgeInsets.only(top: 30),
           ),
           SliverToBoxAdapter(
             child: Container(
-              height: 400.0,
+              height: height * 0.5,
               child: PageView.builder(
-                controller: PageController(viewportFraction: 0.9),
+                controller: PageController(viewportFraction: 0.95),
                 itemCount: chartNames.length,
                 itemBuilder: (context, pageIndex) {
                   return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10.0),
+                    margin: EdgeInsets.symmetric(horizontal: 5.0),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: Color(0xFFC9D99B)),
@@ -125,7 +123,7 @@ class mainpage extends StatelessWidget {
                             ),
                           ),
                         ),
-   /*                     Expanded(
+                        /*                     Expanded(
                           child: ListView.builder(
                             itemCount: songLists[pageIndex].length,
                             itemBuilder: (context, songIndex) {

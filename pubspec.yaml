@@ -94,6 +94,7 @@ flutter:
     - assets/images/recommendation/range_based.png
     - assets/images/recommendation/timbre_based.png
     - assets/images/start/splash.png
+    - assets/images/home/banner/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
