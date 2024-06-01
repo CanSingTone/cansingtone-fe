@@ -93,6 +93,7 @@ flutter:
     - assets/images/recommendation/to_timbre_based.png
     - assets/images/recommendation/range_based.png
     - assets/images/recommendation/timbre_based.png
+    - assets/images/start/splash.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -116,4 +117,10 @@ flutter:
         - asset: assets/fonts/NanumBarunGothic.otf
           weight: 400
         - asset: assets/fonts/NanumBarunGothicBold.otf
+          weight: 700
+    - family: Pretendard
+      fonts:
+        - asset: assets/fonts/Pretendard-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Pretendard-Bold.ttf
           weight: 700

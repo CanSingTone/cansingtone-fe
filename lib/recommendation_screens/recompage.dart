@@ -199,113 +199,16 @@ class recompage extends StatelessWidget {
   }
 }
 
-class TestSelectionPage extends StatelessWidget {
-  const TestSelectionPage({Key? key}) : super(key: key);
+class TimbreBasedCard extends StatefulWidget {
+  const TimbreBasedCard({super.key});
 
   @override
+  State<TimbreBasedCard> createState() => _TimbreBasedCardState();
+}
+
+class _TimbreBasedCardState extends State<TimbreBasedCard> {
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFF241D27),
-      appBar: AppBar(
-        title: Text(
-          '테스트 선택',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Color(0xFF241D27),
-        iconTheme: IconThemeData(
-          color: Colors.white,
-        ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: InkWell(
-              onTap: () {},
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.brown,
-                ),
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '음색측정테스트',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                          backgroundColor: Colors.black54,
-                        ),
-                      ),
-                      Text(
-                        '미완료',
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 10.0,
-                          fontWeight: FontWeight.bold,
-                          backgroundColor: Colors.black54,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Divider(
-            height: 2,
-            color: Colors.white,
-          ),
-          Expanded(
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => VocalRangeTestPage()),
-                );
-              },
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.blueGrey,
-                ),
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '음역대측정테스트',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                          backgroundColor: Colors.black54,
-                        ),
-                      ),
-                      Text(
-                        '미완료',
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 10.0,
-                          fontWeight: FontWeight.bold,
-                          backgroundColor: Colors.black54,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+    return const Placeholder();
   }
 }

@@ -246,20 +246,24 @@ class _TutorialPageState extends State<TutorialPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        physics: NeverScrollableScrollPhysics(),
-        children: [
-          _buildNamePage(),
-          _buildGenderPage(),
-          _buildAgePage(),
-          _buildChoicesPage(),
-        ],
+      body: Container(
+        child: PageView(
+          controller: _pageController,
+          physics: NeverScrollableScrollPhysics(),
+          children: [
+            _buildNamePage(),
+            _buildGenderPage(),
+            _buildAgePage(),
+            _buildChoicesPage(),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildNamePage() {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
     return Container(
       color: Color(0xFF241D27),
       padding: const EdgeInsets.all(16.0),
@@ -268,7 +272,7 @@ class _TutorialPageState extends State<TutorialPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            '닉네임을 입력하세요',
+            '닉네임을 입력해주세요.',
             style: TextStyle(fontSize: 24, color: Colors.white),
             textAlign: TextAlign.center,
           ),
@@ -278,15 +282,26 @@ class _TutorialPageState extends State<TutorialPage> {
             onChanged: (value) {
               setState(() {});
             },
+            style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
-              labelText: '이름',
               border: OutlineInputBorder(),
             ),
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 30),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size(150, 50),
+              backgroundColor: Colors.white, // 버튼의 배경색을 검정으로
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(45), // 모서리를 둥글게
+              ),
+            ),
             onPressed: _nameController.text.isNotEmpty ? _nextPage : null,
-            child: Text('다음'),
+            child: Text('다음',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                )),
           ),
         ],
       ),
@@ -302,12 +317,13 @@ class _TutorialPageState extends State<TutorialPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            '성별을 선택하세요',
+            '성별을 선택해주세요.',
             style: TextStyle(fontSize: 24, color: Colors.white),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 16),
           DropdownButtonFormField<String>(
+            style: TextStyle(color: Colors.white, fontSize: 18),
             value: _genderController.text.isNotEmpty
                 ? _genderController.text
                 : null,
@@ -321,7 +337,6 @@ class _TutorialPageState extends State<TutorialPage> {
                     DropdownMenuItem(value: gender, child: Text(gender)))
                 .toList(),
             decoration: InputDecoration(
-              labelText: '성별',
               border: OutlineInputBorder(),
             ),
           ),
@@ -331,11 +346,19 @@ class _TutorialPageState extends State<TutorialPage> {
             children: [
               ElevatedButton(
                 onPressed: _prevPage,
-                child: Text('이전'),
+                child: Text('이전',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                    )),
               ),
               ElevatedButton(
                 onPressed: _genderController.text.isNotEmpty ? _nextPage : null,
-                child: Text('다음'),
+                child: Text('다음',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                    )),
               ),
             ],
           ),
@@ -353,7 +376,7 @@ class _TutorialPageState extends State<TutorialPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            '나이를 입력하세요',
+            '나이를 입력해주세요',
             style: TextStyle(fontSize: 24, color: Colors.white),
             textAlign: TextAlign.center,
           ),
@@ -375,11 +398,19 @@ class _TutorialPageState extends State<TutorialPage> {
             children: [
               ElevatedButton(
                 onPressed: _prevPage,
-                child: Text('이전'),
+                child: Text('이전',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                    )),
               ),
               ElevatedButton(
                 onPressed: _agesController.text.isNotEmpty ? _nextPage : null,
-                child: Text('다음'),
+                child: Text('다음',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                    )),
               ),
             ],
           ),
@@ -389,82 +420,90 @@ class _TutorialPageState extends State<TutorialPage> {
   }
 
   Widget _buildChoicesPage() {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
+    List<String> image = [];
     return Container(
       color: Color(0xFF241D27),
       padding: const EdgeInsets.all(16.0),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(height: 100),
-            Text(
-              '노래방에서 부를 때 선호하는 장르를 선택해주세요! (최대 3개)',
-              style: TextStyle(fontSize: 24, color: Colors.white),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 16),
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 3,
-                crossAxisSpacing: 10.0,
-                mainAxisSpacing: 10.0,
-                children: _choices.map((choice) {
-                  bool isSelected = _selectedChoices.contains(choice);
-                  return InkWell(
-                    onTap: () {
-                      setState(() {
-                        if (isSelected) {
-                          _selectedChoices.remove(choice);
-                        } else {
-                          if (_selectedChoices.length < 3) {
-                            _selectedChoices.add(choice);
-                          }
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(height: 100),
+          Text(
+            '노래방에서 부를 때 선호하는 장르를 선택해주세요! (최대 3개)',
+            style: TextStyle(fontSize: 24, color: Colors.white),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 16),
+          SizedBox(
+            height: height * 0.45,
+            child: GridView.count(
+              crossAxisCount: 3,
+              crossAxisSpacing: 10.0,
+              mainAxisSpacing: 10.0,
+              children: _choices.map((choice) {
+                bool isSelected = _selectedChoices.contains(choice);
+                return InkWell(
+                  onTap: () {
+                    setState(() {
+                      if (isSelected) {
+                        _selectedChoices.remove(choice);
+                      } else {
+                        if (_selectedChoices.length < 3) {
+                          _selectedChoices.add(choice);
                         }
-                      });
-                    },
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                      height: 10,
-                      decoration: BoxDecoration(
-                        color:
-                            isSelected ? Color(0xFFC9D99B) : Colors.transparent,
-                        border: Border.all(color: Color(0xFFC9D99B)),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Center(
-                        child: Text(
-                          choice,
-                          style: TextStyle(
-                            color:
-                                isSelected ? Colors.black : Color(0xFFC9D99B),
-                            fontSize: 18,
-                          ),
-                          textAlign: TextAlign.center,
+                      }
+                    });
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    height: 10,
+                    decoration: BoxDecoration(
+                      color:
+                          isSelected ? Color(0xFFC9D99B) : Colors.transparent,
+                      border: Border.all(color: Color(0xFFC9D99B)),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Text(
+                        choice,
+                        style: TextStyle(
+                          color: isSelected ? Colors.black : Color(0xFFC9D99B),
+                          fontSize: 18,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                  );
-                }).toList(),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ElevatedButton(
+                onPressed: _prevPage,
+                child: Text('이전',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                    )),
               ),
-            ),
-            SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  onPressed: _prevPage,
-                  child: Text('이전'),
-                ),
-                ElevatedButton(
-                  onPressed: _selectedChoices.isNotEmpty ? _submitData : null,
-                  child: Text('완료'),
-                ),
-              ],
-            ),
-          ],
-        ),
+              ElevatedButton(
+                onPressed: _selectedChoices.isNotEmpty ? _submitData : null,
+                child: Text('완료',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                    )),
+              ),
+            ],
+          ),
+          SizedBox(height: height * 0.05),
+        ],
       ),
     );
   }

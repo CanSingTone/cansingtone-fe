@@ -35,7 +35,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'NanumBarunGothic',
       ),
-      home:  SplashScreen(),
+      home: TutorialPage(
+        onComplete: () {},
+      ),
       routes: {
         '/splash': (context) => SplashScreen(),
         '/login': (context) => LoginScreen(),
