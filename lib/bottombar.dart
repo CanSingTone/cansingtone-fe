@@ -4,7 +4,7 @@ import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:flutter/cupertino.dart';
 import './mainpage.dart';
 import './mypage.dart';
-import './playlist.dart';
+import 'playlist/playlistpage.dart';
 
 class AnimatedBarExample extends StatefulWidget {
   const AnimatedBarExample({Key? key}) : super(key: key);
@@ -119,7 +119,7 @@ class _AnimatedBarExampleState extends State<AnimatedBarExample> {
       case 0:
         return mainpage();
       case 1:
-        return playlist();
+        return PlaylistPage();
       case 2:
         return mypage();
       case 3:
