@@ -1,9 +1,8 @@
 import 'dart:convert';
+import 'package:cansingtone_front/userdata.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import './playlistinfo.dart';
-import 'package:provider/provider.dart';
-import '../UserData.dart';
 
 class Playlist {
   final int playlistId;
@@ -32,6 +31,7 @@ class Playlist {
 class PlaylistPage extends StatefulWidget {
   const PlaylistPage({Key? key}) : super(key: key);
 
+
   @override
   _PlaylistPageState createState() => _PlaylistPageState();
 }
@@ -39,15 +39,19 @@ class PlaylistPage extends StatefulWidget {
 class _PlaylistPageState extends State<PlaylistPage> {
   late Future<List<Playlist>> futurePlaylists;
 
+
+
   @override
   void initState() {
     super.initState();
+
     futurePlaylists = fetchPlaylists();
   }
 
   Future<List<Playlist>> fetchPlaylists() async {
-    final response = await http.get(Uri.parse('http://13.125.27.204:8080/playlists/3504301360'));
-
+    String? userId = await UserDataShare.getUserId(); // userId를 상태 클래스 내에 정의합니다.
+    final response = await http.get(Uri.parse('http://13.125.27.204:8080/playlists/${userId}'));
+    print('http://13.125.27.204:8080/playlists/${userId}'+'패치');
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes))['result'];
       return data.map((json) => Playlist.fromJson(json)).toList();
@@ -57,6 +61,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
   }
 
   Future<void> createPlaylist(String userId, String playlistName, int isPublic) async {
+    String? userId = await UserDataShare.getUserId();
     final response = await http.post(
       Uri.parse('http://13.125.27.204:8080/playlists'),
       body: {

@@ -183,6 +183,15 @@ class SongListTile extends StatefulWidget {
 
 class _SongListTileState extends State<SongListTile> {
   bool isLiked = false;
+  int? likeId;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkLikeStatus(widget.songInfo['songId']);
+    print(widget.songInfo['songId']);
+    //print(likeId);
+  }
 
   void _sendLikeRequest(int songId) async {
     try {
@@ -200,6 +209,7 @@ class _SongListTileState extends State<SongListTile> {
       // 서버 응답 처리
       if (response.statusCode == 200) {
         print('Like request sent successfully');
+        print(url);
       } else {
         print('Failed to send like request: ${response.statusCode}');
       }
@@ -207,11 +217,101 @@ class _SongListTileState extends State<SongListTile> {
       print('Error sending like request: $e');
     }
   }
+  Future<void> _getLikeId(int songId) async {
+    try {
+      // UserData 인스턴스에서 userId를 가져옵니다.
+      String userId = Provider.of<UserData>(context, listen: false).getUserId();
+
+      // 서버 URL을 구성합니다.
+      String url = 'http://13.125.27.204:8080/like?user_id=$userId&song_id=$songId';
+
+      // Dio 인스턴스를 생성하여 HTTP GET 요청을 보냅니다.
+      Dio dio = Dio();
+      Response response = await dio.get(url);
+print(url);
+      // 서버 응답 처리
+      if (response.statusCode == 200) {
+        // 좋아요 ID를 저장합니다.
+        dynamic data = response.data;
+        if(data != null && data['result'] != null && data['result']['likeId'] != null) {
+          likeId = data['result']['likeId'];
+          print(likeId);
+          _deleteLikeRequest(likeId!);
+        } else {
+          print('Failed to get likeId');
+        }
+      } else {
+        print('Failed to get likeId: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error getting likeId: $e');
+    }
+  }
+  // 좋아요 취소 요청을 보내는 함수
+  Future<void> _deleteLikeRequest(int likeId) async {
+    try {
+      // 서버 URL을 구성합니다.
+      String url = 'http://13.125.27.204:8080/like?like_id=$likeId';
+      print(url);
+      // Dio 인스턴스를 생성하여 HTTP DELETE 요청을 보냅니다.
+      Dio dio = Dio();
+      Response response = await dio.delete(url);
+
+      // 서버 응답 처리
+      if (response.statusCode == 200) {
+        print('Delete like request sent successfully');
+      } else {
+        print('Failed to send delete like request: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error sending delete like request: $e');
+    }
+  }
+  Future<void> _checkLikeStatus(int songId) async {
+    try {
+      // UserData 인스턴스에서 userId를 가져옵니다.
+      String userId = Provider.of<UserData>(context, listen: false).getUserId();
+
+      // 서버 URL을 구성합니다.
+      String url = 'http://13.125.27.204:8080/like?user_id=$userId&song_id=$songId';
+
+      // Dio 인스턴스를 생성하여 HTTP GET 요청을 보냅니다.
+      Dio dio = Dio();
+      Response response = await dio.get(url);
+print(response);
+      // 서버 응답 처리
+      if (response.statusCode == 200) {
+        // isSuccess 값이 true일 때만 좋아요 상태를 업데이트합니다.
+        if (response.data['isSuccess']) {
+          // 가져온 좋아요 상태를 확인합니다.
+          if(isLiked == false){
+            setState(() {
+              isLiked = true;
+            });
+          }
+          print('업데이트완료');
+        } else {
+          print('Failed to get like status: ${response.data['message']}');
+          if(isLiked == true){
+            setState(() {
+              isLiked = false;
+            });
+          }
+        }
+      } else {
+        print('Failed to get like status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error getting like status: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     var songInfo = widget.songInfo;
+    _checkLikeStatus(songInfo['songId']);
     return ListTile(
+
       visualDensity: VisualDensity(vertical: 0, horizontal: 0),
       contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 1.0),
       leading: songInfo['albumImage'] != null
@@ -232,8 +332,12 @@ class _SongListTileState extends State<SongListTile> {
             onPressed: () {
               setState(() {
                 isLiked = !isLiked;
-                _sendLikeRequest(songInfo['songId']);
-                //좋아요 전송
+                if (isLiked) {
+                  _sendLikeRequest(songInfo['songId']);
+                } else {
+                  _getLikeId(songInfo['songId']);
+
+                }
               });
             },
           ),

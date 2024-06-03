@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cansingtone_front/service/users_api.dart';
 import 'package:provider/provider.dart';
 
+import 'package:cansingtone_front/playlist//playlistpage.dart';
 import '../getuserdata.dart';
 import '../userdata.dart';
 
@@ -89,10 +90,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (result) {
                             // 이미 존재하는 사용자의 경우, 로그인 상태 저장 후 index 페이지로 이동
                             UserDataService.fetchAndSaveUserDataS(context, id);
+                            await UserDataShare.saveUserId(id);
+                            print('Set userId: $id');
                             // js: 이 부분에서 '회원 ID로 정보조회' API 사용해서 사용자 정보를 가져와서 앱에 저장해야 합니다. provider 쓰신 거 같은데 그거 여기서도 이용하면 될 듯
                             //setLogin(); // js: 로그인하고 나갔다 들어왔을 때 다시 로그인 안 하게 하려고 쓰는 부분입니다. 나중에 주석 푸시면 될 듯
                             Navigator.of(context).pushReplacementNamed('/home');
                           } else {
+                            await UserDataShare.saveUserId(id);
+                            print('Set userId: $id');
                             // 존재하지 않는 사용자의 경우, 튜토리얼 페이지로 이동
                             Navigator.of(context).pushReplacementNamed(
                                 '/tutorial',
@@ -120,10 +125,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           UserDataService.fetchAndSaveUserDataS(context, id);
                           Provider.of<UserData>(context, listen: false)
                               .updateUserId(id);
+                          await UserDataShare.saveUserId(id);
+                          print('Set userId: $id');
                           //setLogin(); // js: 로그인하고 나갔다 들어왔을 때 다시 로그인 안 하게 하려고 쓰는 부분입니다. 나중에 주석 푸시면 될 듯
                           Navigator.of(context).pushReplacementNamed('/home');
                         } else {
                           // 존재하지 않는 사용자의 경우, 튜토리얼 페이지로 이동
+                          await UserDataShare.saveUserId(id);
+                          print('Set userId: $id');
                           Navigator.of(context)
                               .pushReplacementNamed('/tutorial', arguments: id);
                           Provider.of<UserData>(context, listen: false)
