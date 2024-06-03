@@ -51,7 +51,6 @@ class _PlaylistPageState extends State<PlaylistPage> {
   Future<List<Playlist>> fetchPlaylists() async {
     String? userId = await UserDataShare.getUserId(); // userId를 상태 클래스 내에 정의합니다.
     final response = await http.get(Uri.parse('http://13.125.27.204:8080/playlists/${userId}'));
-    print('http://13.125.27.204:8080/playlists/${userId}'+'패치');
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes))['result'];
       return data.map((json) => Playlist.fromJson(json)).toList();
@@ -80,6 +79,8 @@ class _PlaylistPageState extends State<PlaylistPage> {
       throw Exception('플레이리스트 생성에 실패했습니다.');
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -131,10 +132,10 @@ class _PlaylistPageState extends State<PlaylistPage> {
     );
   }
 
-  void _showCreatePlaylistDialog(BuildContext context) {
+  void _showCreatePlaylistDialog(BuildContext context) async{
     final _playlistNameController = TextEditingController();
     bool isPublic = false;
-
+    String? userId = await UserDataShare.getUserId();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -176,7 +177,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                   onPressed: () {
                     final playlistName = _playlistNameController.text;
                     final publicFlag = isPublic ? 1 : 0;
-                    createPlaylist('3504301360', playlistName, publicFlag);
+                    createPlaylist(userId!, playlistName, publicFlag);
                     Navigator.of(context).pop();
                   },
                 ),
