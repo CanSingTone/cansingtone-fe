@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cansingtone_front/song_detail_screen.dart';
 import 'package:cansingtone_front/test_screens/timbretest.dart';
 import 'package:provider/provider.dart';
-import '../service/recom_api.dart'; // 예시에 맞게 서비스 임포트
+import '../service/recom_api.dart';
 
 class TimbreBasedRecomScreen extends StatefulWidget {
   const TimbreBasedRecomScreen({Key? key});
@@ -21,8 +21,26 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Image.asset('assets/images/recommendation/timbre_based.png',
-            height: height * 0.03),
+        title: Row(
+          children: [
+            Text(
+              '음색 기반 추천 ',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: Image.asset(
+                'assets/images/emoji/voice.png',
+                height: 25,
+              ),
+            ),
+            SizedBox(width: 10),
+          ],
+        ),
       ),
       body: Center(
         child: Column(
@@ -79,7 +97,7 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
                       ), // 버튼의 내부 패딩
                     ),
                     child: Text(
-                      '음색 테스트 다시 하기',
+                      '음역대 테스트 다시 하기',
                       style: TextStyle(
                         color: Color(0xFF1A0C0C), // 버튼 텍스트 색상
                         fontSize: 15.0, // 버튼 텍스트 크기

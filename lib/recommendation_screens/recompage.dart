@@ -1,3 +1,4 @@
+import 'package:cansingtone_front/recommendation_screens/range_based_recom_screen.dart';
 import 'package:cansingtone_front/song_detail_screen.dart';
 import 'package:cansingtone_front/recommendation_screens/timbre_based_recom_screen.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,7 @@ class recompage extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                '음색 기반 추천곡 ',
+                '음색 기반 추천 ',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 22,
@@ -66,10 +67,10 @@ class recompage extends StatelessWidget {
               ),
               SizedBox(width: 10),
               Text(
-                '전체 보기',
+                '>',
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.5),
-                  fontSize: 15,
+                  color: Colors.white,
+                  fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -136,24 +137,40 @@ class recompage extends StatelessWidget {
           ),
         ),
         SizedBox(height: height * 0.03),
-        Row(
-          children: [
-            Text(
-              '음역대 기반 추천곡 ',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+        InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => RangeBasedRecomScreen()),
+            );
+          },
+          child: Row(
+            children: [
+              Text(
+                '음역대 기반 추천 ',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 5),
-              child: Image.asset(
-                'assets/images/emoji/updown.png',
-                height: 20,
+              Padding(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: Image.asset(
+                  'assets/images/emoji/updown.png',
+                  height: 20,
+                ),
               ),
-            ),
-          ],
+              Text(
+                ' >',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
         ),
         Card(
           color: Colors.white,
@@ -178,28 +195,28 @@ class recompage extends StatelessWidget {
                         itemCount: 4,
                         itemBuilder: (context, index) {
                           var recommendation = recommendations[index];
-                          var songInfo = recommendation['songInfo'];
+
                           return GestureDetector(
                             onTap: () {
                               // 곡 상세 정보 페이지로 이동하는 코드 추가
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      SongDetailScreen(songInfo: songInfo),
+                                  builder: (context) => SongDetailScreen(
+                                      songInfo: recommendation),
                                 ),
                               );
                             },
                             child: ListTile(
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 0.0, vertical: 1.0),
-                              leading: songInfo['albumImage'] != null
-                                  ? Image.network(songInfo['albumImage'])
+                              leading: recommendation['albumImage'] != null
+                                  ? Image.network(recommendation['albumImage'])
                                   : Icon(Icons.music_note),
-                              title: Text(songInfo['songTitle']),
-                              subtitle: Text(songInfo['artist']),
-                              trailing: songInfo['karaokeNum'] != null
-                                  ? Text(songInfo['karaokeNum'])
+                              title: Text(recommendation['songTitle']),
+                              subtitle: Text(recommendation['artist']),
+                              trailing: recommendation['karaokeNum'] != null
+                                  ? Text(recommendation['karaokeNum'])
                                   : null,
                             ),
                           );
