@@ -93,7 +93,11 @@ flutter:
     - assets/images/start/splash.png
     - assets/images/home/banner/
     - assets/images/emoji/
+    - assets/images/emoji/fire.png
+    - assets/images/emoji/updown.png
+    - assets/images/emoji/voice.png
     - assets/images/usercard/
+    - assets/images/usercard/girl.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
