@@ -1,3 +1,4 @@
+import 'package:cansingtone_front/playlist/playlistpage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -97,6 +98,36 @@ Future<bool> checkUserIdAvailability(int userId) async {
     throw Exception('Failed to check user ID availability');
   }
 }
+
+
+Future<List<Playlist>> fetchPlaylists() async {
+  String? userId = await UserDataShare.getUserId(); // userId를 상태 클래스 내에 정의합니다.
+  final response = await http.get(Uri.parse('http://13.125.27.204:8080/playlists/${userId}'));
+  if (response.statusCode == 200) {
+    final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes))['result'];
+    return data.map((json) => Playlist.fromJson(json)).toList();
+  } else {
+    throw Exception('플레이리스트를 불러오는데 실패했습니다.');
+  }
+}
+
+Future<void> createFirstPlaylist(String userId) async {
+   final response = await http.post(
+    Uri.parse('http://13.125.27.204:8080/playlists'),
+    body: {
+      'user_id': userId,
+      'playlist_name': "좋아요 표시한 음악",
+      'is_public': '1',
+    },
+  );
+
+  if (response.statusCode == 200) {
+
+  } else {
+    throw Exception('플레이리스트 생성에 실패했습니다.');
+  }
+}
+
 
 class TutorialPage extends StatefulWidget {
   final VoidCallback onComplete;
@@ -220,7 +251,7 @@ class _TutorialPageState extends State<TutorialPage> {
         Provider.of<UserData>(context, listen: false).updateAges(ages);
         Provider.of<UserData>(context, listen: false)
             .updatePrefGenres(prefGenre1, prefGenre2, prefGenre3);
-
+        createFirstPlaylist(userId);
         // 페이지 이동
         Navigator.push(
           context,

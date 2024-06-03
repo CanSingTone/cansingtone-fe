@@ -180,12 +180,17 @@ class SongListTile extends StatefulWidget {
 class _SongListTileState extends State<SongListTile> {
   bool isLiked = false;
   int? likeId;
-
+  bool isLoading = true;
   @override
   void initState() {
     super.initState();
-    _checkLikeStatus(widget.songInfo['songId']);
+    //_checkLikeStatus(widget.songInfo['songId']);
     print(widget.songInfo['songId']);
+    Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
     //print(likeId);
   }
 

@@ -1,3 +1,8 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+import 'package:cansingtone_front/playlist/playlistpage.dart';
+import 'package:cansingtone_front/userdata.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -83,11 +88,118 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
     super.dispose();
   }
 
+  Future<List<Playlist>> fetchPlaylists() async {
+    String? userId = await UserDataShare.getUserId();
+    final response = await http
+        .get(Uri.parse('http://13.125.27.204:8080/playlists/${userId}'));
+    if (response.statusCode == 200) {
+      final List<dynamic> data =
+          jsonDecode(utf8.decode(response.bodyBytes))['result'];
+      return data.map((json) => Playlist.fromJson(json)).toList();
+    } else {
+      throw Exception('플레이리스트를 불러오는데 실패했습니다.');
+    }
+  }
+
+  // 플레이리스트 선택 다이얼로그 표시 함수
+  Future<void> _showPlaylistDialog() async {
+    try {
+      // Fetch playlists using the fetchPlaylists function
+      List<Playlist> playlists = await fetchPlaylists();
+
+      String? selectedPlaylist = await showDialog<String>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('플레이리스트 선택'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: playlists.map((playlist) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop(playlist.playlistId.toString());
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(playlist.playlistName),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          );
+        },
+      );
+
+      if (selectedPlaylist != null) {
+        // 선택된 플레이리스트에 곡을 추가하는 로직
+        print('선택된 플레이리스트: $selectedPlaylist');
+        // 곡을 플레이리스트에 추가하는 API 호출
+        String songId = widget.songInfo['songId'].toString();
+        final response = await http.post(
+          Uri.parse(
+              'http://13.125.27.204:8080/songs-in-playlist?playlist_id=$selectedPlaylist&song_id=$songId'),
+        );
+        final Map<String, dynamic> responseBody =
+            jsonDecode(utf8.decode(response.bodyBytes));
+        if (responseBody['isSuccess'] == true) {
+          // 추가 성공 메시지
+          await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('추가 완료!'),
+                content: const Text('곡이 플레이리스트에 성공적으로 추가되었습니다.'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('확인'),
+                  ),
+                ],
+              );
+            },
+          );
+        } else {
+          // 추가 실패 메시지
+          final Map<String, dynamic> responseBody =
+              jsonDecode(utf8.decode(response.bodyBytes));
+          await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('추가 실패'),
+                content: Text(responseBody['message'] ?? '알 수 없는 오류가 발생했습니다.'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    child: const Text('확인'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      }
+    } catch (e) {
+      print('플레이리스트를 불러오는데 실패했습니다: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: Color(0xFF241D27),
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(Icons.playlist_add),
+            onPressed: _showPlaylistDialog,
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -113,19 +225,19 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
               SizedBox(height: 8.0),
               Text(
                 '${widget.songInfo['artist']}',
-                style: TextStyle(fontSize: 17.0),
+                style: TextStyle(fontSize: 16.0),
               ),
               SizedBox(height: 8.0),
               Text(
                 '노래방 번호: ${widget.songInfo['karaokeNum'] ?? '노래방 번호'}',
-                style: TextStyle(fontSize: 17.0),
+                style: TextStyle(fontSize: 16.0),
               ),
               SizedBox(height: 16.0),
               Row(
                 children: [
                   Text(
                     "음원 영상",
-                    style: TextStyle(fontSize: 17.0),
+                    style: TextStyle(fontSize: 16.0),
                   ),
                 ],
               ),
@@ -147,11 +259,10 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                 children: [
                   Text(
                     "MR 영상",
-                    style: TextStyle(fontSize: 17.0),
+                    style: TextStyle(fontSize: 16.0),
                   ),
                 ],
               ),
-
               if (widget.songInfo['mrVidUrl'] != null)
                 SizedBox(
                   height: 250,

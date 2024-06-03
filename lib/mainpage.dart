@@ -1,4 +1,3 @@
-import 'package:cansingtone_front/song_detail_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
@@ -215,8 +214,8 @@ class _mainpageState extends State<mainpage> {
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
-                                                          SongDetailScreen(
-                                                        songInfo: song,
+                                                          SongInfoPage(
+                                                        songId: song['songId'],
                                                       ),
                                                     ),
                                                   );
