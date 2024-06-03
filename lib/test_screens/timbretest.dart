@@ -12,6 +12,7 @@ import '../start_screens/tutorial.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
 import '../getuserdata.dart';
+import '../widgets/wave_animation.dart';
 
 class TimbreTestPage extends StatefulWidget {
   @override
@@ -129,6 +130,8 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
     final userId = Provider.of<UserData>(context).getUserId();
     return Scaffold(
       backgroundColor: Color(0xFF241D27),
@@ -174,7 +177,6 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GestureDetector(
               onTap: () {
@@ -185,24 +187,48 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
                 }
               },
               child: _isRecording
-                  ? Image.asset(
-                      'assets/pinkmic.png',
+                  ? Padding(
+                      padding: EdgeInsets.only(
+                          top: height * 0.13, bottom: height * 0.02),
+                      child: Stack(
+                        children: [
+                          WaveAnimation(
+                            size: 200,
+                            color: Color(0xFFC9D99B),
+                          ),
+                          Positioned(
+                            left: 0,
+                            top: 0,
+                            right: 0,
+                            bottom: 0,
+                            child: Image.asset(
+                              'assets/mic.png',
+                            ),
+                          ),
+                        ],
+                      ),
                     )
-                  : Image.asset(
-                      'assets/mic.png',
+                  : Padding(
+                      padding: EdgeInsets.only(
+                          top: height * 0.25, bottom: height * 0.05),
+                      child: Image.asset(
+                        'assets/mic.png',
+                      ),
                     ),
             ),
             SizedBox(height: 20.0),
             if (_hasShownInitialMessage) ...[
-              SizedBox(height: 20.0),
-              Text(
-                '마이크를 클릭하고 아무 노래나 불러주세요.',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
+              Padding(
+                padding: const EdgeInsets.only(top: 50.0),
+                child: Text(
+                  '마이크를 클릭하고 아무 노래나 불러주세요.',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               ),
             ],
             Text(_isRecording ? '완료되었다면 \n마이크를 다시 한 번 터치해주세요.' : '',
@@ -220,7 +246,7 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center),
-              SizedBox(height: 10.0),
+              SizedBox(height: height * 0.03),
               _isRecording
                   ? Row()
                   : Row(
@@ -228,7 +254,18 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
                       children: [
                         ElevatedButton(
                           onPressed: _playRecordedAudio,
-                          child: Text('들어보기'),
+                          child: Text('들어보기',
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 17)),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(30), // 모서리를 조절해요
+                            ),
+                            minimumSize: Size(
+                                MediaQuery.of(context).size.width * 0.3, 50),
+                          ),
                         ),
                         SizedBox(width: 20.0),
                         ElevatedButton(
@@ -247,7 +284,18 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
                               print('No recorded file found');
                             }
                           },
-                          child: Text('이대로 보내기'),
+                          child: Text('이대로 보내기',
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 17)),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(30), // 모서리를 조절해요
+                            ),
+                            minimumSize: Size(
+                                MediaQuery.of(context).size.width * 0.3, 50),
+                          ),
                         ),
                       ],
                     ),
