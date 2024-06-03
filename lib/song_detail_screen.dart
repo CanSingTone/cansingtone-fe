@@ -86,6 +86,7 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //backgroundColor: Color(0xFF241D27),
       appBar: AppBar(),
       body: SingleChildScrollView(
         child: Padding(
@@ -112,19 +113,19 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
               SizedBox(height: 8.0),
               Text(
                 '${widget.songInfo['artist']}',
-                style: TextStyle(fontSize: 16.0),
+                style: TextStyle(fontSize: 17.0),
               ),
               SizedBox(height: 8.0),
               Text(
                 '노래방 번호: ${widget.songInfo['karaokeNum'] ?? '노래방 번호'}',
-                style: TextStyle(fontSize: 16.0),
+                style: TextStyle(fontSize: 17.0),
               ),
               SizedBox(height: 16.0),
               Row(
                 children: [
                   Text(
                     "음원 영상",
-                    style: TextStyle(fontSize: 16.0),
+                    style: TextStyle(fontSize: 17.0),
                   ),
                 ],
               ),
@@ -146,7 +147,7 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                 children: [
                   Text(
                     "MR 영상",
-                    style: TextStyle(fontSize: 16.0),
+                    style: TextStyle(fontSize: 17.0),
                   ),
                 ],
               ),
