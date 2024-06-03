@@ -1,14 +1,14 @@
 import 'package:cansingtone_front/recommendation_screens/recompage.dart';
-import 'package:cansingtone_front/start/login_screen.dart';
+import 'package:cansingtone_front/start_screens/login_screen.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 import 'mainpage.dart';
-import 'start/splash.dart';
+import 'start_screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:flutter/cupertino.dart';
 import './bottombar.dart';
-import 'start/tutorial.dart';
+import 'start_screens/tutorial.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'NanumBarunGothic',
       ),
-      home: AnimatedBarExample(),
+      home: SplashScreen(),
       routes: {
         '/splash': (context) => SplashScreen(),
         '/login': (context) => LoginScreen(),

@@ -2,7 +2,7 @@ import 'package:cansingtone_front/userdata.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:cansingtone_front/song_detail_screen.dart';
-import 'package:cansingtone_front/recommendation_screens/timbretest.dart';
+import 'package:cansingtone_front/test_screens/timbretest.dart';
 import 'package:provider/provider.dart';
 import '../service/recom_api.dart'; // 예시에 맞게 서비스 임포트
 

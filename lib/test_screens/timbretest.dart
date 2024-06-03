@@ -7,18 +7,18 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import '../uploader.dart';
-import '../start/tutorial.dart';
+import '../uploadert.dart';
+import '../start_screens/tutorial.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
 import '../getuserdata.dart';
 
-class VocalRangeTestPage extends StatefulWidget {
+class TimbreTestPage extends StatefulWidget {
   @override
-  _VocalRangeTestPageState createState() => _VocalRangeTestPageState();
+  _TimbreTestPageState createState() => _TimbreTestPageState();
 }
 
-class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
+class _TimbreTestPageState extends State<TimbreTestPage> {
   FlutterSoundRecorder _recorder = FlutterSoundRecorder();
   FlutterSoundPlayer _player = FlutterSoundPlayer();
   String _filePath = '';
@@ -87,7 +87,7 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
     var status = await Permission.microphone.request();
     if (status.isGranted) {
       final tempDir = await getTemporaryDirectory();
-      _filePath = '${tempDir.path}/flutter_sound_example.aac';
+      _filePath = '${tempDir.path}/flutter_sound_timbre.aac';
       await _recorder.startRecorder(
         toFile: _filePath,
         codec: Codec.aacADTS,
@@ -134,7 +134,7 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
       backgroundColor: Color(0xFF241D27),
       appBar: AppBar(
         title: Text(
-          '음역대 측정',
+          '음색 측정',
           style: TextStyle(
             color: Colors.white,
             fontSize: 20.0,
@@ -196,7 +196,7 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
             if (_hasShownInitialMessage) ...[
               SizedBox(height: 20.0),
               Text(
-                '마이크를 클릭하고 편안하게 낼 수 있는\n 최저음과 최고음을 내주세요.',
+                '마이크를 클릭하고 아무 노래나 불러주세요.',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20.0,
@@ -236,9 +236,11 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
                             if (_filePath.isNotEmpty) {
                               showLoadingDialog(context);
                               File file = File(_filePath);
-                              AudioUploader audioUploader = AudioUploader(context);
-                              await audioUploader.uploadAudioFile(file);
-                              UserDataService.fetchAndSaveUserDataS(context,userId);
+                              AudioUploaderT audioUploader =
+                                  AudioUploaderT(context);
+                              await audioUploader.uploadAudioFileT(file);
+                              UserDataService.fetchAndSaveUserDataS(
+                                  context, userId);
                               Navigator.of(context).pop();
                               showCompleteDialog(context);
                             } else {

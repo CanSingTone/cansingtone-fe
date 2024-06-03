@@ -5,8 +5,8 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import '../models/recommendation.dart';
 import '../models/song.dart';
 import '../service/recom_api.dart';
-import 'vocalrangetest.dart';
-import 'timbretest.dart';
+import '../test_screens/vocalrangetest.dart';
+import '../test_screens/timbretest.dart';
 import '../usercard.dart';
 import 'package:provider/provider.dart';
 import '../userdata.dart';
@@ -34,94 +34,128 @@ class recompage extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Color(0xFF241D27),
       ),
-      body: ListView(padding: EdgeInsets.all(16.0), children: [
+      body: ListView(padding: EdgeInsets.all(15.0), children: [
         UserCard(
           userData: userData,
           onEditPressed: () {},
           isEditing: false,
         ),
-        SizedBox(height: height * 0.01),
+        SizedBox(height: height * 0.03),
+        InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => TimbreBasedRecomScreen()),
+            );
+          },
+          child: Row(
+            children: [
+              Text(
+                '음색 기반 추천곡 ',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: Image.asset(
+                  'assets/images/emoji/voice.png',
+                  height: 25,
+                ),
+              ),
+              SizedBox(width: 10),
+              Text(
+                '전체 보기',
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.5),
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
         Card(
           elevation: 5.0,
           color: Colors.white,
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.only(left: 15.0, top: 5),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TimbreBasedRecomScreen()),
-                    );
-                  },
-                  child: Image.asset(
-                    'assets/images/recommendation/to_timbre_based.png',
-                    height: height * 0.03,
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                Column(
-                  children: <Widget>[
-                    FutureBuilder<List<dynamic>>(
-                      future: recomApi
-                          .getTimbreBasedRecommendation(userData.userId),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Center(
-                              child: Text('오류 발생: ${snapshot.error}'));
-                        } else if (snapshot.hasData) {
-                          List<dynamic> recommendations = snapshot.data!;
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: 4,
-                            itemBuilder: (context, index) {
-                              var recommendation = recommendations[index];
-                              var songInfo = recommendation['songInfo'];
-                              return GestureDetector(
-                                onTap: () {
-                                  // 곡 상세 정보 페이지로 이동하는 코드 추가
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          SongDetailScreen(songInfo: songInfo),
-                                    ),
-                                  );
-                                },
-                                child: ListTile(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      horizontal: 0.0, vertical: 1.0),
-                                  leading: songInfo['albumImage'] != null
-                                      ? Image.network(songInfo['albumImage'])
-                                      : Icon(Icons.music_note),
-                                  title: Text(songInfo['songTitle']),
-                                  subtitle: Text(songInfo['artist']),
-                                  trailing: songInfo['karaokeNum'] != null
-                                      ? Text(songInfo['karaokeNum'])
-                                      : null,
+                FutureBuilder<List<dynamic>>(
+                  future:
+                      recomApi.getTimbreBasedRecommendation(userData.userId),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('오류 발생: ${snapshot.error}'));
+                    } else if (snapshot.hasData) {
+                      List<dynamic> recommendations = snapshot.data!;
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: 4,
+                        itemBuilder: (context, index) {
+                          var recommendation = recommendations[index];
+                          var songInfo = recommendation['songInfo'];
+                          return GestureDetector(
+                            onTap: () {
+                              // 곡 상세 정보 페이지로 이동하는 코드 추가
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      SongDetailScreen(songInfo: songInfo),
                                 ),
                               );
                             },
+                            child: ListTile(
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 0.0, vertical: 1.0),
+                              leading: songInfo['albumImage'] != null
+                                  ? Image.network(songInfo['albumImage'])
+                                  : Icon(Icons.music_note),
+                              title: Text(songInfo['songTitle']),
+                              subtitle: Text(songInfo['artist']),
+                              trailing: songInfo['karaokeNum'] != null
+                                  ? Text(songInfo['karaokeNum'])
+                                  : null,
+                            ),
                           );
-                        } else {
-                          return Center(child: Text('데이터 없음'));
-                        }
-                      },
-                    ),
-                  ],
+                        },
+                      );
+                    } else {
+                      return Center(child: Text('데이터 없음'));
+                    }
+                  },
                 ),
               ],
             ),
           ),
         ),
-        SizedBox(height: height * 0.01),
+        SizedBox(height: height * 0.03),
+        Row(
+          children: [
+            Text(
+              '음역대 기반 추천곡 ',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: Image.asset(
+                'assets/images/emoji/updown.png',
+                height: 20,
+              ),
+            ),
+          ],
+        ),
         Card(
           color: Colors.white,
           child: Padding(
@@ -129,15 +163,11 @@ class recompage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Image.asset(
-                  'assets/images/recommendation/to_range_based.png',
-                  height: height * 0.03,
-                ),
-                SizedBox(height: height * 0.05),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
+                    SizedBox(height: height * 0.05),
                     Text(
                       '음역대 추천 기능이 처음이시군요?',
                       style: TextStyle(
@@ -152,7 +182,7 @@ class recompage extends StatelessWidget {
                       '음역대 측정 테스트를 진행해주세요',
                       style: TextStyle(
                         color: Colors.grey[700],
-                        fontSize: 14.0,
+                        fontSize: 17.0,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -173,7 +203,7 @@ class recompage extends StatelessWidget {
                             '테스트하기',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 16.0,
+                              fontSize: 18.0,
                             ),
                           ),
                           style: ElevatedButton.styleFrom(
