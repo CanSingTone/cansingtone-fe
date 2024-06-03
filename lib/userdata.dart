@@ -1,5 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+class UserDataShare {
+  static const String _userIdKey = 'user_id';
+
+  // 사용자 ID를 SharedPreferences에 저장합니다.
+  static Future<void> saveUserId(String userId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_userIdKey, userId);
+  }
+
+  // 저장된 사용자 ID를 가져옵니다.
+  static Future<String?> getUserId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_userIdKey);
+  }
+}
 
 class UserData extends ChangeNotifier {
   String userId = '';
