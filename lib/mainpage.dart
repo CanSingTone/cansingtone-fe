@@ -1,11 +1,52 @@
+import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
+
 import './mypage.dart';
 import 'package:flutter/material.dart';
 import './songinfopage.dart';
 import './detailsearch.dart';
 
-class mainpage extends StatelessWidget {
-  // const mainpage({Key? key}) : super(key: key);
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
+Future<List<dynamic>> fetchSongs() async {
+  final List<dynamic> songs = [];
+  final Dio _dio = Dio();
+
+  try {
+    for (int i = 15; i <= 35; i++) {
+      Response response = await _dio.get('http://13.125.27.204:8080/songs/$i');
+
+      if (response.statusCode == 200) {
+        songs.add(response.data['result']);
+      } else {
+        throw Exception('Failed to load song with ID: $i');
+      }
+    }
+  } catch (e) {
+    throw Exception('Failed to fetch songs: $e');
+  }
+
+  return songs;
+}
+
+class mainpage extends StatefulWidget {
+  @override
+  State<mainpage> createState() => _mainpageState();
+}
+
+class _mainpageState extends State<mainpage> {
+  late Future<List<dynamic>> _futureSongs;
+
+  @override
+  void initState() {
+    super.initState();
+    _futureSongs = fetchSongs();
+  }
+
+  // const mainpage({Key? key}) : super(key: key);
   final List<String> imagePaths = [
     'assets/images/home/banner/gang.png',
     'assets/images/home/banner/bubblegum.png',
@@ -13,30 +54,14 @@ class mainpage extends StatelessWidget {
     'assets/bom.png',
     'assets/bom.png',
   ];
-  final List<String> chartNames = [
-    '노래방 TOP10',
-    '20대 남성 TOP10',
-    '차트 3',
-    '차트 4',
-    '차트 5',
-    '차트 6',
-    '차트 7',
-    '차트 8',
-    '차트 9',
-    '차트 10',
-  ];
-  final List<List<Map<String, String>>> songLists = List.generate(10, (index) {
-    return List.generate(10, (songIndex) {
-      return {
-        'title': '노래 제목 $songIndex',
-        'artist': '가수 이름 $songIndex',
-      };
-    });
-  });
+
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
+
+    final int songsPerPage = 4;
+    final int pageCount = (20 / songsPerPage).ceil();
     return Scaffold(
       backgroundColor: Color(0xFF241D27),
       body: CustomScrollView(
@@ -68,7 +93,7 @@ class mainpage extends StatelessWidget {
             ],
           ),
           SliverPadding(
-            padding: EdgeInsets.only(top: 10),
+            padding: EdgeInsets.only(top: 5),
           ),
           SliverToBoxAdapter(
             child: Container(
@@ -93,130 +118,131 @@ class mainpage extends StatelessWidget {
             ),
           ),
           SliverPadding(
-            padding: EdgeInsets.only(top: 30),
+            padding: EdgeInsets.only(top: 25),
           ),
           SliverToBoxAdapter(
             child: Container(
-              height: height * 0.5,
-              child: PageView.builder(
-                controller: PageController(viewportFraction: 0.95),
-                itemCount: chartNames.length,
-                itemBuilder: (context, pageIndex) {
-                  return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 5.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Color(0xFFC9D99B)),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            chartNames[pageIndex],
-                            textAlign: TextAlign.left,
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            '노래방 TOP100 ',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Colors.white,
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ),
-                        /*                     Expanded(
-                          child: ListView.builder(
-                            itemCount: songLists[pageIndex].length,
-                            itemBuilder: (context, songIndex) {
-                              var song = songLists[pageIndex][songIndex];
-                              return ListTile(
-                                leading:
-                                    Icon(Icons.music_note, color: Colors.black),
-                                title: Text(
-                                  song['title']!,
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 18),
-                                ),
-                                subtitle: Text(
-                                  song['artist']!,
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 14),
-                                ),
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => SongInfoPage(
-                                            songId: songIndex + 4)),
-                                  );
-                                },
-                              );
-                            },
+                          Image.asset(
+                            'assets/images/emoji/fire.png',
+                            height: 25,
                           ),
-                        ),
-                        */
-                      ],
+                        ],
+                      ),
                     ),
-                  );
-                },
+                  ),
+                  FutureBuilder<List<dynamic>>(
+                    future: _futureSongs,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else {
+                        final songs = snapshot.data!;
+                        return Align(
+                          child: Container(
+                            height: height * 0.5,
+                            child: PageView.builder(
+                              controller:
+                                  PageController(viewportFraction: 0.92),
+                              itemCount: pageCount,
+                              itemBuilder: (context, pageIndex) {
+                                final startIndex = pageIndex * songsPerPage;
+                                final endIndex =
+                                    (startIndex + songsPerPage < songs.length)
+                                        ? startIndex + songsPerPage
+                                        : songs.length;
+
+                                final pageSongs =
+                                    songs.sublist(startIndex, endIndex);
+
+                                return Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        child: ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemCount: pageSongs.length,
+                                          itemBuilder: (context, songIndex) {
+                                            var song = pageSongs[songIndex];
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
+                                              child: ListTile(
+                                                contentPadding:
+                                                    EdgeInsets.only(left: 10),
+                                                tileColor: Colors.grey
+                                                    .withOpacity(0.2),
+                                                leading: Image.network(
+                                                  song['albumImage'],
+
+                                                  fit: BoxFit
+                                                      .cover, // 이미지 채우기 옵션
+                                                ),
+                                                title: Text(
+                                                  song['songTitle'],
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 17),
+                                                ),
+                                                subtitle: Text(
+                                                  song['artist'],
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 13),
+                                                ),
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SongInfoPage(
+                                                        songId: song['songId'],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ],
               ),
             ),
           ),
+          SliverPadding(
+            padding: EdgeInsets.only(top: 25),
+          ),
         ],
-      ),
-    );
-  }
-}
-
-class SongDetailPage extends StatelessWidget {
-  final String title;
-  final String artist;
-
-  SongDetailPage({required this.title, required this.artist});
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      child: Container(
-        padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '노래 정보',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 20),
-            Text(
-              '제목: $title',
-              style: TextStyle(fontSize: 18),
-            ),
-            SizedBox(height: 10),
-            Text(
-              '가수: $artist',
-              style: TextStyle(fontSize: 18),
-            ),
-            SizedBox(height: 20),
-            Align(
-              alignment: Alignment.center,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('닫기'),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

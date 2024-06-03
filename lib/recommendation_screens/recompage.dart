@@ -1,4 +1,4 @@
-import 'package:cansingtone_front/recommendation_screens/song_detail_screen.dart';
+import 'package:cansingtone_front/song_detail_screen.dart';
 import 'package:cansingtone_front/recommendation_screens/timbre_based_recom_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';

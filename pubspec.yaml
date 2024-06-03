@@ -78,13 +78,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/cansingtone.png
-    - assets/bom.png
-    - assets/tone_test.jpg
-    - assets/range_test.jpg
-    - assets/title.png
     - assets/new.jpg
-    - assets/iu.jpg
-    - assets/iu1.jpg
     - assets/mic.png
     - assets/pinkmic.png
     - assets/images/test/timbre_recording.png
@@ -95,6 +89,7 @@ flutter:
     - assets/images/recommendation/timbre_based.png
     - assets/images/start/splash.png
     - assets/images/home/banner/
+    - assets/images/emoji/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
