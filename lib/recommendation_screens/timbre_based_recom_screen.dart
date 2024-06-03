@@ -29,8 +29,8 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(width: width * 0.03),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -43,7 +43,6 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius:
                           BorderRadius.circular(10.0), // 버튼의 모서리를 둥글게 만듦
-                      side: BorderSide(color: Colors.black), // 버튼의 테두리 색상 및 너비
                     ),
                     padding: EdgeInsets.symmetric(
                       vertical: 9.0,
@@ -54,7 +53,7 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
                     '추천 새로 받기',
                     style: TextStyle(
                       color: Color(0xFF1A0C0C), // 버튼 텍스트 색상
-                      fontSize: 16.0, // 버튼 텍스트 크기
+                      fontSize: 15.0, // 버튼 텍스트 크기
                     ),
                   ),
                 ),
@@ -74,11 +73,8 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(10.0), // 버튼의 모서리를 둥글게 만듦
-                        side:
-                            BorderSide(color: Colors.black), // 버튼의 테두리 색상 및 너비
                       ),
                       padding: EdgeInsets.symmetric(
-                        vertical: 9.0,
                         horizontal: width * 0.05,
                       ), // 버튼의 내부 패딩
                     ),
@@ -86,7 +82,7 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
                       '음색 테스트 다시 하기',
                       style: TextStyle(
                         color: Color(0xFF1A0C0C), // 버튼 텍스트 색상
-                        fontSize: 16.0, // 버튼 텍스트 크기
+                        fontSize: 15.0, // 버튼 텍스트 크기
                       ),
                     ),
                   ),
@@ -217,23 +213,27 @@ class _SongListTileState extends State<SongListTile> {
       print('Error sending like request: $e');
     }
   }
+
   Future<void> _getLikeId(int songId) async {
     try {
       // UserData 인스턴스에서 userId를 가져옵니다.
       String userId = Provider.of<UserData>(context, listen: false).getUserId();
 
       // 서버 URL을 구성합니다.
-      String url = 'http://13.125.27.204:8080/like?user_id=$userId&song_id=$songId';
+      String url =
+          'http://13.125.27.204:8080/like?user_id=$userId&song_id=$songId';
 
       // Dio 인스턴스를 생성하여 HTTP GET 요청을 보냅니다.
       Dio dio = Dio();
       Response response = await dio.get(url);
-print(url);
+      print(url);
       // 서버 응답 처리
       if (response.statusCode == 200) {
         // 좋아요 ID를 저장합니다.
         dynamic data = response.data;
-        if(data != null && data['result'] != null && data['result']['likeId'] != null) {
+        if (data != null &&
+            data['result'] != null &&
+            data['result']['likeId'] != null) {
           likeId = data['result']['likeId'];
           print(likeId);
           _deleteLikeRequest(likeId!);
@@ -247,6 +247,7 @@ print(url);
       print('Error getting likeId: $e');
     }
   }
+
   // 좋아요 취소 요청을 보내는 함수
   Future<void> _deleteLikeRequest(int likeId) async {
     try {
@@ -267,24 +268,26 @@ print(url);
       print('Error sending delete like request: $e');
     }
   }
+
   Future<void> _checkLikeStatus(int songId) async {
     try {
       // UserData 인스턴스에서 userId를 가져옵니다.
       String userId = Provider.of<UserData>(context, listen: false).getUserId();
 
       // 서버 URL을 구성합니다.
-      String url = 'http://13.125.27.204:8080/like?user_id=$userId&song_id=$songId';
+      String url =
+          'http://13.125.27.204:8080/like?user_id=$userId&song_id=$songId';
 
       // Dio 인스턴스를 생성하여 HTTP GET 요청을 보냅니다.
       Dio dio = Dio();
       Response response = await dio.get(url);
-print(response);
+      print(response);
       // 서버 응답 처리
       if (response.statusCode == 200) {
         // isSuccess 값이 true일 때만 좋아요 상태를 업데이트합니다.
         if (response.data['isSuccess']) {
           // 가져온 좋아요 상태를 확인합니다.
-          if(isLiked == false){
+          if (isLiked == false) {
             setState(() {
               isLiked = true;
             });
@@ -292,7 +295,7 @@ print(response);
           print('업데이트완료');
         } else {
           print('Failed to get like status: ${response.data['message']}');
-          if(isLiked == true){
+          if (isLiked == true) {
             setState(() {
               isLiked = false;
             });
@@ -311,7 +314,6 @@ print(response);
     var songInfo = widget.songInfo;
     _checkLikeStatus(songInfo['songId']);
     return ListTile(
-
       visualDensity: VisualDensity(vertical: 0, horizontal: 0),
       contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 1.0),
       leading: songInfo['albumImage'] != null
@@ -336,7 +338,6 @@ print(response);
                   _sendLikeRequest(songInfo['songId']);
                 } else {
                   _getLikeId(songInfo['songId']);
-
                 }
               });
             },

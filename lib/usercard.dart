@@ -88,14 +88,14 @@ class UserCard extends StatelessWidget {
           elevation: 5.0,
           color: Color(0xffAA83E2),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 10, 15),
+            padding: const EdgeInsets.fromLTRB(15, 20, 15, 50),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(width: 15.0),
+                    SizedBox(width: 30.0),
                     Expanded(
                       child: Column(
                         children: [
@@ -148,7 +148,7 @@ class UserCard extends StatelessWidget {
                           '선호 장르',
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 16.0,
+                            fontSize: 17.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -206,24 +206,26 @@ class UserCard extends StatelessWidget {
                           '음역대',
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 16.0,
+                            fontSize: 17.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(width: 16),
+                        SizedBox(width: 20),
                         Column(
                           children: [
                             CustomPaint(
                               size: Size(200, 20),
                               painter: VocalRangePainter(
-                                lowNote: 53,
-                                highNote: 72,
+                                lowNote: userData.vocalRangeLow,
+                                highNote: userData.vocalRangeHigh,
+                                rangeColor: Color(0xffE365CF),
                               ),
                             ),
                           ],
                         ),
+                        SizedBox(width: 10),
                         Tooltip(
-                          message: '낮은 라 ~ 높은 파',
+                          message: '음역대 정보',
                           child: IconButton(
                             icon: Icon(Icons.help_outline),
                             onPressed: () {
@@ -231,24 +233,41 @@ class UserCard extends StatelessWidget {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: Text('음역대 정보'),
+                                    backgroundColor: Color(0xFF241D27),
                                     content: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
+                                        Text("남자 평균 음역대",
+                                            style:
+                                                TextStyle(color: Colors.white)),
                                         CustomPaint(
                                           size: Size(300, 30),
                                           painter: VocalRangePainter(
-                                              lowNote: 41, highNote: 65),
+                                              lowNote: 41,
+                                              highNote: 65,
+                                              rangeColor: Colors.blue),
                                         ),
-                                        CustomPaint(
-                                          size: Size(300, 50),
-                                          painter: VocalRangePainter(
-                                              lowNote: 53, highNote: 77),
-                                        ),
+                                        SizedBox(height: 50),
+                                        Text("여자 평균 음역대",
+                                            style:
+                                                TextStyle(color: Colors.white)),
                                         CustomPaint(
                                           size: Size(300, 30),
                                           painter: VocalRangePainter(
-                                              lowNote: 50, highNote: 72),
+                                              lowNote: 53,
+                                              highNote: 77,
+                                              rangeColor: Colors.pink),
+                                        ),
+                                        SizedBox(height: 50),
+                                        Text("당신의 음역대",
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                        CustomPaint(
+                                          size: Size(300, 30),
+                                          painter: VocalRangePainter(
+                                              lowNote: 50,
+                                              highNote: 72,
+                                              rangeColor: Color(0xffE365CF)),
                                         ),
                                       ],
                                     ),
@@ -269,15 +288,15 @@ class UserCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Text(
-                      showVocalRange(userData.vocalRangeLow) +
-                          ' - ' +
-                          showVocalRange(userData.vocalRangeHigh),
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 17.0,
-                      ),
-                    ),
+                    // Text(
+                    //   showVocalRange(userData.vocalRangeLow) +
+                    //       ' - ' +
+                    //       showVocalRange(userData.vocalRangeHigh),
+                    //   style: TextStyle(
+                    //     color: Colors.black,
+                    //     fontSize: 17.0,
+                    //   ),
+                    // ),
                   ],
                 ),
               ],
@@ -300,8 +319,35 @@ class UserCard extends StatelessWidget {
 class VocalRangePainter extends CustomPainter {
   final int lowNote;
   final int highNote;
+  final Color lineColor;
+  final Color rangeColor;
 
-  VocalRangePainter({required this.lowNote, required this.highNote});
+  VocalRangePainter({
+    required this.lowNote,
+    required this.highNote,
+    this.lineColor = Colors.white,
+    this.rangeColor = const Color(0xffE365CF),
+  });
+
+  String getMidiNoteName(int midiNote) {
+    final noteNames = [
+      'C',
+      'C#',
+      'D',
+      'D#',
+      'E',
+      'F',
+      'F#',
+      'G',
+      'G#',
+      'A',
+      'A#',
+      'B'
+    ];
+    int octave = (midiNote / 12).floor() - 1;
+    int noteIndex = (midiNote % 12).floor();
+    return '${noteNames[noteIndex]}$octave';
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -310,24 +356,77 @@ class VocalRangePainter extends CustomPainter {
     double highPosition = (highNote - 21) / totalRange * size.width;
 
     Paint linePaint = Paint()
-      ..color = Colors.white
-      ..strokeWidth = 10.0;
+      ..color = lineColor
+      ..strokeWidth = 10.0
+      ..strokeCap = StrokeCap.round;
 
     Paint rangePaint = Paint()
-      ..color = Colors.pink
-      ..strokeWidth = 10.0;
+      ..color = rangeColor
+      ..strokeWidth = 10.0
+      ..strokeCap = StrokeCap.round;
 
-    // Draw horizontal line
+    Paint shadowPaint = Paint()
+      ..color = Colors.black.withOpacity(0.5)
+      ..strokeWidth = 10.0
+      ..strokeCap = StrokeCap.round
+      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 5);
+
+    canvas.drawLine(Offset(3, size.height / 2 + 3),
+        Offset(size.width + 3, size.height / 2 + 3), shadowPaint);
+
     canvas.drawLine(Offset(0, size.height / 2),
         Offset(size.width, size.height / 2), linePaint);
 
-    // Draw vocal range
     canvas.drawLine(Offset(lowPosition, size.height / 2),
         Offset(highPosition, size.height / 2), rangePaint);
+
+    // 시작점과 끝점에 동그라미 그리기
+    Paint circlePaint = Paint()
+      ..color = rangeColor
+      ..style = PaintingStyle.fill;
+
+    canvas.drawCircle(Offset(lowPosition, size.height / 2), 10, circlePaint);
+    canvas.drawCircle(Offset(highPosition, size.height / 2), 10, circlePaint);
+
+    // 동그라미에 하이라이트 효과 추가
+    Paint circleHighlightPaint = Paint()
+      ..color = Colors.white.withOpacity(0.5)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3;
+
+    // 노트 값 텍스트 그리기
+    TextPainter textPainter = TextPainter(
+      textAlign: TextAlign.center,
+      textDirection: TextDirection.ltr,
+    );
+
+    String lowNoteText = getMidiNoteName(lowNote);
+    String highNoteText = getMidiNoteName(highNote);
+
+    textPainter.text = TextSpan(
+      text: lowNoteText,
+      style: TextStyle(
+          color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+    );
+    textPainter.layout();
+    textPainter.paint(canvas,
+        Offset(lowPosition - textPainter.width / 2, size.height / 2 + 16));
+
+    textPainter.text = TextSpan(
+      text: highNoteText,
+      style: TextStyle(
+          color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+    );
+    textPainter.layout();
+    textPainter.paint(canvas,
+        Offset(highPosition - textPainter.width / 2, size.height / 2 + 16));
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
+  bool shouldRepaint(VocalRangePainter oldDelegate) {
+    return oldDelegate.lowNote != lowNote ||
+        oldDelegate.highNote != highNote ||
+        oldDelegate.lineColor != lineColor ||
+        oldDelegate.rangeColor != rangeColor;
   }
 }
