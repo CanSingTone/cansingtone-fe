@@ -173,6 +173,65 @@ class recompage extends StatelessWidget {
           ),
         ),
         Card(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(height: height * 0.05),
+              Text(
+                '음역대 추천 기능이 처음이시군요?',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 22.0,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 5.0),
+              Text(
+                '음역대 측정 테스트를 진행해주세요',
+                style: TextStyle(
+                  color: Colors.grey[700],
+                  fontSize: 17.0,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: height * 0.03),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 48.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => VocalRangeTestPage()),
+                      );
+                    },
+                    child: Text(
+                      '테스트하기',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.0,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFFB290E4),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      minimumSize: Size(0, 48),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: height * 0.05),
+            ],
+          ),
+        ),
+        Card(
           color: Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(16.0),

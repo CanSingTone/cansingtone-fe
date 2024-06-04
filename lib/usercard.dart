@@ -223,7 +223,7 @@ class UserCard extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(width: 10),
+                        SizedBox(width: 5),
                         Tooltip(
                           message: '음역대 정보',
                           child: IconButton(
@@ -243,8 +243,8 @@ class UserCard extends StatelessWidget {
                                         CustomPaint(
                                           size: Size(300, 30),
                                           painter: VocalRangePainter(
-                                              lowNote: 41,
-                                              highNote: 65,
+                                              lowNote: 45,
+                                              highNote: 66,
                                               rangeColor: Colors.blue),
                                         ),
                                         SizedBox(height: 50),
@@ -254,8 +254,8 @@ class UserCard extends StatelessWidget {
                                         CustomPaint(
                                           size: Size(300, 30),
                                           painter: VocalRangePainter(
-                                              lowNote: 53,
-                                              highNote: 77,
+                                              lowNote: 52,
+                                              highNote: 72,
                                               rangeColor: Colors.pink),
                                         ),
                                         SizedBox(height: 50),
@@ -304,7 +304,7 @@ class UserCard extends StatelessWidget {
           ),
         ),
         Positioned(
-          left: width * 0.31,
+          left: width * 0.29,
           top: -19,
           child: Image.asset(
             'assets/images/usercard/girl.png',

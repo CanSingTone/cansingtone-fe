@@ -58,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             Container(
               width: width, // 원하는 너비 설정
-              height: height * 0.75, // 원하는 높이 설정
+              height: height * 0.7, // 원하는 높이 설정
               child: ClipRect(
                 child: FittedBox(
                   fit: BoxFit.cover,
