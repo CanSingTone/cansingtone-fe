@@ -94,13 +94,13 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
             color: Colors.white,
           ),
         ),
-        leading: IconButton(
+      /*  leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        backgroundColor: Color(0xFF241D27),
+      */  backgroundColor: Color(0xFF241D27),
       ),
       body: Container(
         padding: EdgeInsets.all(16.0),

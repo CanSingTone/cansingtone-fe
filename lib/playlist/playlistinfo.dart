@@ -186,6 +186,15 @@ class _PlaylistInfoPageState extends State<PlaylistInfoPage> {
                     },
                   ),
                   onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SongInfoPage(
+                          songId: songInfo.songId,
+                        ),
+                      ),
+                    );
+
                     // 세부 정보 페이지로 이동 (나중에 구현)
                   },
                 );
