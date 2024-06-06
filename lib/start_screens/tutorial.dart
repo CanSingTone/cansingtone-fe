@@ -1,6 +1,7 @@
 import 'package:cansingtone_front/playlist/playlistpage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import '../mainpage.dart';
 import '../userdata.dart';
@@ -123,6 +124,10 @@ Future<void> createFirstPlaylist(String userId) async {
   );
 
   if (response.statusCode == 200) {
+    final Map<String, dynamic> data = jsonDecode(response.body);
+    final int likeplaylistId = data['result'];
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
   } else {
     throw Exception('플레이리스트 생성에 실패했습니다.');
   }

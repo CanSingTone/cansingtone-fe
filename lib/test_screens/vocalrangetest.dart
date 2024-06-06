@@ -375,8 +375,8 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
                                     await audioUploader.uploadAudioFile(file);
                                     UserDataService.fetchAndSaveUserDataS(
                                         context, userId);
-                                    Navigator.of(context).pop();
                                     showCompleteDialog(context);
+                                    Navigator.of(context).pop();
                                   } else {
                                     print('No recorded file found');
                                   }

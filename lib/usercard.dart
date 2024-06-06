@@ -207,7 +207,8 @@ class UserCard extends StatelessWidget {
                         SizedBox(width: 20),
                         Column(
                           children: [
-                            CustomPaint(
+                            if(userData.vocalRangeLow != 0 && userData.vocalRangeHigh != 0)
+                              CustomPaint(
                               size: Size(200, 20),
                               painter: VocalRangePainter(
                                 lowNote: userData.vocalRangeLow,
@@ -256,13 +257,21 @@ class UserCard extends StatelessWidget {
                                         Text("당신의 음역대",
                                             style:
                                                 TextStyle(color: Colors.white)),
-                                        CustomPaint(
+                                        if(userData.vocalRangeLow != 0 && userData.vocalRangeHigh != 0)
+                                          CustomPaint(
                                           size: Size(300, 30),
                                           painter: VocalRangePainter(
                                               lowNote: userData.vocalRangeLow,
                                               highNote: userData.vocalRangeHigh,
                                               rangeColor: Color(0xffE365CF)),
-                                        ),
+                                        )
+                                        else
+                                          Text("미측정",
+                                            style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 17.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),)
                                       ],
                                     ),
                                     actions: [
