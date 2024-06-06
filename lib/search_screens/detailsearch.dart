@@ -1,4 +1,4 @@
-import 'package:cansingtone_front/searchresultpage.dart';
+import 'package:cansingtone_front/search_screens/searchresultpage.dart';
 import 'package:cansingtone_front/songinfopage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -54,9 +54,11 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
         'keyword=$keyword';
 
     try {
-      final response = await http.get(Uri.parse(url), headers: {"Accept-Charset": "utf-8"});
+      final response =
+          await http.get(Uri.parse(url), headers: {"Accept-Charset": "utf-8"});
       if (response.statusCode == 200) {
-        final responseData = jsonDecode(utf8.decode(response.bodyBytes));//한글 해결
+        final responseData =
+            jsonDecode(utf8.decode(response.bodyBytes)); //한글 해결
         if (responseData['result'] is List) {
           setState(() {
             searchResults = responseData['result'] ?? [];
@@ -73,7 +75,8 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SearchResultsPage(searchResults: searchResults),
+            builder: (context) =>
+                SearchResultsPage(searchResults: searchResults),
           ),
         );
       } else {
@@ -94,13 +97,14 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
             color: Colors.white,
           ),
         ),
-      /*  leading: IconButton(
+        /*  leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-      */  backgroundColor: Color(0xFF241D27),
+      */
+        backgroundColor: Color(0xFF241D27),
       ),
       body: Container(
         padding: EdgeInsets.all(16.0),
@@ -247,7 +251,18 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
     }
 
     List<String> notes = [
-      'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'
+      'A',
+      'A#',
+      'B',
+      'C',
+      'C#',
+      'D',
+      'D#',
+      'E',
+      'F',
+      'F#',
+      'G',
+      'G#'
     ];
 
     int octave = (midiNumber - 12) ~/ 12;

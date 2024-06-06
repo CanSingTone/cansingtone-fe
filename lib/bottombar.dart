@@ -1,4 +1,4 @@
-import 'package:cansingtone_front/detailsearch.dart';
+import 'package:cansingtone_front/search_screens/detailsearch.dart';
 import 'package:cansingtone_front/recommendation_screens/recompage.dart';
 import 'package:flutter/material.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';

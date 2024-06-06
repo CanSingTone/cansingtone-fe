@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import './mypage.dart';
 import 'package:flutter/material.dart';
 import './songinfopage.dart';
-import './detailsearch.dart';
+import 'search_screens/detailsearch.dart';
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -83,8 +83,7 @@ class _mainpageState extends State<mainpage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => mypage()),
+                      MaterialPageRoute(builder: (context) => mypage()),
                     );
                   },
                   color: Colors.white,

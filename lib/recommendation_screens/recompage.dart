@@ -175,9 +175,7 @@ class recompage extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-
               children: <Widget>[
-
                 if (userData.vocalRangeLow != 0 && userData.vocalRangeHigh != 0)
                   FutureBuilder<List<dynamic>>(
                     future:

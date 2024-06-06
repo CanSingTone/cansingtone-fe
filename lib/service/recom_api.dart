@@ -15,6 +15,7 @@ class RecomApi {
 
       if (response.statusCode == 200) {
         List<dynamic> data = response.data['result'];
+        print(data);
         return data;
       } else {
         throw Exception('요청 실패: ${response.statusCode}');

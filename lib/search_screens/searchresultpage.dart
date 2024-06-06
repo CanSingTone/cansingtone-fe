@@ -12,6 +12,12 @@ class SearchResultsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('검색 결과', style: TextStyle(color: Colors.white)),
         backgroundColor: Color(0xFF241D27),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white), // 뒤로가기 아이콘
+          onPressed: () {
+            Navigator.of(context).pop(); // 뒤로가기 버튼이 클릭되었을 때의 동작
+          },
+        ),
       ),
       body: Container(
         color: Color(0xFF241D27),
@@ -38,12 +44,14 @@ class SearchResultsPage extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SongInfoPage(songId: result['songId']),
+                    builder: (context) =>
+                        SongInfoPage(songId: result['songId']),
                   ),
                 );
               },

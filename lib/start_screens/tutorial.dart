@@ -1,4 +1,5 @@
 import 'package:cansingtone_front/playlist/playlistpage.dart';
+import 'package:cansingtone_front/start_screens/tutorial_range_test_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -257,9 +258,9 @@ class _TutorialPageState extends State<TutorialPage> {
             .updatePrefGenres(prefGenre1, prefGenre2, prefGenre3);
         createFirstPlaylist(userId);
         // 페이지 이동
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => AnimatedBarExample()),
+          MaterialPageRoute(builder: (context) => TutorialVocalRangeTestPage()),
         );
       }
     } catch (e) {
@@ -281,16 +282,18 @@ class _TutorialPageState extends State<TutorialPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: PageView(
-          controller: _pageController,
-          physics: NeverScrollableScrollPhysics(),
-          children: [
-            _buildNamePage(),
-            _buildGenderPage(),
-            _buildAgePage(),
-            _buildChoicesPage(),
-          ],
+      body: Expanded(
+        child: Container(
+          child: PageView(
+            controller: _pageController,
+            physics: NeverScrollableScrollPhysics(),
+            children: [
+              _buildNamePage(),
+              _buildGenderPage(),
+              _buildAgePage(),
+              _buildChoicesPage(),
+            ],
+          ),
         ),
       ),
     );
