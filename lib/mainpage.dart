@@ -320,6 +320,8 @@ class _mainpageState extends State<mainpage> {
                                           itemCount: pageSongs.length,
                                           itemBuilder: (context, songIndex) {
                                             var song = pageSongs[songIndex];
+                                            var overallIndex = startIndex +
+                                                songIndex + 1;
                                             return Padding(
                                               padding:
                                                   const EdgeInsets.all(5.0),
@@ -328,11 +330,28 @@ class _mainpageState extends State<mainpage> {
                                                     EdgeInsets.only(left: 10),
                                                 tileColor: Colors.grey
                                                     .withOpacity(0.2),
-                                                leading: Image.network(
-                                                  song['albumImage'],
-
-                                                  fit: BoxFit
-                                                      .cover, // 이미지 채우기 옵션
+                                                leading: Row(
+                                                  mainAxisSize:
+                                                  MainAxisSize.min,
+                                                  children: [
+                                                    Text(
+                                                      '$overallIndex',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 10),
+                                                    Image.network(
+                                                      song['albumImage'],
+                                                      fit: BoxFit
+                                                          .cover, // 이미지 채우기 옵션
+                                                      width: 50, // 이미지 너비
+                                                      height: 50, // 이미지 높이
+                                                    ),
+                                                  ],
                                                 ),
                                                 title: Text(
                                                   song['songTitle'],
