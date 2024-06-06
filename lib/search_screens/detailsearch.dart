@@ -97,124 +97,129 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
             color: Colors.white,
           ),
         ),
-        /*  leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      */
         backgroundColor: Color(0xFF241D27),
       ),
+      resizeToAvoidBottomInset: true, // 키보드가 올라올 때 화면 크기 조절
       body: Container(
+        color: Color(0xFF241D27), // 전체 배경색 설정
         padding: EdgeInsets.all(16.0),
-        color: Color(0xFF241D27),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '검색 조건',
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+        child: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height - 100, // Adjust height as needed
             ),
-            SizedBox(height: 16.0),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('제목 또는 가수', style: TextStyle(color: Colors.white)),
-                SizedBox(height: 8.0),
-                TextFormField(
-                  controller: _searchController,
-                  style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.grey[800],
-                    hintText: '검색어 입력',
-                    hintStyle: TextStyle(color: Colors.grey[400]),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(8.0),
+            child: IntrinsicHeight(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '검색 조건',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('장르', style: TextStyle(color: Colors.white)),
-                Checkbox(
-                  value: isGenreEnabled,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      isGenreEnabled = value ?? false;
-                      if (!isGenreEnabled) {
-                        selectedGenres.clear();
-                      }
-                    });
-                  },
-                ),
-              ],
-            ),
-            if (isGenreEnabled)
-              Wrap(
-                spacing: 8.0,
-                children: _buildGenreToggleButtons(),
+                  SizedBox(height: 16.0),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('제목 또는 가수', style: TextStyle(color: Colors.white)),
+                      SizedBox(height: 8.0),
+                      TextFormField(
+                        controller: _searchController,
+                        style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.grey[800],
+                          hintText: '검색어 입력',
+                          hintStyle: TextStyle(color: Colors.grey[400]),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('장르', style: TextStyle(color: Colors.white)),
+                      Checkbox(
+                        value: isGenreEnabled,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            isGenreEnabled = value ?? false;
+                            if (!isGenreEnabled) {
+                              selectedGenres.clear();
+                            }
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  if (isGenreEnabled)
+                    Wrap(
+                      spacing: 8.0,
+                      children: _buildGenreToggleButtons(),
+                    ),
+                  SizedBox(height: 16.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('음역대', style: TextStyle(color: Colors.white)),
+                      Checkbox(
+                        value: isRangeEnabled,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            isRangeEnabled = value ?? false;
+                            if (!isRangeEnabled) {
+                              selectedRange = RangeValues(21, 108);
+                            }
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  if (isRangeEnabled)
+                    RangeSlider(
+                      values: selectedRange,
+                      onChanged: (RangeValues values) {
+                        if (values.start < 21) values = RangeValues(21, values.end);
+                        if (values.end > 108) values = RangeValues(values.start, 108);
+                        setState(() {
+                          selectedRange = values;
+                        });
+                      },
+                      min: 21,
+                      max: 108,
+                      divisions: 87,
+                      labels: RangeLabels(
+                        midiNumberToNoteName(selectedRange.start.round()),
+                        midiNumberToNoteName(selectedRange.end.round()),
+                      ),
+                    ),
+                  SizedBox(height: 16.0),
+                  ElevatedButton(
+                    onPressed: _search,
+                    child: Text('검색', style: TextStyle(color: Colors.white)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.lightGreen,
+                      minimumSize: Size(double.infinity, 50),
+                    ),
+                  ),
+                  Expanded(child: Container()), // 빈 공간을 채우기 위한 위젯
+                ],
               ),
-            SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('음역대', style: TextStyle(color: Colors.white)),
-                Checkbox(
-                  value: isRangeEnabled,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      isRangeEnabled = value ?? false;
-                      if (!isRangeEnabled) {
-                        selectedRange = RangeValues(21, 108);
-                      }
-                    });
-                  },
-                ),
-              ],
             ),
-            if (isRangeEnabled)
-              RangeSlider(
-                values: selectedRange,
-                onChanged: (RangeValues values) {
-                  if (values.start < 21) values = RangeValues(21, values.end);
-                  if (values.end > 108) values = RangeValues(values.start, 108);
-                  setState(() {
-                    selectedRange = values;
-                  });
-                },
-                min: 21,
-                max: 108,
-                divisions: 87,
-                labels: RangeLabels(
-                  midiNumberToNoteName(selectedRange.start.round()),
-                  midiNumberToNoteName(selectedRange.end.round()),
-                ),
-              ),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: _search,
-              child: Text('검색', style: TextStyle(color: Colors.white)),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.lightGreen,
-                minimumSize: Size(double.infinity, 50),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
+
 
   List<Widget> _buildGenreToggleButtons() {
     List<String> genres = ['발라드', '댄스', 'R&B', '힙합', '락', '성인가요'];
