@@ -428,52 +428,50 @@ class _mainpageState extends State<mainpage> {
                         Container(
                           width: 100,
                           height: 100,
-                          color: Colors.red,
-                          margin: EdgeInsets.symmetric(horizontal: 10),
                           child: Center(
-                            child: Text(
-                              'Banner 1',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 24),
+                            child: Image.asset(
+                              'assets/images/playlist.png',
+                              height: 70,
                             ),
                           ),
                         ),
                         Container(
                           width: 100,
                           height: 100,
-                          color: Colors.green,
-                          margin: EdgeInsets.symmetric(horizontal: 10),
                           child: Center(
-                            child: Text(
-                              'Banner 2',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 24),
+                            child: Image.asset(
+                              'assets/images/playlist.png',
+                              height: 70,
                             ),
                           ),
                         ),
                         Container(
                           width: 100,
                           height: 100,
-                          color: Colors.blue,
-                          margin: EdgeInsets.symmetric(horizontal: 10),
                           child: Center(
-                            child: Text(
-                              'Banner 3',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 24),
+                            child: Image.asset(
+                              'assets/images/playlist.png',
+                              height: 70,
                             ),
                           ),
                         ),
                         Container(
                           width: 100,
                           height: 100,
-                          color: Colors.white,
-                          margin: EdgeInsets.symmetric(horizontal: 10),
                           child: Center(
-                            child: Text(
-                              'Banner 4',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 24),
+                            child: Image.asset(
+                              'assets/images/playlist.png',
+                              height: 70,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 100,
+                          height: 100,
+                          child: Center(
+                            child: Image.asset(
+                              'assets/images/playlist.png',
+                              height: 70,
                             ),
                           ),
                         ),

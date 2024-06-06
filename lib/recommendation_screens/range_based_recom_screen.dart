@@ -124,7 +124,7 @@ class _RangeBasedRecomScreenState extends State<RangeBasedRecomScreen> {
                       shrinkWrap: true,
                       itemCount: recommendations.length,
                       itemBuilder: (context, index) {
-                        var recommendation = recommendations[index];
+                        var recommendation = recommendations[index]['songInfo'];
                         return GestureDetector(
                           onTap: () {
                             // 곡 상세 정보 페이지로 이동하는 코드 추가
