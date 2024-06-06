@@ -23,6 +23,7 @@ class TimbreBasedRecomScreen extends StatefulWidget {
 class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
   @override
   Widget build(BuildContext context) {
+    final userData = Provider.of<UserData>(context);
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -116,7 +117,7 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
             ),
             Expanded(
               child: FutureBuilder<List<dynamic>>(
-                future: recomApi.getTimbreBasedRecommendation('userId'),
+                future: recomApi.getTimbreBasedRecommendation(userData.userId),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());

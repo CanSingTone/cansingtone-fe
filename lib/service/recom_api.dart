@@ -11,7 +11,7 @@ class RecomApi {
     try {
       //Response response = await _dio.get("$_API_PREFIX/$userId/timbre");
       Response response =
-          await _dio.get("$_API_PREFIX/timbre-based-recommendations/1");
+          await _dio.get("$_API_PREFIX/timbre-based-recommendations/$userId");
 
       if (response.statusCode == 200) {
         List<dynamic> data = response.data['result'];
@@ -27,7 +27,7 @@ class RecomApi {
   Future<List<dynamic>> getRangeBasedRecommendation(String userId) async {
     try {
       Response response = await _dio.get(
-        "$_API_PREFIX/range-based-recommendations/1",
+        "$_API_PREFIX/range-based-recommendations/$userId",
       );
 
       if (response.statusCode == 200) {
