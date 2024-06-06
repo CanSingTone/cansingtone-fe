@@ -2,7 +2,7 @@
 import 'package:dio/dio.dart';
 import '../models/recommendation.dart';
 
-const String _API_PREFIX = "http://13.125.27.204:8080/recommendations";
+const String _API_PREFIX = "http://13.125.27.204:8080";
 
 class RecomApi {
   final Dio _dio = Dio();
@@ -10,7 +10,8 @@ class RecomApi {
   Future<List<dynamic>> getTimbreBasedRecommendation(String userId) async {
     try {
       //Response response = await _dio.get("$_API_PREFIX/$userId/timbre");
-      Response response = await _dio.get("$_API_PREFIX/7/timbre");
+      Response response =
+          await _dio.get("$_API_PREFIX/timbre-based-recommendations/1");
 
       if (response.statusCode == 200) {
         List<dynamic> data = response.data['result'];
@@ -23,19 +24,14 @@ class RecomApi {
     }
   }
 
-  Future<List<dynamic>> getRangeBasedRecommendation(
-      String userId, int vocalRangeHigh, int vocalRangeLow) async {
+  Future<List<dynamic>> getRangeBasedRecommendation(String userId) async {
     try {
-      //Response response = await _dio.get("$_API_PREFIX/$userId/timbre");
-      Response response = await _dio.get("$_API_PREFIX/$userId/vocal-range",
-          queryParameters: {
-            'vocal_range_high': vocalRangeHigh,
-            'vocal_range_low': vocalRangeLow
-          });
+      Response response = await _dio.get(
+        "$_API_PREFIX/range-based-recommendations/1",
+      );
 
       if (response.statusCode == 200) {
         List<dynamic> data = response.data['result'];
-
         return data;
       } else {
         throw Exception('요청 실패: ${response.statusCode}');
