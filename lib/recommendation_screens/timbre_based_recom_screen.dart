@@ -105,7 +105,7 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
                       ), // 버튼의 내부 패딩
                     ),
                     child: Text(
-                      '음역대 테스트 다시 하기',
+                      '음색 테스트 다시 하기',
                       style: TextStyle(
                         color: Color(0xFF1A0C0C), // 버튼 텍스트 색상
                         fontSize: 15.0, // 버튼 텍스트 크기

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cansingtone_front/userdata.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'dart:async';
@@ -12,7 +13,11 @@ import '../start_screens/tutorial.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
 import '../getuserdata.dart';
-import '../widgets/wave_animation.dart';
+//import '../widgets/wave_animation.dart';
+
+import './vocalrangetest.dart';
+
+import 'dart:math' as math show sin, pi, sqrt;
 
 class TimbreTestPage extends StatefulWidget {
   @override
@@ -41,23 +46,69 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
     super.dispose();
   }
 
-  void showLoadingDialog(BuildContext context) {
+
+  void showLoadingDialog(BuildContext context, Widget spinner, String message,
+      int duration, VoidCallback onComplete) {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog(
+          backgroundColor: Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Row(
+            child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                CircularProgressIndicator(),
-                SizedBox(width: 16),
-                Text("측정중...  잠시만 기다려주세요..."),
+                spinner,
+                SizedBox(height: 16),
+                Text(message),
               ],
             ),
           ),
+        );
+      },
+    );
+
+    // Dismiss the dialog after the specified duration
+    Future.delayed(Duration(seconds: duration), () {
+      Navigator.pop(context);
+      onComplete();
+    });
+  }
+
+  void showSequentialLoadingDialogs(BuildContext context) {
+    showLoadingDialog(
+      context,
+      SpinKitThreeInOut(
+        color: Colors.red,
+        size: 50.0,
+      ),
+      "데이터 전송중... ",
+      10,
+          () {
+        showLoadingDialog(
+          context,
+          SpinKitWave(
+            color: Colors.blue,
+            size: 50.0,
+          ),
+          "데이터 처리중...",
+          10,
+              () {
+            showLoadingDialog(
+              context,
+              SpinKitHourGlass(
+                color: Colors.yellow,
+                size: 50.0,
+              ),
+              "결과 생성중...",
+              20,
+                  () {
+                    showCompleteDialog(context);
+                  },
+            );
+          },
         );
       },
     );
@@ -271,15 +322,15 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
                         ElevatedButton(
                           onPressed: () async {
                             if (_filePath.isNotEmpty) {
-                              showLoadingDialog(context);
+                             // showLoadingDialog(context);
+                              showSequentialLoadingDialogs(context);
                               File file = File(_filePath);
                               AudioUploaderT audioUploader =
                                   AudioUploaderT(context);
                               await audioUploader.uploadAudioFileT(file);
-                              UserDataService.fetchAndSaveUserDataS(
-                                  context, userId);
-                              Navigator.of(context).pop();
-                              showCompleteDialog(context);
+                             // UserDataService.fetchAndSaveUserDataS(
+                             //     context, userId);
+                             // showCompleteDialog(context);
                             } else {
                               print('No recorded file found');
                             }

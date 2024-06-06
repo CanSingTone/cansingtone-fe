@@ -47,7 +47,7 @@ class SongInfo {
 
 class SongInPlaylist {
   final int songInPlaylistId;
-  final int playlistId;
+  final String playlistId;
   final SongInfo songInfo;
 
   SongInPlaylist({
@@ -195,13 +195,13 @@ class _LikePlaylistInfoPageState extends State<LikePlaylistInfoPage> {
                       : Icon(Icons.music_note),
                   title: Text(songInfo.songTitle),
                   subtitle: Text(songInfo.artist),
-                  trailing: IconButton(
+                /*  trailing: IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: () {
                       _showDeleteDialog(context, id);
                     },
                   ),
-                  onTap: () {
+                 */ onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(

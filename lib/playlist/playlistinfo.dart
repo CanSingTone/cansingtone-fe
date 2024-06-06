@@ -57,8 +57,8 @@ class SongInPlaylist {
 
   factory SongInPlaylist.fromJson(Map<String, dynamic> json) {
     return SongInPlaylist(
-      songInPlaylistId: json['likeId'] as int,
-      playlistId: json['userId'] as int,
+      songInPlaylistId: (json['songInPlaylistId']),
+      playlistId: (json['playlistId']),
       songInfo: SongInfo.fromJson(json['songInfo']),
     );
   }
