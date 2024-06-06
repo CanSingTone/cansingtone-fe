@@ -191,11 +191,17 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: Color(0xFF241D27),
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: BackButton(color: Colors.white),
         actions: [
           IconButton(
-            icon: Icon(Icons.playlist_add),
+            icon: Icon(Icons.playlist_add, color: Colors.white),
             onPressed: _showPlaylistDialog,
           ),
         ],
@@ -207,30 +213,34 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               widget.songInfo['albumImage'] != null
-                  ? Image.network(
-                      widget.songInfo['albumImage'],
-                      width: 200, // 이미지 너비 조절 가능
-                      height: 200, // 이미지 높이 조절 가능
-                      fit: BoxFit.cover, // 이미지 채우기 옵션
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Image.network(
+                        widget.songInfo['albumImage'],
+                        width: width * 0.6,
+                        height: width * 0.6,
+                        fit: BoxFit.cover,
+                      ),
                     )
-                  : Container(), // 앨범 이미지가 없는 경우 빈 컨테이너를 표시
+                  : Container(),
               SizedBox(height: 8.0),
               Text(
                 widget.songInfo['songTitle'],
                 style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
               SizedBox(height: 8.0),
               Text(
                 '${widget.songInfo['artist']}',
-                style: TextStyle(fontSize: 16.0),
+                style: TextStyle(fontSize: 16.0, color: Colors.white),
               ),
               SizedBox(height: 8.0),
               Text(
-                '노래방 번호: ${widget.songInfo['karaokeNum'] ?? '노래방 번호'}',
-                style: TextStyle(fontSize: 16.0),
+                '노래방 번호: ${widget.songInfo['karaokeNum'] ?? ''}',
+                style: TextStyle(fontSize: 16.0, color: Colors.white),
               ),
               SizedBox(height: 16.0),
               Row(

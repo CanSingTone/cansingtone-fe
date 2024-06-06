@@ -480,7 +480,7 @@ class _TutorialPageState extends State<TutorialPage> {
                         Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: SizedBox(
-                              height: height * 0.15,
+                              height: height * 0.14,
                               child: Image.asset(
                                   'assets/images/usercard/girl.png')),
                         ),

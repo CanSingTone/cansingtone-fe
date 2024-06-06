@@ -30,7 +30,6 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
   bool _isRecordingComplete = false;
   bool _hasShownInitialMessage = true;
 
-
   @override
   void initState() {
     super.initState();
@@ -83,7 +82,7 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
         size: 50.0,
       ),
       "데이터 전송중... ",
-      5,
+      10,
       () {
         showLoadingDialog(
           context,
@@ -92,7 +91,7 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
             size: 50.0,
           ),
           "데이터 처리중...",
-          5,
+          10,
           () {
             showLoadingDialog(
               context,
@@ -101,7 +100,7 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
                 size: 50.0,
               ),
               "결과 생성중...",
-              10,
+              20,
               () {},
             );
           },
