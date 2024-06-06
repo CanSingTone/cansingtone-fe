@@ -1,3 +1,4 @@
+import 'package:cansingtone_front/detailsearch.dart';
 import 'package:cansingtone_front/recommendation_screens/recompage.dart';
 import 'package:flutter/material.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
@@ -66,13 +67,13 @@ class _AnimatedBarExampleState extends State<AnimatedBarExample> {
           ),
           BottomBarItem(
             icon: const Icon(
-              Icons.person,
+              Icons.search,
             ),
             selectedIcon: const Icon(
-              Icons.person,
+              Icons.search,
             ),
             selectedColor: Colors.deepOrangeAccent,
-            title: const Text('마이페이지'),
+            title: const Text('검색'),
           ),
           BottomBarItem(
             icon: Icon(
@@ -121,7 +122,7 @@ class _AnimatedBarExampleState extends State<AnimatedBarExample> {
       case 1:
         return PlaylistPage();
       case 2:
-        return mypage();
+        return DetailSearchPage();
       case 3:
         return recompage();
       default:

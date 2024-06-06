@@ -49,7 +49,12 @@ class _MyPageState extends State<mypage> {
             _navigateToPage(0);
           },
         )
-            : null,
+            : IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: _buildPageContent(),
     );

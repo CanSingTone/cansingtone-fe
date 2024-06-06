@@ -79,12 +79,12 @@ class _mainpageState extends State<mainpage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: IconButton(
-                  icon: Icon(Icons.search),
+                  icon: Icon(Icons.person),
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => DetailSearchPage()),
+                          builder: (context) => mypage()),
                     );
                   },
                   color: Colors.white,
