@@ -27,10 +27,22 @@ class Playlist {
   }
 }
 
+class Song {
+  final String albumImageUrl;
+
+  Song({
+    required this.albumImageUrl,
+  });
+
+  factory Song.fromJson(Map<String, dynamic> json) {
+    return Song(
+      albumImageUrl: json['songInfo']['albumImage'],
+    );
+  }
+}
 
 class PlaylistPage extends StatefulWidget {
   const PlaylistPage({Key? key}) : super(key: key);
-
 
   @override
   _PlaylistPageState createState() => _PlaylistPageState();
@@ -39,23 +51,30 @@ class PlaylistPage extends StatefulWidget {
 class _PlaylistPageState extends State<PlaylistPage> {
   late Future<List<Playlist>> futurePlaylists;
 
-
-
   @override
   void initState() {
     super.initState();
-
     futurePlaylists = fetchPlaylists();
   }
 
   Future<List<Playlist>> fetchPlaylists() async {
-    String? userId = await UserDataShare.getUserId(); // userId를 상태 클래스 내에 정의합니다.
+    String? userId = await UserDataShare.getUserId();
     final response = await http.get(Uri.parse('http://13.125.27.204:8080/playlists/${userId}'));
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes))['result'];
       return data.map((json) => Playlist.fromJson(json)).toList();
     } else {
       throw Exception('플레이리스트를 불러오는데 실패했습니다.');
+    }
+  }
+
+  Future<List<Song>> fetchSongs(int playlistId) async {
+    final response = await http.get(Uri.parse('http://13.125.27.204:8080/songs-in-playlist/${playlistId}'));
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes))['result'];
+      return data.map((json) => Song.fromJson(json)).toList();
+    } else {
+      throw Exception('플레이리스트의 곡을 불러오는데 실패했습니다.');
     }
   }
 
@@ -71,7 +90,6 @@ class _PlaylistPageState extends State<PlaylistPage> {
     );
 
     if (response.statusCode == 200) {
-      // 성공적으로 생성된 경우, 플레이리스트를 다시 불러옴
       setState(() {
         futurePlaylists = fetchPlaylists();
       });
@@ -79,8 +97,6 @@ class _PlaylistPageState extends State<PlaylistPage> {
       throw Exception('플레이리스트 생성에 실패했습니다.');
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +130,13 @@ class _PlaylistPageState extends State<PlaylistPage> {
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('플레이리스트가 없습니다.', style: TextStyle(color: Colors.white)));
           } else {
-            return ListView.builder(
+            return GridView.builder(
+              padding: EdgeInsets.all(8.0),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 8.0,
+                mainAxisSpacing: 8.0,
+              ),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 final playlist = snapshot.data![index];
@@ -123,6 +145,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                   playlistId: playlist.playlistId,
                   playlistName: playlist.playlistName,
                   isPublic: playlist.isPublic,
+                  fetchSongs: fetchSongs,
                 );
               },
             );
@@ -132,7 +155,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
     );
   }
 
-  void _showCreatePlaylistDialog(BuildContext context) async{
+  void _showCreatePlaylistDialog(BuildContext context) async {
     final _playlistNameController = TextEditingController();
     bool isPublic = false;
     String? userId = await UserDataShare.getUserId();
@@ -189,33 +212,79 @@ class _PlaylistPageState extends State<PlaylistPage> {
     );
   }
 }
+
 class PlaylistItem extends StatelessWidget {
   final String title;
   final int playlistId;
   final String playlistName;
   final int isPublic;
+  final Future<List<Song>> Function(int) fetchSongs;
 
+  const PlaylistItem({
+    Key? key,
+    required this.title,
+    required this.playlistId,
+    required this.playlistName,
+    required this.isPublic,
+    required this.fetchSongs,
+  }) : super(key: key);
 
-  const PlaylistItem({Key? key, required this.title, required this.playlistId, required this.playlistName, required this.isPublic}) : super(key: key);
+  Future<String?> _getAlbumImageUrl() async {
+    List<Song> songs = await fetchSongs(playlistId);
+    if (songs.isNotEmpty) {
+      return songs[0].albumImageUrl;
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        title,
-        style: TextStyle(color: Colors.white),
-      ),
-      trailing: Icon(Icons.more_vert, color: Colors.white),
+    return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => PlaylistInfoPage(
-            playlistId: playlistId,
-            playlistName: playlistName,
-            isPublic: isPublic,
-          ),),
+          MaterialPageRoute(
+            builder: (context) => PlaylistInfoPage(
+              playlistId: playlistId,
+              playlistName: playlistName,
+              isPublic: isPublic,
+            ),
+          ),
         );
       },
+      child: FutureBuilder<String?>(
+        future: _getAlbumImageUrl(),
+        builder: (context, snapshot) {
+          Widget displayWidget;
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            displayWidget = CircularProgressIndicator();
+          } else if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
+            displayWidget = Icon(Icons.music_note, color: Colors.white, size: 70.0);
+          } else {
+            displayWidget = Image.network(snapshot.data!, fit: BoxFit.cover);
+          }
+
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              //border: Border.all(color: Colors.white),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(child: Center(child: displayWidget)),
+                SizedBox(height: 10.0),
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

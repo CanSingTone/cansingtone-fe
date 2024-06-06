@@ -63,7 +63,6 @@ class SongInPlaylist {
     );
   }
 }
-
 class PlaylistInfoPage extends StatefulWidget {
   final int playlistId;
   final String playlistName;
@@ -101,6 +100,48 @@ class _PlaylistInfoPageState extends State<PlaylistInfoPage> {
     }
   }
 
+  Future<void> deleteSongInPlaylist(int songInPlaylistId) async {
+    final response = await http.delete(
+      Uri.parse('http://13.125.27.204:8080/songs-in-playlist?song_in_playlist_id=$songInPlaylistId'),
+    );
+    if (response.statusCode == 200) {
+      print('삭제');
+      setState(() {
+        futureSongsInPlaylist = fetchSongsInPlaylist(widget.playlistId);
+      });
+    } else {
+      throw Exception('노래를 삭제하는데 실패했습니다.');
+    }
+  }
+
+  void _showDeleteDialog(BuildContext context, int songInPlaylistId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('노래 삭제'),
+          content: Text('정말 삭제하시겠습니까?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                deleteSongInPlaylist(songInPlaylistId);
+                // 삭제 함수 호출
+                Navigator.of(context).pop();
+              },
+              child: Text('예'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('아니오'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isPublicText = widget.isPublic == 1 ? '공개' : '비공개';
@@ -133,10 +174,17 @@ class _PlaylistInfoPageState extends State<PlaylistInfoPage> {
               itemBuilder: (context, index) {
                 final songInPlaylist = snapshot.data![index];
                 final songInfo = songInPlaylist.songInfo;
+                final id = songInPlaylist.songInPlaylistId;
                 return ListTile(
                   leading: Image.network(songInfo.albumImage),
                   title: Text(songInfo.songTitle),
                   subtitle: Text(songInfo.artist),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      _showDeleteDialog(context, id);
+                    },
+                  ),
                   onTap: () {
                     // 세부 정보 페이지로 이동 (나중에 구현)
                   },

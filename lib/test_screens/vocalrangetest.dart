@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cansingtone_front/usercard.dart';
 import 'package:cansingtone_front/userdata.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -28,6 +29,7 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
   bool _isRecording = false;
   bool _isRecordingComplete = false;
   bool _hasShownInitialMessage = true;
+
 
   @override
   void initState() {
@@ -109,19 +111,61 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
   }
 
   void showCompleteDialog(BuildContext context) {
+    final userData = Provider.of<UserData>(context);
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("측정완료!"),
+          backgroundColor: Color(0xFF241D27),
+          title: Text(
+            "측정완료!",
+            style: TextStyle(color: Colors.white),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text("남자 평균 음역대", style: TextStyle(color: Colors.white)),
+              CustomPaint(
+                size: Size(300, 30),
+                painter: VocalRangePainter(
+                  lowNote: 41,
+                  highNote: 65,
+                  rangeColor: Colors.blue,
+                ),
+              ),
+              SizedBox(height: 50),
+              Text("여자 평균 음역대", style: TextStyle(color: Colors.white)),
+              CustomPaint(
+                size: Size(300, 30),
+                painter: VocalRangePainter(
+                  lowNote: 53,
+                  highNote: 77,
+                  rangeColor: Colors.pink,
+                ),
+              ),
+              SizedBox(height: 50),
+              Text("당신의 음역대", style: TextStyle(color: Colors.white)),
+              CustomPaint(
+                size: Size(300, 30),
+                painter: VocalRangePainter(
+                  lowNote: userData.vocalRangeLow,
+                  highNote: userData.vocalRangeHigh,
+                  rangeColor: Color(0xffE365CF),
+                ),
+              ),
+            ],
+          ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
               },
-              child: Text("돌아가기", style: TextStyle(color: Colors.black)),
+              child: Text(
+                "돌아가기",
+                style: TextStyle(color: Colors.black),
+              ),
             ),
           ],
         );
