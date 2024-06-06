@@ -101,7 +101,9 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
               ),
               "결과 생성중...",
               20,
-              () {},
+              () {
+                showCompleteDialog(context);
+              },
             );
           },
         );
@@ -110,7 +112,7 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
   }
 
   void showCompleteDialog(BuildContext context) {
-    final userData = Provider.of<UserData>(context);
+    final userData = Provider.of<UserData>(context, listen: false);
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -374,8 +376,8 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
                                     await audioUploader.uploadAudioFile(file);
                                     UserDataService.fetchAndSaveUserDataS(
                                         context, userId);
-                                    showCompleteDialog(context);
-                                    Navigator.of(context).pop();
+
+                                    //showCompleteDialog(context);
                                   } else {
                                     print('No recorded file found');
                                   }
