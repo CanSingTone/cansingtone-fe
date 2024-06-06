@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:cansingtone_front/songinfopage.dart';
+import 'package:cansingtone_front/userdata.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -57,43 +58,52 @@ class SongInPlaylist {
 
   factory SongInPlaylist.fromJson(Map<String, dynamic> json) {
     return SongInPlaylist(
-      songInPlaylistId: json['likeId'] as int,
-      playlistId: json['userId'] as int,
+      songInPlaylistId: json['likeId'],
+      playlistId: json['userId'],
       songInfo: SongInfo.fromJson(json['songInfo']),
     );
   }
 }
-class PlaylistInfoPage extends StatefulWidget {
+
+class LikePlaylistInfoPage extends StatefulWidget {
   final int playlistId;
   final String playlistName;
   final int isPublic;
 
-  const PlaylistInfoPage({
+  const LikePlaylistInfoPage({
     Key? key,
     required this.playlistId,
     required this.playlistName,
     required this.isPublic,
   }) : super(key: key);
 
-
   @override
-  _PlaylistInfoPageState createState() => _PlaylistInfoPageState();
+  _LikePlaylistInfoPageState createState() => _LikePlaylistInfoPageState();
 }
 
-class _PlaylistInfoPageState extends State<PlaylistInfoPage> {
+class _LikePlaylistInfoPageState extends State<LikePlaylistInfoPage> {
   late Future<List<SongInPlaylist>> futureSongsInPlaylist;
 
   @override
   void initState() {
     super.initState();
-    futureSongsInPlaylist = fetchSongsInPlaylist(widget.playlistId);
+    futureSongsInPlaylist = fetchSongsInPlaylist();
   }
 
-  Future<List<SongInPlaylist>> fetchSongsInPlaylist(int playlistId) async {
-    final response = await http.get(Uri.parse('http://13.125.27.204:8080/songs-in-playlist/$playlistId'));
+  Future<List<SongInPlaylist>> fetchSongsInPlaylist() async {
+    String? userId = await UserDataShare.getUserId();
+    final response = await http.get(Uri.parse('http://13.125.27.204:8080/like/$userId'));
+
+    // 디버깅 로그 추가
+    print('User ID: $userId');
+    print('Request URL: http://13.125.27.204:8080/like/$userId');
+    print('Response status code: ${response.statusCode}');
+    print('Response body: ${response.body}');
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes))['result'];
+      // 데이터 구조 확인
+      print('Parsed data: $data');
       return data.map((json) => SongInPlaylist.fromJson(json)).toList();
     } else {
       throw Exception('노래를 불러오는데 실패했습니다.');
@@ -107,7 +117,7 @@ class _PlaylistInfoPageState extends State<PlaylistInfoPage> {
     if (response.statusCode == 200) {
       print('삭제');
       setState(() {
-        futureSongsInPlaylist = fetchSongsInPlaylist(widget.playlistId);
+        futureSongsInPlaylist = fetchSongsInPlaylist();
       });
     } else {
       throw Exception('노래를 삭제하는데 실패했습니다.');
@@ -162,21 +172,27 @@ class _PlaylistInfoPageState extends State<PlaylistInfoPage> {
       body: FutureBuilder<List<SongInPlaylist>>(
         future: futureSongsInPlaylist,
         builder: (context, snapshot) {
+          print('FutureBuilder snapshot state: ${snapshot.connectionState}');
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
+            print('FutureBuilder error: ${snapshot.error}');
             return Center(child: Text('노래를 불러오는데 실패했습니다.'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('노래가 없습니다.'));
           } else {
+            final songs = snapshot.data!;
+            print('Loaded songs: $songs');
             return ListView.builder(
-              itemCount: snapshot.data!.length,
+              itemCount: songs.length,
               itemBuilder: (context, index) {
-                final songInPlaylist = snapshot.data![index];
+                final songInPlaylist = songs[index];
                 final songInfo = songInPlaylist.songInfo;
                 final id = songInPlaylist.songInPlaylistId;
                 return ListTile(
-                  leading: Image.network(songInfo.albumImage),
+                  leading: songInfo.albumImage.isNotEmpty
+                      ? Image.network(songInfo.albumImage)
+                      : Icon(Icons.music_note),
                   title: Text(songInfo.songTitle),
                   subtitle: Text(songInfo.artist),
                   trailing: IconButton(

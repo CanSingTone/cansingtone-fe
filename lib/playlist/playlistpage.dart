@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cansingtone_front/playlist/likeplaylistinfo.dart';
 import 'package:cansingtone_front/userdata.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -241,16 +242,28 @@ class PlaylistItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        if (playlistName == "좋아요 표시한 음악")
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => PlaylistInfoPage(
+            builder: (context) => LikePlaylistInfoPage(
               playlistId: playlistId,
               playlistName: playlistName,
               isPublic: isPublic,
             ),
           ),
         );
+        else
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PlaylistInfoPage(
+                playlistId: playlistId,
+                playlistName: playlistName,
+                isPublic: isPublic,
+              ),
+            ),
+          );
       },
       child: FutureBuilder<String?>(
         future: _getAlbumImageUrl(),
@@ -258,7 +271,9 @@ class PlaylistItem extends StatelessWidget {
           Widget displayWidget;
           if (snapshot.connectionState == ConnectionState.waiting) {
             displayWidget = CircularProgressIndicator();
-          } else if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
+          } else if (playlistName == "좋아요 표시한 음악") {
+            displayWidget = Icon(Icons.thumb_up, color: Colors.white, size: 70.0);
+          }else if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
             displayWidget = Icon(Icons.music_note, color: Colors.white, size: 70.0);
           } else {
             displayWidget = Image.network(snapshot.data!, fit: BoxFit.cover);

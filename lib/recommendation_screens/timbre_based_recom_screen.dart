@@ -1,3 +1,4 @@
+import 'package:cansingtone_front/playlist/addplaylist.dart';
 import 'package:cansingtone_front/userdata.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,12 @@ import 'package:cansingtone_front/song_detail_screen.dart';
 import 'package:cansingtone_front/test_screens/timbretest.dart';
 import 'package:provider/provider.dart';
 import '../service/recom_api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+Future<String?> getLikePlaylistId() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getString('likeplaylistId');
+}
 
 class TimbreBasedRecomScreen extends StatefulWidget {
   const TimbreBasedRecomScreen({Key? key});
