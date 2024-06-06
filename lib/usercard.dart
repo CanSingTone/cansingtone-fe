@@ -84,43 +84,37 @@ class UserCard extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         Card(
-          margin: EdgeInsets.only(top: height * 0.09, left: 3.0, right: 3.0),
+          margin: EdgeInsets.only(top: height * 0.02, left: 3.0, right: 3.0),
           elevation: 5.0,
           color: Color(0xffAA83E2),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(15, 20, 15, 50),
+            padding: const EdgeInsets.fromLTRB(15, 15, 15, 30),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(width: 30.0),
+                    SizedBox(
+                      width: width * 0.32,
+                    ),
                     Expanded(
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: height * 0.028),
-                          Align(
-                            alignment: Alignment.topCenter,
-                            child: Text(
-                              '@${userData.nickname}',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 23.0,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          Text(
+                            '@${userData.nickname}',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 23.0,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Align(
-                            alignment: Alignment.topCenter,
-                            child: Text(
-                              '${userData.ages}세 ' +
-                                  getGenderText(userData.gender),
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15.0,
-                              ),
+                          Text(
+                            '${userData.ages}세 ' +
+                                getGenderText(userData.gender),
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.0,
                             ),
                           ),
                         ],
@@ -139,7 +133,7 @@ class UserCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 10.0),
+                SizedBox(height: height * 0.05),
                 Column(
                   children: [
                     Row(
@@ -216,8 +210,8 @@ class UserCard extends StatelessWidget {
                             CustomPaint(
                               size: Size(200, 20),
                               painter: VocalRangePainter(
-                                lowNote: 50,
-                                highNote: 72,
+                                lowNote: userData.vocalRangeLow,
+                                highNote: userData.vocalRangeHigh,
                                 rangeColor: Color(0xffE365CF),
                               ),
                             ),
@@ -304,11 +298,11 @@ class UserCard extends StatelessWidget {
           ),
         ),
         Positioned(
-          left: width * 0.29,
-          top: -19,
+          left: width * 0.04,
+          top: -20,
           child: Image.asset(
             'assets/images/usercard/girl.png',
-            height: height * 0.18,
+            height: height * 0.19,
           ),
         ),
       ],

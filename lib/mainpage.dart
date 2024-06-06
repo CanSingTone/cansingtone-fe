@@ -159,52 +159,59 @@ class _mainpageState extends State<mainpage> {
                           child: Container(
                             height: height * 0.5,
                             child: PageView.builder(
-<<<<<<< HEAD
                               controller:
-                                  PageController(viewportFraction: 0.93),
-=======
-                              controller: PageController(viewportFraction: 0.92),
->>>>>>> 7b7e0aa604d042d2606ea793047257d26eda1218
+                                  PageController(viewportFraction: 0.92),
                               itemCount: pageCount,
                               itemBuilder: (context, pageIndex) {
                                 final startIndex = pageIndex * songsPerPage;
-                                final endIndex = (startIndex + songsPerPage < songs.length)
-                                    ? startIndex + songsPerPage
-                                    : songs.length;
+                                final endIndex =
+                                    (startIndex + songsPerPage < songs.length)
+                                        ? startIndex + songsPerPage
+                                        : songs.length;
 
-                                final pageSongs = songs.sublist(startIndex, endIndex);
+                                final pageSongs =
+                                    songs.sublist(startIndex, endIndex);
 
                                 return Container(
                                   child: Column(
                                     children: [
                                       Expanded(
                                         child: ListView.builder(
-                                          physics: NeverScrollableScrollPhysics(),
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
                                           itemCount: pageSongs.length,
                                           itemBuilder: (context, songIndex) {
                                             var song = pageSongs[songIndex];
-                                            var overallIndex = startIndex + songIndex + 1; // 전체 순위 계산
+                                            var overallIndex = startIndex +
+                                                songIndex +
+                                                1; // 전체 순위 계산
 
                                             return Padding(
-                                              padding: const EdgeInsets.all(5.0),
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
                                               child: ListTile(
-                                                contentPadding: EdgeInsets.only(left: 10),
-                                                tileColor: Colors.grey.withOpacity(0.2),
+                                                contentPadding:
+                                                    EdgeInsets.only(left: 10),
+                                                tileColor: Colors.grey
+                                                    .withOpacity(0.2),
                                                 leading: Row(
-                                                  mainAxisSize: MainAxisSize.min,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
                                                   children: [
                                                     Text(
                                                       '$overallIndex',
                                                       style: TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 20,
-                                                        fontWeight: FontWeight.bold,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                       ),
                                                     ),
                                                     SizedBox(width: 10),
                                                     Image.network(
                                                       song['albumImage'],
-                                                      fit: BoxFit.cover, // 이미지 채우기 옵션
+                                                      fit: BoxFit
+                                                          .cover, // 이미지 채우기 옵션
                                                       width: 50, // 이미지 너비
                                                       height: 50, // 이미지 높이
                                                     ),
@@ -212,17 +219,22 @@ class _mainpageState extends State<mainpage> {
                                                 ),
                                                 title: Text(
                                                   song['songTitle'],
-                                                  style: TextStyle(color: Colors.white, fontSize: 17),
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 17),
                                                 ),
                                                 subtitle: Text(
                                                   song['artist'],
-                                                  style: TextStyle(color: Colors.white, fontSize: 13),
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 13),
                                                 ),
                                                 onTap: () {
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
-                                                      builder: (context) => SongInfoPage(
+                                                      builder: (context) =>
+                                                          SongInfoPage(
                                                         songId: song['songId'],
                                                       ),
                                                     ),
@@ -243,7 +255,6 @@ class _mainpageState extends State<mainpage> {
                       }
                     },
                   ),
-
                 ],
               ),
             ),

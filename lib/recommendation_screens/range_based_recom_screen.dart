@@ -110,8 +110,9 @@ class _RangeBasedRecomScreenState extends State<RangeBasedRecomScreen> {
             ),
             Expanded(
               child: FutureBuilder<List<dynamic>>(
-                future: recomApi.getRangeBasedRecommendation(userData.userId,
-                    userData.vocalRangeHigh, userData.vocalRangeLow),
+                future: recomApi.getRangeBasedRecommendation(
+                  userData.userId,
+                ),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
