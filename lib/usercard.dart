@@ -84,7 +84,7 @@ class UserCard extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         Card(
-          margin: EdgeInsets.only(top: height * 0.02, left: 3.0, right: 3.0),
+          margin: EdgeInsets.only(top: height * 0.04, left: 3.0, right: 3.0),
           elevation: 5.0,
           color: Color(0xffAA83E2),
           child: Padding(
@@ -133,7 +133,7 @@ class UserCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: height * 0.05),
+                SizedBox(height: height * 0.04),
                 Column(
                   children: [
                     Row(

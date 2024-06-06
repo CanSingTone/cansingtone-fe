@@ -9,7 +9,6 @@ import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:flutter/cupertino.dart';
 import './bottombar.dart';
 import 'start_screens/tutorial.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import './userdata.dart';

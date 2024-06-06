@@ -99,12 +99,13 @@ Future<bool> checkUserIdAvailability(int userId) async {
   }
 }
 
-
 Future<List<Playlist>> fetchPlaylists() async {
   String? userId = await UserDataShare.getUserId(); // userId를 상태 클래스 내에 정의합니다.
-  final response = await http.get(Uri.parse('http://13.125.27.204:8080/playlists/${userId}'));
+  final response = await http
+      .get(Uri.parse('http://13.125.27.204:8080/playlists/${userId}'));
   if (response.statusCode == 200) {
-    final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes))['result'];
+    final List<dynamic> data =
+        jsonDecode(utf8.decode(response.bodyBytes))['result'];
     return data.map((json) => Playlist.fromJson(json)).toList();
   } else {
     throw Exception('플레이리스트를 불러오는데 실패했습니다.');
@@ -112,7 +113,7 @@ Future<List<Playlist>> fetchPlaylists() async {
 }
 
 Future<void> createFirstPlaylist(String userId) async {
-   final response = await http.post(
+  final response = await http.post(
     Uri.parse('http://13.125.27.204:8080/playlists'),
     body: {
       'user_id': userId,
@@ -122,12 +123,10 @@ Future<void> createFirstPlaylist(String userId) async {
   );
 
   if (response.statusCode == 200) {
-
   } else {
     throw Exception('플레이리스트 생성에 실패했습니다.');
   }
 }
-
 
 class TutorialPage extends StatefulWidget {
   final VoidCallback onComplete;
@@ -330,7 +329,7 @@ class _TutorialPageState extends State<TutorialPage> {
             onPressed: _nameController.text.isNotEmpty ? _nextPage : null,
             child: Text('다음',
                 style: TextStyle(
-                  color: Colors.black,
+                  color: Color(0xFF241D27),
                   fontSize: 18,
                 )),
           ),
@@ -339,13 +338,73 @@ class _TutorialPageState extends State<TutorialPage> {
     );
   }
 
+  // Widget _buildGenderPage() {
+  //   return Container(
+  //     color: Color(0xFF241D27),
+  //     padding: const EdgeInsets.all(16.0),
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       crossAxisAlignment: CrossAxisAlignment.stretch,
+  //       children: [
+  //         Text(
+  //           '성별을 선택해주세요.',
+  //           style: TextStyle(fontSize: 24, color: Colors.white),
+  //           textAlign: TextAlign.center,
+  //         ),
+  //         SizedBox(height: 16),
+  //         DropdownButtonFormField<String>(
+  //           style: TextStyle(color: Color(0xFF241D27), fontSize: 18),
+  //           value: _genderController.text.isNotEmpty
+  //               ? _genderController.text
+  //               : null,
+  //           onChanged: (value) {
+  //             setState(() {
+  //               _genderController.text = value!;
+  //             });
+  //           },
+  //           items: ['남성', '여성']
+  //               .map((gender) =>
+  //                   DropdownMenuItem(value: gender, child: Text(gender)))
+  //               .toList(),
+  //           decoration: InputDecoration(
+  //             border: OutlineInputBorder(),
+  //           ),
+  //         ),
+  //         SizedBox(height: 16),
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             ElevatedButton(
+  //               onPressed: _prevPage,
+  //               child: Text('이전',
+  //                   style: TextStyle(
+  //                     color: Colors.black,
+  //                     fontSize: 18,
+  //                   )),
+  //             ),
+  //             ElevatedButton(
+  //               onPressed: _genderController.text.isNotEmpty ? _nextPage : null,
+  //               child: Text('다음',
+  //                   style: TextStyle(
+  //                     color: Color(0xFF241D27),
+  //                     fontSize: 18,
+  //                   )),
+  //             ),
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
   Widget _buildGenderPage() {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
     return Container(
       color: Color(0xFF241D27),
       padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
             '성별을 선택해주세요.',
@@ -353,23 +412,94 @@ class _TutorialPageState extends State<TutorialPage> {
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 16),
-          DropdownButtonFormField<String>(
-            style: TextStyle(color: Colors.white, fontSize: 18),
-            value: _genderController.text.isNotEmpty
-                ? _genderController.text
-                : null,
-            onChanged: (value) {
-              setState(() {
-                _genderController.text = value!;
-              });
-            },
-            items: ['남성', '여성', '기타']
-                .map((gender) =>
-                    DropdownMenuItem(value: gender, child: Text(gender)))
-                .toList(),
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _genderController.text = '남성';
+                    });
+                  },
+                  child: Container(
+                    height: height * 0.25,
+                    // padding: EdgeInsets.all(16),
+                    // margin: EdgeInsets.symmetric(horizontal: 8.0),
+                    decoration: BoxDecoration(
+                      color: _genderController.text == '남성'
+                          ? Color(0xFFC0B4C6)
+                          : Color(0xFF403645),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: SizedBox(
+                              height: height * 0.15,
+                              child: Image.asset(
+                                  'assets/images/usercard/boy.png')),
+                        ),
+                        Text(
+                          '남성',
+                          style: TextStyle(
+                            color: _genderController.text == '남성'
+                                ? Colors.black
+                                : Colors.white,
+                            fontSize: 18,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _genderController.text = '여성';
+                    });
+                  },
+                  child: Container(
+                    height: height * 0.25,
+                    padding: EdgeInsets.all(16),
+                    margin: EdgeInsets.symmetric(horizontal: 8.0),
+                    decoration: BoxDecoration(
+                      color: _genderController.text == '여성'
+                          ? Color(0xFFC0B4C6)
+                          : Color(0xFF403645),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: SizedBox(
+                              height: height * 0.15,
+                              child: Image.asset(
+                                  'assets/images/usercard/girl.png')),
+                        ),
+                        Text(
+                          '여성',
+                          style: TextStyle(
+                            color: _genderController.text == '여성'
+                                ? Colors.black
+                                : Colors.white,
+                            fontSize: 18,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
           SizedBox(height: 16),
           Row(
@@ -387,7 +517,7 @@ class _TutorialPageState extends State<TutorialPage> {
                 onPressed: _genderController.text.isNotEmpty ? _nextPage : null,
                 child: Text('다음',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Color(0xFF241D27),
                       fontSize: 18,
                     )),
               ),
@@ -413,6 +543,7 @@ class _TutorialPageState extends State<TutorialPage> {
           ),
           SizedBox(height: 16),
           TextField(
+            style: TextStyle(color: Colors.white),
             controller: _agesController,
             keyboardType: TextInputType.number,
             onChanged: (value) {
@@ -439,7 +570,7 @@ class _TutorialPageState extends State<TutorialPage> {
                 onPressed: _agesController.text.isNotEmpty ? _nextPage : null,
                 child: Text('다음',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Color(0xFF241D27),
                       fontSize: 18,
                     )),
               ),
@@ -453,7 +584,15 @@ class _TutorialPageState extends State<TutorialPage> {
   Widget _buildChoicesPage() {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
-    List<String> image = [];
+    List<String> image = [
+      'assets/images/tutorial/ballad.png',
+      'assets/images/tutorial/dance.png',
+      'assets/images/tutorial/rnb.png',
+      'assets/images/tutorial/hiphop.png',
+      'assets/images/tutorial/rock.png',
+      'assets/images/tutorial/trot.png'
+    ];
+
     return Container(
       color: Color(0xFF241D27),
       padding: const EdgeInsets.all(16.0),
@@ -463,7 +602,7 @@ class _TutorialPageState extends State<TutorialPage> {
         children: [
           SizedBox(height: 100),
           Text(
-            '노래방에서 부를 때 선호하는 장르를 선택해주세요! (최대 3개)',
+            '노래방에서 부를 때 선호하는 장르를 \n선택해주세요! (최대 3개)',
             style: TextStyle(fontSize: 24, color: Colors.white),
             textAlign: TextAlign.center,
           ),
@@ -492,19 +631,27 @@ class _TutorialPageState extends State<TutorialPage> {
                     padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     height: 10,
                     decoration: BoxDecoration(
-                      color:
-                          isSelected ? Color(0xFFC9D99B) : Colors.transparent,
-                      border: Border.all(color: Color(0xFFC9D99B)),
+                      color: isSelected ? Color(0xFFC0B4C6) : Color(0xFF403645),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Center(
-                      child: Text(
-                        choice,
-                        style: TextStyle(
-                          color: isSelected ? Colors.black : Color(0xFFC9D99B),
-                          fontSize: 18,
-                        ),
-                        textAlign: TextAlign.center,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Image.asset(image[_choices.indexOf(choice)],
+                                width: 50, height: 50),
+                          ),
+                          Text(
+                            choice,
+                            style: TextStyle(
+                              color: isSelected ? Colors.black : Colors.white,
+                              fontSize: 18,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -527,7 +674,7 @@ class _TutorialPageState extends State<TutorialPage> {
                 onPressed: _selectedChoices.isNotEmpty ? _submitData : null,
                 child: Text('완료',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Color(0xFF241D27),
                       fontSize: 18,
                     )),
               ),

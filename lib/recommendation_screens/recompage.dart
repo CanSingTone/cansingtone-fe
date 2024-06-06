@@ -2,12 +2,9 @@ import 'package:cansingtone_front/recommendation_screens/range_based_recom_scree
 import 'package:cansingtone_front/song_detail_screen.dart';
 import 'package:cansingtone_front/recommendation_screens/timbre_based_recom_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
-import '../models/recommendation.dart';
-import '../models/song.dart';
+
 import '../service/recom_api.dart';
 import '../test_screens/vocalrangetest.dart';
-import '../test_screens/timbretest.dart';
 import '../usercard.dart';
 import 'package:provider/provider.dart';
 import '../userdata.dart';

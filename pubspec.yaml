@@ -47,7 +47,6 @@ dependencies:
   stylish_bottom_bar: ^1.1.0
   shared_preferences: ^2.2.3
   kakao_flutter_sdk_user: ^1.4.2
-  kakao_flutter_sdk: ^1.9.0
   flutter_inappwebview: ^6.0.0
 
   flutter_spinkit: ^5.2.1
@@ -81,16 +80,18 @@ flutter:
   uses-material-design: true
   assets:
     - assets/cansingtone.png
-    - assets/new.jpg
     - assets/mic.png
-    - assets/pinkmic.png
-    - assets/images/test/timbre_recording.png
+
+    - assets/images/start/
     - assets/images/start/kakao_login.png
+    - assets/images/start/splash.png
+    - assets/images/tutorial/
+    - assets/images/tutorial/ballad.png
+    - assets/images/test/timbre_recording.png
     - assets/images/recommendation/to_range_based.png
     - assets/images/recommendation/to_timbre_based.png
     - assets/images/recommendation/range_based.png
     - assets/images/recommendation/timbre_based.png
-    - assets/images/start/splash.png
     - assets/images/home/banner/
     - assets/images/emoji/
     - assets/images/emoji/fire.png
