@@ -216,8 +216,8 @@ class UserCard extends StatelessWidget {
                             CustomPaint(
                               size: Size(200, 20),
                               painter: VocalRangePainter(
-                                lowNote: userData.vocalRangeLow,
-                                highNote: userData.vocalRangeHigh,
+                                lowNote: 50,
+                                highNote: 72,
                                 rangeColor: Color(0xffE365CF),
                               ),
                             ),
