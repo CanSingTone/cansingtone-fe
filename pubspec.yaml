@@ -82,6 +82,7 @@ flutter:
     - assets/cansingtone.png
     - assets/mic.png
     - assets/images/
+    - assets/images/liked_list.png
     - assets/images/start/
     - assets/images/start/kakao_login.png
     - assets/images/start/splash.png

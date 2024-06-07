@@ -96,14 +96,14 @@ class _mainpageState extends State<mainpage> {
           ),
           SliverToBoxAdapter(
             child: Container(
-              height: height * 0.18,
+              height: height * 0.16,
               child: PageView.builder(
                   controller: PageController(viewportFraction: 0.95),
                   itemCount: 3,
                   itemBuilder: (context, index) {
                     return Container(
                       margin: EdgeInsets.symmetric(horizontal: 5.0),
-                      height: height * 0.3,
+                      height: height * 0.25,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
@@ -117,7 +117,7 @@ class _mainpageState extends State<mainpage> {
             ),
           ),
           SliverPadding(
-            padding: EdgeInsets.only(top: 25),
+            padding: EdgeInsets.only(top: 20),
           ),
           SliverToBoxAdapter(
             child: Container(
@@ -156,7 +156,7 @@ class _mainpageState extends State<mainpage> {
                         final songs = snapshot.data!;
                         return Align(
                           child: Container(
-                            height: height * 0.5,
+                            height: height * 0.47,
                             child: PageView.builder(
                               controller:
                                   PageController(viewportFraction: 0.92),
@@ -295,7 +295,7 @@ class _mainpageState extends State<mainpage> {
                         final songs = snapshot.data!;
                         return Align(
                           child: Container(
-                            height: height * 0.5,
+                            height: height * 0.47,
                             child: PageView.builder(
                               controller:
                                   PageController(viewportFraction: 0.93),
@@ -320,8 +320,8 @@ class _mainpageState extends State<mainpage> {
                                           itemCount: pageSongs.length,
                                           itemBuilder: (context, songIndex) {
                                             var song = pageSongs[songIndex];
-                                            var overallIndex = startIndex +
-                                                songIndex + 1;
+                                            var overallIndex =
+                                                startIndex + songIndex + 1;
                                             return Padding(
                                               padding:
                                                   const EdgeInsets.all(5.0),
@@ -332,7 +332,7 @@ class _mainpageState extends State<mainpage> {
                                                     .withOpacity(0.2),
                                                 leading: Row(
                                                   mainAxisSize:
-                                                  MainAxisSize.min,
+                                                      MainAxisSize.min,
                                                   children: [
                                                     Text(
                                                       '$overallIndex',
@@ -340,7 +340,7 @@ class _mainpageState extends State<mainpage> {
                                                         color: Colors.white,
                                                         fontSize: 20,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                       ),
                                                     ),
                                                     SizedBox(width: 10),

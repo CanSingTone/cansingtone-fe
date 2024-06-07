@@ -78,7 +78,9 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
             title: const Text('플레이리스트 선택'),
             content: SingleChildScrollView(
               child: ListBody(
-                children: playlists.where((playlist) => playlist.playlistName != "좋아요 표시한 음악").map((playlist) {
+                children: playlists
+                    .where((playlist) => playlist.playlistName != "좋아요 표시한 음악")
+                    .map((playlist) {
                   return GestureDetector(
                     onTap: () {
                       Navigator.of(context).pop(playlist.playlistId.toString());
@@ -287,7 +289,7 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                         child: ElevatedButton(
                           onPressed: () {
                             Uri uri =
-                                Uri.parse(widget.songInfo['songVidUrl'] ?? '');
+                                Uri.parse(widget.songInfo['mrVidUrl'] ?? '');
                             _launchVideo(uri);
                           },
                           child: Row(

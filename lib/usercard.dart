@@ -104,7 +104,7 @@ class UserCard extends StatelessWidget {
                             '@${userData.nickname}',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 23.0,
+                              fontSize: 22.0,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -133,7 +133,7 @@ class UserCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: height * 0.04),
+                SizedBox(height: height * 0.03),
                 Column(
                   children: [
                     Row(
@@ -207,15 +207,16 @@ class UserCard extends StatelessWidget {
                         SizedBox(width: 20),
                         Column(
                           children: [
-                            if(userData.vocalRangeLow != 0 && userData.vocalRangeHigh != 0)
+                            if (userData.vocalRangeLow != 0 &&
+                                userData.vocalRangeHigh != 0)
                               CustomPaint(
-                              size: Size(200, 20),
-                              painter: VocalRangePainter(
-                                lowNote: userData.vocalRangeLow,
-                                highNote: userData.vocalRangeHigh,
-                                rangeColor: Color(0xffE365CF),
+                                size: Size(200, 20),
+                                painter: VocalRangePainter(
+                                  lowNote: userData.vocalRangeLow,
+                                  highNote: userData.vocalRangeHigh,
+                                  rangeColor: Color(0xffE365CF),
+                                ),
                               ),
-                            ),
                           ],
                         ),
                         SizedBox(width: 5),
@@ -257,21 +258,25 @@ class UserCard extends StatelessWidget {
                                         Text("당신의 음역대",
                                             style:
                                                 TextStyle(color: Colors.white)),
-                                        if(userData.vocalRangeLow != 0 && userData.vocalRangeHigh != 0)
+                                        if (userData.vocalRangeLow != 0 &&
+                                            userData.vocalRangeHigh != 0)
                                           CustomPaint(
-                                          size: Size(300, 30),
-                                          painter: VocalRangePainter(
-                                              lowNote: userData.vocalRangeLow,
-                                              highNote: userData.vocalRangeHigh,
-                                              rangeColor: Color(0xffE365CF)),
-                                        )
+                                            size: Size(300, 30),
+                                            painter: VocalRangePainter(
+                                                lowNote: userData.vocalRangeLow,
+                                                highNote:
+                                                    userData.vocalRangeHigh,
+                                                rangeColor: Color(0xffE365CF)),
+                                          )
                                         else
-                                          Text("미측정",
+                                          Text(
+                                            "미측정",
                                             style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 17.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),)
+                                              color: Colors.white,
+                                              fontSize: 17.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          )
                                       ],
                                     ),
                                     actions: [
@@ -307,11 +312,11 @@ class UserCard extends StatelessWidget {
           ),
         ),
         Positioned(
-          left: width * 0.04,
+          left: width * 0.03,
           top: -20,
           child: Image.asset(
             'assets/images/usercard/girl.png',
-            height: height * 0.19,
+            height: height * 0.17,
           ),
         ),
       ],

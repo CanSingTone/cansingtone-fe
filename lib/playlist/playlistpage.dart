@@ -60,9 +60,11 @@ class _PlaylistPageState extends State<PlaylistPage> {
 
   Future<List<Playlist>> fetchPlaylists() async {
     String? userId = await UserDataShare.getUserId();
-    final response = await http.get(Uri.parse('http://13.125.27.204:8080/playlists/${userId}'));
+    final response = await http
+        .get(Uri.parse('http://13.125.27.204:8080/playlists/${userId}'));
     if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes))['result'];
+      final List<dynamic> data =
+          jsonDecode(utf8.decode(response.bodyBytes))['result'];
       return data.map((json) => Playlist.fromJson(json)).toList();
     } else {
       throw Exception('플레이리스트를 불러오는데 실패했습니다.');
@@ -70,16 +72,19 @@ class _PlaylistPageState extends State<PlaylistPage> {
   }
 
   Future<List<Song>> fetchSongs(int playlistId) async {
-    final response = await http.get(Uri.parse('http://13.125.27.204:8080/songs-in-playlist/${playlistId}'));
+    final response = await http.get(
+        Uri.parse('http://13.125.27.204:8080/songs-in-playlist/${playlistId}'));
     if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes))['result'];
+      final List<dynamic> data =
+          jsonDecode(utf8.decode(response.bodyBytes))['result'];
       return data.map((json) => Song.fromJson(json)).toList();
     } else {
       throw Exception('플레이리스트의 곡을 불러오는데 실패했습니다.');
     }
   }
 
-  Future<void> createPlaylist(String userId, String playlistName, int isPublic) async {
+  Future<void> createPlaylist(
+      String userId, String playlistName, int isPublic) async {
     String? userId = await UserDataShare.getUserId();
     final response = await http.post(
       Uri.parse('http://13.125.27.204:8080/playlists'),
@@ -127,9 +132,13 @@ class _PlaylistPageState extends State<PlaylistPage> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('플레이리스트를 불러오는데 실패했습니다.', style: TextStyle(color: Colors.white)));
+            return Center(
+                child: Text('플레이리스트를 불러오는데 실패했습니다.',
+                    style: TextStyle(color: Colors.white)));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('플레이리스트가 없습니다.', style: TextStyle(color: Colors.white)));
+            return Center(
+                child: Text('플레이리스트가 없습니다.',
+                    style: TextStyle(color: Colors.white)));
           } else {
             return GridView.builder(
               padding: EdgeInsets.all(8.0),
@@ -240,19 +249,21 @@ class PlaylistItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
     return GestureDetector(
       onTap: () {
         if (playlistName == "좋아요 표시한 음악")
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LikePlaylistInfoPage(
-              playlistId: playlistId,
-              playlistName: playlistName,
-              isPublic: isPublic,
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LikePlaylistInfoPage(
+                playlistId: playlistId,
+                playlistName: playlistName,
+                isPublic: isPublic,
+              ),
             ),
-          ),
-        );
+          );
         else
           Navigator.push(
             context,
@@ -272,9 +283,17 @@ class PlaylistItem extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             displayWidget = CircularProgressIndicator();
           } else if (playlistName == "좋아요 표시한 음악") {
-            displayWidget = Icon(Icons.thumb_up, color: Colors.white, size: 70.0);
-          }else if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
-            displayWidget = Icon(Icons.music_note, color: Colors.white, size: 70.0);
+            displayWidget = Image.asset(
+              'assets/images/liked_list.png',
+              height: height * 0.12,
+            );
+          } else if (snapshot.hasError ||
+              !snapshot.hasData ||
+              snapshot.data == null) {
+            displayWidget = Image.asset(
+              'assets/images/playlist.png',
+              height: height * 0.12,
+            );
           } else {
             displayWidget = Image.network(snapshot.data!, fit: BoxFit.cover);
           }
