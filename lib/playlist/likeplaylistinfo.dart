@@ -110,9 +110,9 @@ class _LikePlaylistInfoPageState extends State<LikePlaylistInfoPage> {
     }
   }
 
-  Future<void> deleteSongInPlaylist(int songInPlaylistId) async {
+  Future<void> deleteLikeSongInPlaylist(int likeId) async {
     final response = await http.delete(
-      Uri.parse('http://13.125.27.204:8080/songs-in-playlist?song_in_playlist_id=$songInPlaylistId'),
+      Uri.parse('http://13.125.27.204:8080/like?like_id=$likeId'),
     );
     if (response.statusCode == 200) {
       print('삭제');
@@ -134,7 +134,7 @@ class _LikePlaylistInfoPageState extends State<LikePlaylistInfoPage> {
           actions: [
             TextButton(
               onPressed: () {
-                deleteSongInPlaylist(songInPlaylistId);
+                deleteLikeSongInPlaylist(songInPlaylistId);
                 // 삭제 함수 호출
                 Navigator.of(context).pop();
               },
@@ -195,13 +195,13 @@ class _LikePlaylistInfoPageState extends State<LikePlaylistInfoPage> {
                       : Icon(Icons.music_note),
                   title: Text(songInfo.songTitle),
                   subtitle: Text(songInfo.artist),
-                /*  trailing: IconButton(
+                  trailing: IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: () {
                       _showDeleteDialog(context, id);
                     },
                   ),
-                 */ onTap: () {
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(

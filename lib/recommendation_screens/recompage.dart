@@ -12,7 +12,6 @@ import 'package:provider/provider.dart';
 import '../userdata.dart';
 
 import 'package:http/http.dart' as http;
-
 class recompage extends StatefulWidget {
   const recompage({Key? key}) : super(key: key);
 
@@ -21,7 +20,7 @@ class recompage extends StatefulWidget {
 }
 
 class _recompageState extends State<recompage> {
-  bool isfirst = false;
+  bool isfirst = true;
   bool isLoading = false;
 
   @override
@@ -32,20 +31,35 @@ class _recompageState extends State<recompage> {
 
   Future<bool> fetchData() async {
     try {
-      final userData = Provider.of<UserData>(context);
+      setState(() {
+        isLoading = true;
+      });
+
+      final userData = Provider.of<UserData>(context, listen: false);
       final String userId = userData.userId;
-      //final response = await http.get(Uri.parse('http://13.125.27.204:8080/timbre?user_id=3504301360'));
       final response =
-          await http.get(Uri.parse('http://13.125.27.204:8080/timbre/$userId'));
-      if (response.statusCode == 200) {
-        final Map<String, dynamic>? data =
-            json.decode(response.body) as Map<String, dynamic>?;
-        isfirst = data?['isSuccess'];
-        print(isfirst);
+      await http.get(Uri.parse('http://13.125.27.204:8080/timbre/$userId'));
+      final Map<String, dynamic> data =
+      json.decode(response.body) as Map<String, dynamic>;
+
+      if (data['code'] == 1000) {
+        setState(() {
+          isfirst = false;
+        });
       }
-      throw Exception('Failed to load data');
+
+      setState(() {
+        isLoading = false;
+      });
+
+      return true;
     } catch (e) {
       print('Error: $e');
+
+      setState(() {
+        isLoading = false;
+      });
+
       return false;
     }
   }

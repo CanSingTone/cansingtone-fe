@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cansingtone_front/recommendation_screens/range_based_recom_screen.dart';
 import 'package:cansingtone_front/usercard.dart';
 import 'package:cansingtone_front/userdata.dart';
 import 'package:flutter/material.dart';
@@ -162,6 +163,7 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RangeBasedRecomScreen()));
               },
               child: Text(
                 "돌아가기",

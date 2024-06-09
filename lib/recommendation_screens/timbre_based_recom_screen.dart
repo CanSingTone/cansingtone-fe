@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cansingtone_front/playlist/addplaylist.dart';
 import 'package:cansingtone_front/userdata.dart';
 import 'package:dio/dio.dart';
@@ -7,6 +9,8 @@ import 'package:cansingtone_front/test_screens/timbretest.dart';
 import 'package:provider/provider.dart';
 import '../service/recom_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:http/http.dart' as http;
 
 Future<String?> getLikePlaylistId() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -20,7 +24,127 @@ class TimbreBasedRecomScreen extends StatefulWidget {
   State<TimbreBasedRecomScreen> createState() => _TimbreBasedRecomScreenState();
 }
 
+
+
+Future<String> recomeSong(String userId, int timbreId) async {
+  final response = await http.post(Uri.parse('http://13.125.27.204:8080/timbre-based-recommendations/request?user_id=$userId&timbre_id=$timbreId'));
+
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> data = jsonDecode(response.body);
+    final bool isSuccess = data['isSuccess'];
+    final String message = data['message'];
+
+    if (isSuccess) {
+      return message;
+    } else {
+      throw Exception('요청에 실패했습니다: $message');
+    }
+  } else {
+    throw Exception('서버 요청 중 오류가 발생했습니다: ${response.statusCode}');
+  }
+}
+
 class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
+  List<dynamic>? recommendations;
+
+
+  Future<void> fetchTimbres(String userId) async {
+    final response = await http.get(Uri.parse('http://13.125.27.204:8080/timbre?user_id=$userId'));
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
+      final bool isSuccess = data['isSuccess'];
+      final String message = data['message'];
+
+      if (isSuccess) {
+        List<dynamic> timbres = data['result'];
+        showTimbreRecomSelectionDialog(context, userId, timbres);
+      } else {
+        throw Exception('요청에 실패했습니다: $message');
+      }
+    } else {
+      throw Exception('서버 요청 중 오류가 발생했습니다: ${response.statusCode}');
+    }
+  }
+
+  void showTimbreRecomSelectionDialog(BuildContext context, String userId, List<dynamic> timbres) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('추천을 받고 싶은 음색을 선택하세요'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: timbres.map((timbre) {
+              return ElevatedButton(
+                onPressed: () async {
+                  Navigator.of(context).pop(); // 다이얼로그 닫기
+                  await recomeSong(userId, timbre['timbreId']);
+                  setState(() {}); // 화면을 새로 고침
+                },
+                child: Text(timbre['timbreName']),
+              );
+            }).toList(),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> fetchTestTimbres(String userId) async {
+    final response = await http.get(Uri.parse('http://13.125.27.204:8080/timbre?user_id=$userId'));
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
+      final bool isSuccess = data['isSuccess'];
+      final String message = data['message'];
+
+      if (isSuccess) {
+        List<dynamic> timbres = data['result'];
+        showTimbreTestSelectionDialog(context, userId, timbres);
+      } else {
+        throw Exception('요청에 실패했습니다: $message');
+      }
+    } else {
+      throw Exception('서버 요청 중 오류가 발생했습니다: ${response.statusCode}');
+    }
+  }
+  void showTimbreTestSelectionDialog(BuildContext context, String userId, List<dynamic> timbres) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('음색을 선택하세요'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (var timbre in timbres.take(3))
+                ElevatedButton(
+                  onPressed: () async {
+                    //여기에는 해당 음색 데이터를 지우고, 새로 생성하는 매커니즘을 넣어야함
+                  },
+                  child: Text(timbre['timbreName']),
+                ),
+              if (timbres.length < 3) // 음색이 3개 미만인 경우에만 표시됨
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TimbreTestPage(),
+                      ),
+                    );
+                  },
+                  child: Text('새로 추가하기'),
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final userData = Provider.of<UserData>(context);
@@ -58,57 +182,48 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
               children: [
                 SizedBox(width: width * 0.03),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => TimbreTestPage()),
-                    );
+                  onPressed: () async {
+                    await fetchTimbres(userData.userId); // 음색 선택 다이얼로그 호출
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10.0), // 버튼의 모서리를 둥글게 만듦
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
                     padding: EdgeInsets.symmetric(
                       vertical: 9.0,
                       horizontal: width * 0.05,
-                    ), // 버튼의 내부 패딩
+                    ),
                   ),
                   child: Text(
                     '추천 새로 받기',
                     style: TextStyle(
-                      color: Color(0xFF1A0C0C), // 버튼 텍스트 색상
-                      fontSize: 15.0, // 버튼 텍스트 크기
+                      color: Color(0xFF1A0C0C),
+                      fontSize: 15.0,
                     ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0),
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => TimbreTestPage()),
-                      );
+                    onPressed: () async {
+                      await fetchTestTimbres(userData.userId); // 음색 선택 다이얼로그 호출
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
-                          Theme.of(context).scaffoldBackgroundColor,
+                      Theme.of(context).scaffoldBackgroundColor,
                       shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(10.0), // 버튼의 모서리를 둥글게 만듦
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
                       padding: EdgeInsets.symmetric(
                         horizontal: width * 0.05,
-                      ), // 버튼의 내부 패딩
+                      ),
                     ),
                     child: Text(
                       '음색 테스트 다시 하기',
                       style: TextStyle(
-                        color: Color(0xFF1A0C0C), // 버튼 텍스트 색상
-                        fontSize: 15.0, // 버튼 텍스트 크기
+                        color: Color(0xFF1A0C0C),
+                        fontSize: 15.0,
                       ),
                     ),
                   ),
@@ -130,7 +245,7 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
                     Map<String, List<dynamic>> groupedRecommendations = {};
                     recommendations.forEach((recommendation) {
                       String recommendationDate =
-                          recommendation['recommendationDate'];
+                      recommendation['recommendationDate'];
                       if (!groupedRecommendations
                           .containsKey(recommendationDate)) {
                         groupedRecommendations[recommendationDate] = [];
@@ -147,7 +262,7 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
                           children: [
                             Padding(
                               padding:
-                                  const EdgeInsets.only(left: 16.0, top: 16.0),
+                              const EdgeInsets.only(left: 16.0, top: 16.0),
                               child: Text(
                                 date, // recommendation_date 표시
                                 style: TextStyle(
@@ -160,7 +275,7 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
                               itemCount: groupedRecommendations[date]!.length,
                               itemBuilder: (context, index) {
                                 var recommendation =
-                                    groupedRecommendations[date]![index];
+                                groupedRecommendations[date]![index];
                                 var songInfo = recommendation['songInfo'];
                                 return GestureDetector(
                                   onTap: () {

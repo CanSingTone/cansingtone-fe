@@ -14,7 +14,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
 import '../getuserdata.dart';
 //import '../widgets/wave_animation.dart';
-
+import 'package:cansingtone_front/recommendation_screens/timbre_based_recom_screen.dart';
 import './vocalrangetest.dart';
 
 import 'dart:math' as math show sin, pi, sqrt;
@@ -126,6 +126,7 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TimbreBasedRecomScreen()));
               },
               child: Text("돌아가기"),
             ),
