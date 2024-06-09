@@ -3,8 +3,6 @@ import './userdata.dart';
 import 'package:provider/provider.dart';
 import './usercard.dart';
 
-
-
 class mypage extends StatefulWidget {
   const mypage({Key? key}) : super(key: key);
 
@@ -29,11 +27,16 @@ class _MyPageState extends State<mypage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       backgroundColor: Color(0xFF241D27),
       appBar: AppBar(
         title: Text(
-          _currentIndex == 0 ? '마이페이지' : _currentIndex == 1 ? '앱 정보' : _currentIndex == 2 ? '앱 설정' : '추천기록',
+          _currentIndex == 0
+              ? '마이페이지'
+              : _currentIndex == 1
+                  ? '앱 정보'
+                  : _currentIndex == 2
+                      ? '앱 설정'
+                      : '추천기록',
           style: TextStyle(
             color: Colors.white,
             fontSize: 20.0,
@@ -44,17 +47,17 @@ class _MyPageState extends State<mypage> {
         backgroundColor: Color(0xFF241D27),
         leading: _currentIndex != 0
             ? IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            _navigateToPage(0);
-          },
-        )
+                icon: Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: () {
+                  _navigateToPage(0);
+                },
+              )
             : IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+                icon: Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
       ),
       body: _buildPageContent(),
     );
@@ -80,13 +83,6 @@ class _MyPageState extends State<mypage> {
     return ListView(
       padding: EdgeInsets.all(16.0),
       children: [
-        UserCard(
-          userData: userData,
-          onEditPressed: () {
-
-          },
-          isEditing: false,
-        ),
         ListTile(
           leading: Icon(Icons.info_outline),
           title: Text(
@@ -198,7 +194,6 @@ class RecomRecordPage extends StatelessWidget {
         child: Text(
           '추천 기록들',
           style: TextStyle(fontSize: 20.0, color: Colors.white),
-
         ),
       ),
     );
