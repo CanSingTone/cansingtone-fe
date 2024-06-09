@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import './userdata.dart';
 import 'package:provider/provider.dart';
 import './getuserdata.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 
 class EditUserData extends StatefulWidget {
   @override
@@ -29,8 +32,11 @@ class _EditUserDataState extends State<EditUserData> {
   int prefGenre3 = 0;
 
 
-  Future<void> _changeData() async{
-    final String userId = Provider.of<UserData>(context, listen: false).userId;
+  Future<void> _changeData() async {
+    final userId = Provider.of<UserData>(context, listen: false).userId;
+    final nickname = Provider.of<UserData>(context, listen: false).nickname;
+    final ages = Provider.of<UserData>(context, listen: false).ages;
+
     if (_selectedGenres.isNotEmpty) {
       prefGenre1 = _genres.indexOf(_selectedGenres[0]) + 1;
       if (_selectedGenres.length > 1)
@@ -38,10 +44,20 @@ class _EditUserDataState extends State<EditUserData> {
       if (_selectedGenres.length > 2)
         prefGenre3 = _genres.indexOf(_selectedGenres[2]) + 1;
     }
+
     Provider.of<UserData>(context, listen: false)
         .updatePrefGenres(prefGenre1, prefGenre2, prefGenre3);
-    //UserDataService.fetchAndSaveUserDataS(context, userId); 나중에 장르 수정 API 생기면 그때 수정하고 이거 쓰기
-    Navigator.of(context).pop();
+
+    final url = Uri.parse('http://13.125.27.204:8080/users/$userId?nickname=$nickname&ages=$ages&pref_genre1=$prefGenre1&pref_genre2=$prefGenre2&pref_genre3=$prefGenre3');
+
+    final response = await http.patch(url);
+    UserDataService.fetchAndSaveUserDataS(context, userId);
+    if (response.statusCode == 200) {
+      Navigator.of(context).pop();
+    } else {
+      // Handle the error
+      print('Failed to update data');
+    }
   }
 
   @override
