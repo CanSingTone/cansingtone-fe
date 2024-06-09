@@ -60,12 +60,6 @@ class _AnimatedBarExampleState extends State<AnimatedBarExample> {
             title: const Text('홈'),
           ),
           BottomBarItem(
-            icon: const Icon(Icons.queue_music),
-            selectedIcon: const Icon(Icons.queue_music),
-            selectedColor: Colors.red,
-            title: const Text('플레이리스트'),
-          ),
-          BottomBarItem(
             icon: const Icon(
               Icons.search,
             ),
@@ -74,6 +68,12 @@ class _AnimatedBarExampleState extends State<AnimatedBarExample> {
             ),
             selectedColor: Colors.deepOrangeAccent,
             title: const Text('검색'),
+          ),
+          BottomBarItem(
+            icon: const Icon(Icons.queue_music),
+            selectedIcon: const Icon(Icons.queue_music),
+            selectedColor: Colors.red,
+            title: const Text('플레이리스트'),
           ),
           BottomBarItem(
             icon: Icon(
@@ -120,9 +120,9 @@ class _AnimatedBarExampleState extends State<AnimatedBarExample> {
       case 0:
         return mainpage();
       case 1:
-        return PlaylistPage();
-      case 2:
         return DetailSearchPage();
+      case 2:
+        return PlaylistPage();
       case 3:
         return recompage();
       default:
