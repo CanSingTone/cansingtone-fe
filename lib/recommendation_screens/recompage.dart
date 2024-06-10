@@ -5,13 +5,15 @@ import 'package:cansingtone_front/song_detail_screen.dart';
 import 'package:cansingtone_front/recommendation_screens/timbre_based_recom_screen.dart';
 import 'package:cansingtone_front/test_screens/timbretest.dart';
 import 'package:flutter/material.dart';
-import '../service/recom_api.dart';
+import '../service/range_recom_api.dart';
+import '../service/timbre_recom_api.dart';
 import '../test_screens/vocalrangetest.dart';
 import '../usercard.dart';
 import 'package:provider/provider.dart';
 import '../userdata.dart';
 
 import 'package:http/http.dart' as http;
+
 class recompage extends StatefulWidget {
   const recompage({Key? key}) : super(key: key);
 
@@ -38,9 +40,9 @@ class _recompageState extends State<recompage> {
       final userData = Provider.of<UserData>(context, listen: false);
       final String userId = userData.userId;
       final response =
-      await http.get(Uri.parse('http://13.125.27.204:8080/timbre/$userId'));
+          await http.get(Uri.parse('http://13.125.27.204:8080/timbre/$userId'));
       final Map<String, dynamic> data =
-      json.decode(response.body) as Map<String, dynamic>;
+          json.decode(response.body) as Map<String, dynamic>;
 
       if (data['code'] == 1000) {
         setState(() {
@@ -204,8 +206,8 @@ class _recompageState extends State<recompage> {
                   )
                 else
                   FutureBuilder<List<dynamic>>(
-                    future:
-                        recomApi.getTimbreBasedRecommendation(userData.userId),
+                    future: timbreRecomApi.getTimbreBasedRecommendation(
+                        userData.userId, 30),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
@@ -302,8 +304,8 @@ class _recompageState extends State<recompage> {
               children: <Widget>[
                 if (userData.vocalRangeLow != 0 && userData.vocalRangeHigh != 0)
                   FutureBuilder<List<dynamic>>(
-                    future:
-                        recomApi.getRangeBasedRecommendation(userData.userId),
+                    future: rangeRecomApi
+                        .getRangeBasedRecommendation(userData.userId),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());

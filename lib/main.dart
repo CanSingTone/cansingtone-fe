@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'NanumBarunGothic',
       ),
-      home: AnimatedBarExample(),
+      home: SplashScreen(),
       //home: AnimatedBarExample(),
       routes: {
         '/splash': (context) => SplashScreen(),

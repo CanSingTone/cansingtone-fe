@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:cansingtone_front/song_detail_screen.dart';
 import 'package:cansingtone_front/test_screens/timbretest.dart';
 import 'package:provider/provider.dart';
-import '../service/recom_api.dart';
+import '../service/range_recom_api.dart';
+import '../service/timbre_recom_api.dart';
 import '../test_screens/vocalrangetest.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,10 +18,10 @@ class RangeBasedRecomScreen extends StatefulWidget {
   State<RangeBasedRecomScreen> createState() => _RangeBasedRecomScreenState();
 }
 
-
-
-Future<String> recomeSong(String userId, int vocal_range_high, int vocal_range_low) async {
-  final response = await http.post(Uri.parse('http://13.125.27.204:8080/range-based-recommendations?user_id=$userId&vocal_range_high=$vocal_range_high&vocal_range_low=$vocal_range_low'));
+Future<String> recomeSong(
+    String userId, int vocal_range_high, int vocal_range_low) async {
+  final response = await http.post(Uri.parse(
+      'http://13.125.27.204:8080/range-based-recommendations?user_id=$userId&vocal_range_high=$vocal_range_high&vocal_range_low=$vocal_range_low'));
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> data = jsonDecode(response.body);
@@ -78,14 +79,15 @@ class _RangeBasedRecomScreenState extends State<RangeBasedRecomScreen> {
                 SizedBox(width: width * 0.03),
                 ElevatedButton(
                   onPressed: () async {
-                    await recomeSong(userData.userId, userData.vocalRangeHigh, userData.vocalRangeLow);
+                    await recomeSong(userData.userId, userData.vocalRangeHigh,
+                        userData.vocalRangeLow);
                     setState(() {}); // 화면을 새로 고침
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     shape: RoundedRectangleBorder(
                       borderRadius:
-                      BorderRadius.circular(10.0), // 버튼의 모서리를 둥글게 만듦
+                          BorderRadius.circular(10.0), // 버튼의 모서리를 둥글게 만듦
                     ),
                     padding: EdgeInsets.symmetric(
                       vertical: 9.0,
@@ -106,15 +108,16 @@ class _RangeBasedRecomScreenState extends State<RangeBasedRecomScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => VocalRangeTestPage()),
+                        MaterialPageRoute(
+                            builder: (context) => VocalRangeTestPage()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
-                      Theme.of(context).scaffoldBackgroundColor,
+                          Theme.of(context).scaffoldBackgroundColor,
                       shape: RoundedRectangleBorder(
                         borderRadius:
-                        BorderRadius.circular(10.0), // 버튼의 모서리를 둥글게 만듦
+                            BorderRadius.circular(10.0), // 버튼의 모서리를 둥글게 만듦
                       ),
                       padding: EdgeInsets.symmetric(
                         horizontal: width * 0.05,
@@ -133,7 +136,7 @@ class _RangeBasedRecomScreenState extends State<RangeBasedRecomScreen> {
             ),
             Expanded(
               child: FutureBuilder<List<dynamic>>(
-                future: recomApi.getRangeBasedRecommendation(
+                future: rangeRecomApi.getRangeBasedRecommendation(
                   userData.userId,
                 ),
                 builder: (context, snapshot) {
@@ -147,7 +150,8 @@ class _RangeBasedRecomScreenState extends State<RangeBasedRecomScreen> {
                       shrinkWrap: true,
                       itemCount: recommendations!.length,
                       itemBuilder: (context, index) {
-                        var recommendation = recommendations![index]['songInfo'];
+                        var recommendation =
+                            recommendations![index]['songInfo'];
                         return GestureDetector(
                           onTap: () {
                             // 곡 상세 정보 페이지로 이동하는 코드 추가

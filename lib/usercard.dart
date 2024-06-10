@@ -359,9 +359,9 @@ class VocalRangePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    double totalRange = 108 - 21; // MIDI notes range from 21 to 108
-    double lowPosition = (lowNote - 21) / totalRange * size.width;
-    double highPosition = (highNote - 21) / totalRange * size.width;
+    double totalRange = 84 - 34; // MIDI notes range from 21 to 108
+    double lowPosition = (lowNote - 34) / totalRange * size.width;
+    double highPosition = (highNote - 34) / totalRange * size.width;
 
     Paint linePaint = Paint()
       ..color = lineColor

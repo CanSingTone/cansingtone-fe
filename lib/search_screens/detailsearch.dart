@@ -91,10 +91,13 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           '상세 검색',
           style: TextStyle(
             color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
           ),
         ),
         backgroundColor: Color(0xFF241D27),
@@ -106,7 +109,8 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
         child: SingleChildScrollView(
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height - 100, // Adjust height as needed
+              minHeight: MediaQuery.of(context).size.height -
+                  100, // Adjust height as needed
             ),
             child: IntrinsicHeight(
               child: Column(
@@ -124,7 +128,9 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('제목 또는 가수', style: TextStyle(color: Colors.white)),
+                      Text('제목 또는 가수',
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 16.0)),
                       SizedBox(height: 8.0),
                       TextFormField(
                         controller: _searchController,
@@ -187,8 +193,10 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
                     RangeSlider(
                       values: selectedRange,
                       onChanged: (RangeValues values) {
-                        if (values.start < 21) values = RangeValues(21, values.end);
-                        if (values.end > 108) values = RangeValues(values.start, 108);
+                        if (values.start < 21)
+                          values = RangeValues(21, values.end);
+                        if (values.end > 108)
+                          values = RangeValues(values.start, 108);
                         setState(() {
                           selectedRange = values;
                         });
@@ -219,7 +227,6 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
       ),
     );
   }
-
 
   List<Widget> _buildGenreToggleButtons() {
     List<String> genres = ['발라드', '댄스', 'R&B', '힙합', '락', '성인가요'];
