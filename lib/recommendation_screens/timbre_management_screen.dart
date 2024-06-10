@@ -43,13 +43,7 @@ class _TimbreManagementScreenState extends State<TimbreManagementScreen> {
   @override
   Widget build(BuildContext context) {
     final userData = Provider.of<UserData>(context);
-
-    return WillPopScope(
-        onWillPop: () async {
-          Navigator.pop(context, true);  // 페이지가 닫힐 때 true 반환
-          return false;
-        },
-        child: Scaffold(
+    return Scaffold(
           appBar: AppBar(
             title: Text('음색 관리'),
             leading: IconButton(
@@ -206,7 +200,7 @@ class _TimbreManagementScreenState extends State<TimbreManagementScreen> {
               }
             },
           ),
-        )
+
     );
   }
 }
