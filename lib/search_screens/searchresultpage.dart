@@ -26,6 +26,7 @@ class SearchResultsPage extends StatelessWidget {
           itemBuilder: (context, index) {
             var result = searchResults[index];
             return ListTile(
+              visualDensity: VisualDensity.compact,
               leading: Image.network(
                 result['albumImage'] ?? '',
                 width: 50,

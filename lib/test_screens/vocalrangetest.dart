@@ -18,6 +18,8 @@ import '../getuserdata.dart';
 
 import 'dart:math' as math show sin, pi, sqrt;
 
+import '../widgets/vocal_range_painter.dart';
+
 class VocalRangeTestPage extends StatefulWidget {
   @override
   _VocalRangeTestPageState createState() => _VocalRangeTestPageState();
@@ -101,7 +103,7 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
                 size: 50.0,
               ),
               "결과 생성중...",
-              20,
+              100,
               () {
                 showCompleteDialog(context);
               },
@@ -127,7 +129,9 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("남자 평균 음역대", style: TextStyle(color: Colors.white)),
+              SizedBox(height: 20),
+              Text("남자 평균 음역대",
+                  style: TextStyle(color: Colors.white, fontSize: 15)),
               CustomPaint(
                 size: Size(300, 30),
                 painter: VocalRangePainter(
@@ -137,7 +141,8 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
                 ),
               ),
               SizedBox(height: 50),
-              Text("여자 평균 음역대", style: TextStyle(color: Colors.white)),
+              Text("여자 평균 음역대",
+                  style: TextStyle(color: Colors.white, fontSize: 15)),
               CustomPaint(
                 size: Size(300, 30),
                 painter: VocalRangePainter(
@@ -147,7 +152,8 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
                 ),
               ),
               SizedBox(height: 50),
-              Text("당신의 음역대", style: TextStyle(color: Colors.white)),
+              Text("당신의 음역대",
+                  style: TextStyle(color: Colors.white, fontSize: 15)),
               CustomPaint(
                 size: Size(300, 30),
                 painter: VocalRangePainter(
@@ -163,11 +169,14 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RangeBasedRecomScreen()));
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => RangeBasedRecomScreen()));
               },
               child: Text(
                 "돌아가기",
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: Colors.white),
               ),
             ),
           ],
@@ -309,18 +318,27 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
                       ),
                     ),
             ),
-            SizedBox(height: 20.0),
             if (_hasShownInitialMessage) ...[
               Padding(
                 padding: const EdgeInsets.only(top: 50.0),
-                child: Text(
-                  '마이크를 클릭하고 편안하게 낼 수 있는\n 최저음과 최고음을 내주세요.',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
+                child: Column(
+                  children: [
+                    Text(
+                      '마이크를 클릭하고 편안하게 낼 수 있는\n 최저음과 최고음을 내주세요.',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 30.0),
+                    Text(
+                      '1. 조용한 환경에서 진행해주세요.\n2. 녹음 시간은 30초를 넘지 않게 해주세요.\n     처리 시간이 길어집니다.',
+                      style: TextStyle(
+                          color: Colors.white.withOpacity(0.7), fontSize: 16.0),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -379,7 +397,10 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
                                     UserDataService.fetchAndSaveUserDataS(
                                         context, userId);
 
-                                    //showCompleteDialog(context);
+                                    Navigator.of(context)
+                                        .pop(); // Close the loading dialog
+                                    showCompleteDialog(
+                                        context); // Show the complete dialog
                                   } else {
                                     print('No recorded file found');
                                   }

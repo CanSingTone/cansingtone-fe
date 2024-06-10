@@ -18,6 +18,8 @@ import '../getuserdata.dart';
 
 import 'dart:math' as math show sin, pi, sqrt;
 
+import '../widgets/vocal_range_painter.dart';
+
 class TutorialVocalRangeTestPage extends StatefulWidget {
   @override
   _TutorialVocalRangeTestPage createState() => _TutorialVocalRangeTestPage();
@@ -306,7 +308,6 @@ class _TutorialVocalRangeTestPage extends State<TutorialVocalRangeTestPage> {
                       ),
                     ),
             ),
-            SizedBox(height: 20.0),
             if (_hasShownInitialMessage) ...[
               Padding(
                 padding: const EdgeInsets.only(top: 50.0),
@@ -320,6 +321,12 @@ class _TutorialVocalRangeTestPage extends State<TutorialVocalRangeTestPage> {
                         fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 30.0),
+                    Text(
+                      '1. 조용한 환경에서 진행해주세요.\n2. 녹음 시간은 30초를 넘지 않게 해주세요.\n     처리 시간이 길어집니다.',
+                      style: TextStyle(
+                          color: Colors.white.withOpacity(0.7), fontSize: 16.0),
                     ),
                     SizedBox(height: height * 0.05),
                     InkWell(

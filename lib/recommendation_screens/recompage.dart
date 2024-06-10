@@ -237,7 +237,11 @@ class _recompageState extends State<recompage> {
                                 contentPadding: EdgeInsets.symmetric(
                                     horizontal: 0.0, vertical: 1.0),
                                 leading: songInfo['albumImage'] != null
-                                    ? Image.network(songInfo['albumImage'])
+                                    ? ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(7.0),
+                                        child: Image.network(
+                                            songInfo['albumImage']))
                                     : Icon(Icons.music_note),
                                 title: Text(songInfo['songTitle']),
                                 subtitle: Text(songInfo['artist']),

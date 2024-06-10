@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:cansingtone_front/usercard.dart';
+import 'package:cansingtone_front/widgets/vocal_range_painter.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:cansingtone_front/playlist/playlistpage.dart';
@@ -279,110 +281,68 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                     ),
                     SizedBox(height: height * 0.05),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16.0), // 양쪽 끝에 여유 공간 추가
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  widget.songInfo['songTitle'],
-                                  style: TextStyle(
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                          child: Expanded(
+                            child: Text(
+                              widget.songInfo['songTitle'],
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
                               ),
-                              SizedBox(width: 16.0), // 텍스트 사이의 간격
-                              Text(
-                                '노래의 음역대 : ${midiNumberToNoteName(widget.songInfo['lowestNote'])}~${midiNumberToNoteName(widget.songInfo['highestNote'])}',
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
                         SizedBox(height: 8.0),
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16.0), // 양쪽 끝에 여유 공간 추가
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  '${widget.songInfo['artist']}',
-                                  style: TextStyle(
-                                      fontSize: 16.0, color: Colors.white),
-                                ),
-                              ),
-                              SizedBox(width: 16.0), // 텍스트 사이의 간격
-                              ElevatedButton(
-                                onPressed: () {
-                                  _showKeyRecommendationDialog(
-                                    context,
-                                    widget.songInfo['lowestNote'],
-                                    widget.songInfo['highestNote'],
-                                    userData.vocalRangeLow,
-                                    userData.vocalRangeHigh,
-                                  );
-                                },
-                                child: Text(
-                                  '키 추천',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue, // 버튼 색상
-                                ),
-                              ),
-                            ],
+                          child: Expanded(
+                            child: Text(
+                              '${widget.songInfo['artist']}',
+                              style: TextStyle(
+                                  fontSize: 16.0, color: Colors.white),
+                            ),
                           ),
                         ),
                         SizedBox(height: 8.0),
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16.0), // 양쪽 끝에 여유 공간 추가
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  '노래방 번호: ${widget.songInfo['karaokeNum'] ?? ''}',
-                                  style: TextStyle(
-                                      fontSize: 16.0, color: Colors.white),
-                                ),
-                              ),
-                              SizedBox(width: 16.0), // 텍스트 사이의 간격
-                              Text(
-                                '나의 음역대 : ${midiNumberToNoteName(userData.vocalRangeLow)}~${midiNumberToNoteName(userData.vocalRangeHigh)}',
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
+                          child: Expanded(
+                            child: Text(
+                              '노래방 번호: ${widget.songInfo['karaokeNum'] ?? ''}',
+                              style: TextStyle(
+                                  fontSize: 16.0, color: Colors.white),
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 16.0),
+                    SizedBox(height: height * 0.05),
                     Row(
                       children: [
                         Text(
-                          "음원 영상",
-                          style: TextStyle(fontSize: 18.0, color: Colors.white),
+                          "음원 영상 ",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: Image.asset(
+                            'assets/images/emoji/cd.png',
+                            height: 20,
+                          ),
                         ),
                       ],
                     ),
+                    SizedBox(height: 5.0),
                     if (_isPlayerVisible &&
                         widget.songInfo['songVidUrl'] != null)
                       SizedBox(
@@ -391,6 +351,79 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                           controller: _songController,
                         ),
                       ),
+                    SizedBox(height: height * 0.04),
+                    Container(
+                      padding: EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            '노래의 음역대',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(width: 16.0), // 텍스트 사이의 간격
+                          CustomPaint(
+                            size: Size(width, 50),
+                            painter: VocalRangePainter(
+                              lowNote: widget.songInfo['lowestNote'],
+                              highNote: widget.songInfo['highestNote'],
+                              lineColor: Colors.white,
+                              rangeColor: Colors.blue,
+                            ),
+                          ),
+                          SizedBox(height: height * 0.04),
+                          Text(
+                            '나의 음역대',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                          CustomPaint(
+                            size: Size(width, 50),
+                            painter: VocalRangePainter(
+                              lowNote: userData.vocalRangeLow,
+                              highNote: userData.vocalRangeHigh,
+                              lineColor: Colors.white,
+                              rangeColor: Color(0xffE365CF),
+                            ),
+                          ),
+                          SizedBox(height: height * 0.03),
+                          Text(
+                              "내가 부르려면 " +
+                                  (widget.songInfo['highestNote'] -
+                                          userData.vocalRangeHigh)
+                                      .abs()
+                                      .toString() +
+                                  "키 낮춰야 함",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18)),
+                          // ElevatedButton(
+                          //   onPressed: () {
+                          //     _showKeyRecommendationDialog(
+                          //       context,
+                          //       widget.songInfo['lowestNote'],
+                          //       widget.songInfo['highestNote'],
+                          //       userData.vocalRangeLow,
+                          //       userData.vocalRangeHigh,
+                          //     );
+                          //   },
+                          //   child: Text(
+                          //     '키 추천',
+                          //     style: TextStyle(
+                          //       fontSize: 16.0,
+                          //       color: Colors.white,
+                          //     ),
+                          //   ),
+                          //   style: ElevatedButton.styleFrom(
+                          //     backgroundColor: Colors.blue, // 버튼 색상
+                          //   ),
+                          // ),
+                        ],
+                      ),
+                    ),
                     SizedBox(height: height * 0.04),
                     if (widget.songInfo['mrVidUrl'] != null)
                       SizedBox(
@@ -405,9 +438,11 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('연습하러 가기 ',
+                              Text('연습하러 가기  ',
                                   style: TextStyle(
-                                      fontSize: 17.0, color: Colors.black)),
+                                    fontSize: 17.0,
+                                    color: Colors.white,
+                                  )),
                               Image.asset(
                                 'assets/images/emoji/mic.png',
                                 width: 25,
@@ -416,6 +451,7 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                             ],
                           ),
                           style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
