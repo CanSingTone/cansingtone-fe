@@ -138,7 +138,6 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
                               onTap: () {
                                 setState(() {
                                   selectedTimbreId = timbre['timbreId'];
-                                  print("selectedTimbreId: $selectedTimbreId");
                                 });
                               },
                               child: Container(

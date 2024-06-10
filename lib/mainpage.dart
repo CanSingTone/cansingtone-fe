@@ -47,12 +47,10 @@ class _mainpageState extends State<mainpage> {
   }
 
   // const mainpage({Key? key}) : super(key: key);
-  final List<String> imagePaths = [
-    'assets/images/home/banner/gang.png',
-    'assets/images/home/banner/bubblegum.png',
-    'assets/images/home/banner/lovewinsall.png',
-    'assets/bom.png',
-    'assets/bom.png',
+  final List<List<dynamic>> imagePaths = [
+    ['assets/images/home/banner/gang.png', 6197],
+    ['assets/images/home/banner/bubblegum.png', 6199],
+    ['assets/images/home/banner/lovewinsall.png', 6198],
   ];
 
   @override
@@ -101,15 +99,27 @@ class _mainpageState extends State<mainpage> {
                   controller: PageController(viewportFraction: 0.95),
                   itemCount: 3,
                   itemBuilder: (context, index) {
-                    return Container(
-                      margin: EdgeInsets.symmetric(horizontal: 5.0),
-                      height: height * 0.25,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                          image: AssetImage(imagePaths[index]),
-                          fit: BoxFit.cover,
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SongInfoPage(
+                              songId: imagePaths[index][1] as int,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 5.0),
+                        height: height * 0.25,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          image: DecorationImage(
+                            image: AssetImage(imagePaths[index][0] as String),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     );
