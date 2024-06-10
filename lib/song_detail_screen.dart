@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:cansingtone_front/playlist/playlistpage.dart';
 import 'package:cansingtone_front/userdata.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -22,6 +23,9 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
   late YoutubePlayerController _songController;
   late YoutubePlayerController _mrController;
   bool _isPlayerVisible = true;
+
+
+
 
   @override
   void initState() {
@@ -150,11 +154,40 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
     }
   }
 
+  void _showKeyRecommendationDialog(BuildContext context, int songLow, int songHigh, int userLow, int userHigh) {
+    String message;
+    if ((songHigh - songLow) > (userHigh - userLow)) {
+      message = '부르기 힘든 곡입니다 ㅠㅠ';
+    } else {
+      int lowkeyDifference = songLow - userLow;
+      int highkeyDifference = songHigh - userHigh;
+      message = '나의 음역대와 노래의 음역대의 가장 낮은 음의 차이: ${lowkeyDifference} 키\n 나의 음역대와 노래의 음역대의 가장 높은 음의 차이: ${highkeyDifference} 키';
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('키 추천'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
-
+    final userData = Provider.of<UserData>(context);
     return WillPopScope(
       onWillPop: () async {
         setState(() {
@@ -246,24 +279,101 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                       ],
                     ),
                     SizedBox(height: height * 0.05),
-                    Text(
-                      widget.songInfo['songTitle'],
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    SizedBox(height: 8.0),
-                    Text(
-                      '${widget.songInfo['artist']}',
-                      style: TextStyle(fontSize: 16.0, color: Colors.white),
-                    ),
-                    SizedBox(height: 8.0),
-                    Text(
-                      '노래방 번호: ${widget.songInfo['karaokeNum'] ?? ''}',
-                      style: TextStyle(fontSize: 16.0, color: Colors.white),
-                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0), // 양쪽 끝에 여유 공간 추가
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  widget.songInfo['songTitle'],
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 16.0), // 텍스트 사이의 간격
+                              Text(
+                                '노래의 음역대 : ${midiNumberToNoteName(widget.songInfo['lowestNote'])}~${midiNumberToNoteName(widget.songInfo['highestNote'])}',
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 8.0),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0), // 양쪽 끝에 여유 공간 추가
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  '${widget.songInfo['artist']}',
+                                  style: TextStyle(fontSize: 16.0, color: Colors.white),
+                                ),
+                              ),
+                              SizedBox(width: 16.0), // 텍스트 사이의 간격
+                              ElevatedButton(
+                                onPressed: () {
+                                  _showKeyRecommendationDialog(
+                                    context,
+                                    widget.songInfo['lowestNote'],
+                                    widget.songInfo['highestNote'],
+                                    userData.vocalRangeLow,
+                                    userData.vocalRangeHigh,
+                                  );
+                                },
+                                child: Text(
+                                  '키 추천',
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.blue, // 버튼 색상
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 8.0),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0), // 양쪽 끝에 여유 공간 추가
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  '노래방 번호: ${widget.songInfo['karaokeNum'] ?? ''}',
+                                  style: TextStyle(fontSize: 16.0, color: Colors.white),
+                                ),
+                              ),
+                              SizedBox(width: 16.0), // 텍스트 사이의 간격
+                              Text(
+                                '나의 음역대 : ${midiNumberToNoteName(userData.vocalRangeLow)}~${midiNumberToNoteName(userData.vocalRangeHigh)}',
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+
+                        ),
+
+                      ],
+                    )
+                    ,
+
                     SizedBox(height: 16.0),
                     Row(
                       children: [
@@ -329,4 +439,32 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
       throw 'Could not launch $uri';
     }
   }
+}
+
+
+String midiNumberToNoteName(int midiNumber) {
+  if (midiNumber < 21 || midiNumber > 108) {
+    return '  ';
+  }
+
+  List<String> notes = [
+    'A',
+    'A#',
+    'B',
+    'C',
+    'C#',
+    'D',
+    'D#',
+    'E',
+    'F',
+    'F#',
+    'G',
+    'G#'
+  ];
+
+  int octave = (midiNumber - 12) ~/ 12;
+  int noteIndex = (midiNumber - 21) % 12;
+
+  String noteName = notes[noteIndex] + octave.toString();
+  return noteName;
 }
