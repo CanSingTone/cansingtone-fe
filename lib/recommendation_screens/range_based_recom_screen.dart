@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:cansingtone_front/userdata.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cansingtone_front/song_detail_screen.dart';
 import 'package:cansingtone_front/test_screens/timbretest.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import '../service/range_recom_api.dart';
 import '../service/timbre_recom_api.dart';
@@ -75,35 +77,39 @@ class _RangeBasedRecomScreenState extends State<RangeBasedRecomScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(width: width * 0.03),
-                ElevatedButton(
-                  onPressed: () async {
-                    await recomeSong(userData.userId, userData.vocalRangeHigh,
-                        userData.vocalRangeLow);
-                    setState(() {}); // 화면을 새로 고침
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10.0), // 버튼의 모서리를 둥글게 만듦
+                SizedBox(
+                  width: width * 0.45,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      await recomeSong(userData.userId, userData.vocalRangeHigh,
+                          userData.vocalRangeLow);
+                      setState(() {}); // 화면을 새로 고침
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(10.0), // 버튼의 모서리를 둥글게 만듦
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: width * 0.03,
+                      ), // 버튼의 내부 패딩
                     ),
-                    padding: EdgeInsets.symmetric(
-                      vertical: 9.0,
-                      horizontal: width * 0.05,
-                    ), // 버튼의 내부 패딩
-                  ),
-                  child: Text(
-                    '추천 새로 받기',
-                    style: TextStyle(
-                      color: Color(0xFF1A0C0C), // 버튼 텍스트 색상
-                      fontSize: 15.0, // 버튼 텍스트 크기
+                    child: Text(
+                      '추천 새로 받기',
+                      style: TextStyle(
+                        color: Color(0xFF1A0C0C), // 버튼 텍스트 색상
+                        fontSize: 15.0, // 버튼 텍스트 크기
+                      ),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
+                SizedBox(width: width * 0.02),
+                SizedBox(
+                  width: width * 0.45,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(
@@ -120,7 +126,7 @@ class _RangeBasedRecomScreenState extends State<RangeBasedRecomScreen> {
                             BorderRadius.circular(10.0), // 버튼의 모서리를 둥글게 만듦
                       ),
                       padding: EdgeInsets.symmetric(
-                        horizontal: width * 0.05,
+                        horizontal: width * 0.03,
                       ), // 버튼의 내부 패딩
                     ),
                     child: Text(
@@ -145,27 +151,62 @@ class _RangeBasedRecomScreenState extends State<RangeBasedRecomScreen> {
                   } else if (snapshot.hasError) {
                     return Center(child: Text('오류 발생: ${snapshot.error}'));
                   } else if (snapshot.hasData) {
-                    recommendations = snapshot.data;
-                    return ListView.builder(
+                    List<dynamic> recommendations = snapshot.data!;
+
+                    // recommendation_date를 기준으로 곡들을 그룹화
+                    Map<String, List<dynamic>> groupedRecommendations = {};
+                    recommendations.forEach((recommendation) {
+                      String recommendationDate =
+                          recommendation['recommendationDate'];
+                      if (!groupedRecommendations
+                          .containsKey(recommendationDate)) {
+                        groupedRecommendations[recommendationDate] = [];
+                      }
+                      groupedRecommendations[recommendationDate]!
+                          .add(recommendation);
+                    });
+
+                    return ListView(
                       shrinkWrap: true,
-                      itemCount: recommendations!.length,
-                      itemBuilder: (context, index) {
-                        var recommendation =
-                            recommendations![index]['songInfo'];
-                        return GestureDetector(
-                          onTap: () {
-                            // 곡 상세 정보 페이지로 이동하는 코드 추가
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    SongDetailScreen(songInfo: recommendation),
+                      children: groupedRecommendations.keys.map((date) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 16.0, top: 16.0),
+                              child: Text(
+                                date, // recommendation_date 표시
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.black54),
                               ),
-                            );
-                          },
-                          child: SongListTile(songInfo: recommendation),
+                            ),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: groupedRecommendations[date]!.length,
+                              itemBuilder: (context, index) {
+                                var recommendation =
+                                    groupedRecommendations[date]![index];
+                                var songInfo = recommendation['songInfo'];
+                                return GestureDetector(
+                                  onTap: () {
+                                    // 곡 상세 정보 페이지로 이동하는 코드 추가
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SongDetailScreen(
+                                            songInfo: songInfo),
+                                      ),
+                                    );
+                                  },
+                                  child: SongListTile(songInfo: songInfo),
+                                );
+                              },
+                            ),
+                          ],
                         );
-                      },
+                      }).toList(),
                     );
                   } else {
                     return Center(child: Text('데이터 없음'));

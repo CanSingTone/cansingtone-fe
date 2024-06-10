@@ -24,9 +24,6 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
   late YoutubePlayerController _mrController;
   bool _isPlayerVisible = true;
 
-
-
-
   @override
   void initState() {
     super.initState();
@@ -154,14 +151,16 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
     }
   }
 
-  void _showKeyRecommendationDialog(BuildContext context, int songLow, int songHigh, int userLow, int userHigh) {
+  void _showKeyRecommendationDialog(BuildContext context, int songLow,
+      int songHigh, int userLow, int userHigh) {
     String message;
     if ((songHigh - songLow) > (userHigh - userLow)) {
       message = '부르기 힘든 곡입니다 ㅠㅠ';
     } else {
       int lowkeyDifference = songLow - userLow;
       int highkeyDifference = songHigh - userHigh;
-      message = '나의 음역대와 노래의 음역대의 가장 낮은 음의 차이: ${lowkeyDifference} 키\n 나의 음역대와 노래의 음역대의 가장 높은 음의 차이: ${highkeyDifference} 키';
+      message =
+          '나의 음역대와 노래의 음역대의 가장 낮은 음의 차이: ${lowkeyDifference} 키\n 나의 음역대와 노래의 음역대의 가장 높은 음의 차이: ${highkeyDifference} 키';
     }
 
     showDialog(
@@ -283,7 +282,8 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0), // 양쪽 끝에 여유 공간 추가
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0), // 양쪽 끝에 여유 공간 추가
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -310,14 +310,16 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                         ),
                         SizedBox(height: 8.0),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0), // 양쪽 끝에 여유 공간 추가
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0), // 양쪽 끝에 여유 공간 추가
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
                                 child: Text(
                                   '${widget.songInfo['artist']}',
-                                  style: TextStyle(fontSize: 16.0, color: Colors.white),
+                                  style: TextStyle(
+                                      fontSize: 16.0, color: Colors.white),
                                 ),
                               ),
                               SizedBox(width: 16.0), // 텍스트 사이의 간격
@@ -339,7 +341,7 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                   ),
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                  primary: Colors.blue, // 버튼 색상
+                                  backgroundColor: Colors.blue, // 버튼 색상
                                 ),
                               ),
                             ],
@@ -347,14 +349,16 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                         ),
                         SizedBox(height: 8.0),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0), // 양쪽 끝에 여유 공간 추가
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0), // 양쪽 끝에 여유 공간 추가
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
                                 child: Text(
                                   '노래방 번호: ${widget.songInfo['karaokeNum'] ?? ''}',
-                                  style: TextStyle(fontSize: 16.0, color: Colors.white),
+                                  style: TextStyle(
+                                      fontSize: 16.0, color: Colors.white),
                                 ),
                               ),
                               SizedBox(width: 16.0), // 텍스트 사이의 간격
@@ -367,13 +371,9 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                               ),
                             ],
                           ),
-
                         ),
-
                       ],
-                    )
-                    ,
-
+                    ),
                     SizedBox(height: 16.0),
                     Row(
                       children: [
@@ -440,7 +440,6 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
     }
   }
 }
-
 
 String midiNumberToNoteName(int midiNumber) {
   if (midiNumber < 21 || midiNumber > 108) {
