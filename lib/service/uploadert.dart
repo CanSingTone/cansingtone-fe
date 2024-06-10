@@ -1,24 +1,23 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 
-import './userdata.dart';
+import '../userdata.dart';
 import 'package:provider/provider.dart';
 
-class AudioUploader {
-  final String serverUrl = 'http://13.125.27.204:8080/test/vocal-range?';
+class AudioUploaderT {
+  final String serverUrl = 'http://13.125.27.204:8080/test/timbre?';
   final BuildContext context;
   final String userId;
 
-  AudioUploader(this.context)
+  AudioUploaderT(this.context)
       : userId = Provider.of<UserData>(context, listen: false).getUserId();
 
-
-  Future<void> uploadAudioFile(File audioFile) async {
+  Future<void> uploadAudioFileT(File audioFile) async {
     try {
       Dio dio = Dio();
-      final UserData userData;
+
       String fileName = basename(audioFile.path);
       FormData formData = FormData.fromMap({
         'user_id': userId,

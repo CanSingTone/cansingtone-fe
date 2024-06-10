@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 
-import 'package:cansingtone_front/usercard.dart';
+import 'package:cansingtone_front/recommendation_screens/usercard.dart';
 import 'package:cansingtone_front/widgets/vocal_range_painter.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;

@@ -2,7 +2,7 @@ import 'package:cansingtone_front/recommendation_screens/recompage.dart';
 import 'package:cansingtone_front/start_screens/login_screen.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
-import 'mainpage.dart';
+import 'main_screens/mainpage.dart';
 import 'start_screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';

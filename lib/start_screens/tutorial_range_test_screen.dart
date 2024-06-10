@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:cansingtone_front/start_screens/tutorial_timbre_test_screen.dart';
-import 'package:cansingtone_front/usercard.dart';
+import 'package:cansingtone_front/recommendation_screens/usercard.dart';
 import 'package:cansingtone_front/userdata.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -10,11 +10,11 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import '../uploader.dart';
+import '../service/uploader.dart';
 import '../start_screens/tutorial.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
-import '../getuserdata.dart';
+import '../service/getuserdata.dart';
 
 import 'dart:math' as math show sin, pi, sqrt;
 

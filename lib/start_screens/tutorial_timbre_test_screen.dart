@@ -8,11 +8,11 @@ import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import '../bottombar.dart';
-import '../uploadert.dart';
+import '../service/uploadert.dart';
 import '../start_screens/tutorial.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
-import '../getuserdata.dart';
+import '../service/getuserdata.dart';
 import '../widgets/wave_animation.dart';
 
 class TutorialTimbreTestPage extends StatefulWidget {
@@ -220,7 +220,7 @@ class _TutorialTimbreTestPage extends State<TutorialTimbreTestPage> {
             SizedBox(height: 20.0),
             if (_hasShownInitialMessage) ...[
               Padding(
-                padding: const EdgeInsets.only(top: 50.0),
+                padding: const EdgeInsets.only(top: 30.0),
                 child: Column(
                   children: [
                     Text(
@@ -231,6 +231,12 @@ class _TutorialTimbreTestPage extends State<TutorialTimbreTestPage> {
                         fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 30.0),
+                    Text(
+                      '1. 조용한 환경에서 진행해주세요.\n2. 녹음 시간은 30초를 넘지 않게 해주세요.\n   처리 시간이 길어집니다.',
+                      style: TextStyle(
+                          color: Colors.white.withOpacity(0.7), fontSize: 16.0),
                     ),
                     SizedBox(height: height * 0.05),
                     InkWell(

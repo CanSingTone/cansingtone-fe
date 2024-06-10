@@ -3,8 +3,8 @@ import 'package:cansingtone_front/recommendation_screens/recompage.dart';
 import 'package:flutter/material.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:flutter/cupertino.dart';
-import './mainpage.dart';
-import './mypage.dart';
+import 'main_screens/mainpage.dart';
+import 'main_screens/mypage.dart';
 import 'playlist/playlistpage.dart';
 
 class AnimatedBarExample extends StatefulWidget {

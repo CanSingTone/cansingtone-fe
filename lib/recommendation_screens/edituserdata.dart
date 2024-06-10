@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import './userdata.dart';
+import '../userdata.dart';
 import 'package:provider/provider.dart';
-import './getuserdata.dart';
+import '../service/getuserdata.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
 
 class EditUserData extends StatefulWidget {
   @override
@@ -31,7 +30,6 @@ class _EditUserDataState extends State<EditUserData> {
   int prefGenre2 = 0;
   int prefGenre3 = 0;
 
-
   Future<void> _changeData() async {
     final userId = Provider.of<UserData>(context, listen: false).userId;
     final nickname = Provider.of<UserData>(context, listen: false).nickname;
@@ -48,7 +46,8 @@ class _EditUserDataState extends State<EditUserData> {
     Provider.of<UserData>(context, listen: false)
         .updatePrefGenres(prefGenre1, prefGenre2, prefGenre3);
 
-    final url = Uri.parse('http://13.125.27.204:8080/users/$userId?nickname=$nickname&ages=$ages&pref_genre1=$prefGenre1&pref_genre2=$prefGenre2&pref_genre3=$prefGenre3');
+    final url = Uri.parse(
+        'http://13.125.27.204:8080/users/$userId?nickname=$nickname&ages=$ages&pref_genre1=$prefGenre1&pref_genre2=$prefGenre2&pref_genre3=$prefGenre3');
 
     final response = await http.patch(url);
     UserDataService.fetchAndSaveUserDataS(context, userId);
@@ -68,11 +67,13 @@ class _EditUserDataState extends State<EditUserData> {
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: _goBack,
         ),
-        title: Text('선호 장르 수정',
+        title: Text(
+          '선호 장르 수정',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
-          ),),
+          ),
+        ),
         backgroundColor: Color(0xFF241D27),
       ),
       body: Container(
@@ -110,9 +111,12 @@ class _EditUserDataState extends State<EditUserData> {
                         });
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                         decoration: BoxDecoration(
-                          color: isSelected ? Color(0xFFC9D99B) : Colors.transparent,
+                          color: isSelected
+                              ? Color(0xFFC9D99B)
+                              : Colors.transparent,
                           border: Border.all(color: Color(0xFFC9D99B)),
                           borderRadius: BorderRadius.circular(20),
                         ),
@@ -120,7 +124,8 @@ class _EditUserDataState extends State<EditUserData> {
                           child: Text(
                             genre,
                             style: TextStyle(
-                              color: isSelected ? Colors.black : Color(0xFFC9D99B),
+                              color:
+                                  isSelected ? Colors.black : Color(0xFFC9D99B),
                               fontSize: 18,
                             ),
                             textAlign: TextAlign.center,

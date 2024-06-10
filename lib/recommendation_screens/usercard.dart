@@ -2,8 +2,8 @@ import 'package:cansingtone_front/widgets/vocal_range_painter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import './userdata.dart';
-import './edituserdata.dart';
+import '../userdata.dart';
+import 'edituserdata.dart';
 
 String mapGenre(int genre) {
   switch (genre) {

@@ -4,7 +4,7 @@ import 'package:cansingtone_front/service/users_api.dart';
 import 'package:provider/provider.dart';
 
 import 'package:cansingtone_front/playlist//playlistpage.dart';
-import '../getuserdata.dart';
+import '../service/getuserdata.dart';
 import '../userdata.dart';
 
 import '../main.dart';

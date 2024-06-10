@@ -15,7 +15,7 @@ class RangeRecomApi {
 
       if (response.statusCode == 200) {
         List<dynamic> data = response.data['result'];
-        print('음역대ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ');
+
         return data;
       } else {
         throw Exception('요청 실패: ${response.statusCode}');

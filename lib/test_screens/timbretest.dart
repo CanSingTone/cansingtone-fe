@@ -9,11 +9,11 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import '../uploadert.dart';
+import '../service/uploadert.dart';
 import '../start_screens/tutorial.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
-import '../getuserdata.dart';
+import '../service/getuserdata.dart';
 //import '../widgets/wave_animation.dart';
 import 'package:cansingtone_front/recommendation_screens/timbre_based_recom_screen.dart';
 import './vocalrangetest.dart';
@@ -50,7 +50,6 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
     _recorder.closeRecorder();
     super.dispose();
   }
-
 
   void showLoadingDialog(BuildContext context, Widget spinner, String message,
       int duration, VoidCallback onComplete) {
@@ -91,7 +90,7 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
       ),
       "데이터 전송중... ",
       10,
-          () {
+      () {
         showLoadingDialog(
           context,
           SpinKitWave(
@@ -100,7 +99,7 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
           ),
           "데이터 처리중...",
           10,
-              () {
+          () {
             showLoadingDialog(
               context,
               SpinKitHourGlass(
@@ -109,9 +108,9 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
               ),
               "결과 생성중...",
               20,
-                  () {
-                    showCompleteDialog(context);
-                  },
+              () {
+                showCompleteDialog(context);
+              },
             );
           },
         );
@@ -134,12 +133,14 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
                 if (widget.cameFrom == 'timbre_management_screen') {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => TimbreManagementScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => TimbreManagementScreen()),
                   );
                 } else {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => TimbreBasedRecomScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => TimbreBasedRecomScreen()),
                   );
                 }
               },
@@ -286,15 +287,25 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
             SizedBox(height: 20.0),
             if (_hasShownInitialMessage) ...[
               Padding(
-                padding: const EdgeInsets.only(top: 50.0),
-                child: Text(
-                  '마이크를 클릭하고 아무 노래나 불러주세요.',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
+                padding: const EdgeInsets.only(top: 30.0),
+                child: Column(
+                  children: [
+                    Text(
+                      '마이크를 클릭하고 아무 노래나 불러주세요.',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 30.0),
+                    Text(
+                      '1. 조용한 환경에서 진행해주세요.\n2. 녹음 시간은 30초를 넘지 않게 해주세요.\n   처리 시간이 길어집니다.',
+                      style: TextStyle(
+                          color: Colors.white.withOpacity(0.7), fontSize: 16.0),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -338,15 +349,15 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
                         ElevatedButton(
                           onPressed: () async {
                             if (_filePath.isNotEmpty) {
-                             // showLoadingDialog(context);
+                              // showLoadingDialog(context);
                               showSequentialLoadingDialogs(context);
                               File file = File(_filePath);
                               AudioUploaderT audioUploader =
                                   AudioUploaderT(context);
                               await audioUploader.uploadAudioFileT(file);
-                             // UserDataService.fetchAndSaveUserDataS(
-                             //     context, userId);
-                             // showCompleteDialog(context);
+                              // UserDataService.fetchAndSaveUserDataS(
+                              //     context, userId);
+                              // showCompleteDialog(context);
                             } else {
                               print('No recorded file found');
                             }

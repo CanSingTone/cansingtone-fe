@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import './userdata.dart';
+import '../userdata.dart';
 import 'package:provider/provider.dart';
-import './usercard.dart';
+import '../recommendation_screens/usercard.dart';
 
 class mypage extends StatefulWidget {
   const mypage({Key? key}) : super(key: key);

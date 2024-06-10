@@ -5,10 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-import './mypage.dart';
+import 'mypage.dart';
 import 'package:flutter/material.dart';
-import './songinfopage.dart';
-import 'search_screens/detailsearch.dart';
+import '../songinfopage.dart';
+import '../search_screens/detailsearch.dart';
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -130,8 +130,10 @@ class _mainpageState extends State<mainpage> {
                   }),
             ),
           ),
-          SliverPadding(
-            padding: EdgeInsets.only(top: 20),
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 30,
+            ),
           ),
           SliverToBoxAdapter(
             child: Container(
@@ -163,7 +165,9 @@ class _mainpageState extends State<mainpage> {
                     future: _futureSongs,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
+                        return SizedBox(
+                            height: height * 0.47,
+                            child: Center(child: CircularProgressIndicator()));
                       } else if (snapshot.hasError) {
                         return Center(child: Text('Error: ${snapshot.error}'));
                       } else {
@@ -315,6 +319,11 @@ class _mainpageState extends State<mainpage> {
             ),
           ),
           SliverToBoxAdapter(
+            child: SizedBox(
+              height: 15,
+            ),
+          ),
+          SliverToBoxAdapter(
             child: Container(
               child: Column(
                 children: [
@@ -449,6 +458,11 @@ class _mainpageState extends State<mainpage> {
                   ),
                 ],
               ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 30,
             ),
           ),
           SliverToBoxAdapter(
