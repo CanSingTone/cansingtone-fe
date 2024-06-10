@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cansingtone_front/recommendation_screens/timbre_management_screen.dart';
 import 'package:cansingtone_front/userdata.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -20,6 +21,10 @@ import './vocalrangetest.dart';
 import 'dart:math' as math show sin, pi, sqrt;
 
 class TimbreTestPage extends StatefulWidget {
+  final String cameFrom;
+
+  TimbreTestPage({required this.cameFrom});
+
   @override
   _TimbreTestPageState createState() => _TimbreTestPageState();
 }
@@ -126,7 +131,17 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TimbreBasedRecomScreen()));
+                if (widget.cameFrom == 'timbre_management_screen') {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => TimbreManagementScreen()),
+                  );
+                } else {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => TimbreBasedRecomScreen()),
+                  );
+                }
               },
               child: Text("돌아가기"),
             ),
