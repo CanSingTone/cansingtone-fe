@@ -24,6 +24,7 @@ class recompage extends StatefulWidget {
 class _recompageState extends State<recompage> {
   bool isfirst = true;
   bool isLoading = false;
+  List<int> timbreIds = []; // 리스트 선언
 
   @override
   void initState() {
@@ -39,12 +40,15 @@ class _recompageState extends State<recompage> {
 
       final userData = Provider.of<UserData>(context, listen: false);
       final String userId = userData.userId;
-      final response =
-          await http.get(Uri.parse('http://13.125.27.204:8080/timbre/$userId'));
-      final Map<String, dynamic> data =
-          json.decode(response.body) as Map<String, dynamic>;
+      final response = await http.get(Uri.parse('http://13.125.27.204:8080/timbre/$userId'));
+      final Map<String, dynamic> data = json.decode(response.body) as Map<String, dynamic>;
 
       if (data['code'] == 1000) {
+        // result 배열에서 각 timbreId를 추출하여 리스트에 추가
+        final List<dynamic> result = data['result'];
+        for (var item in result) {
+          timbreIds.add(item['timbreId']);
+        }
         setState(() {
           isfirst = false;
         });
@@ -65,6 +69,7 @@ class _recompageState extends State<recompage> {
       return false;
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +184,7 @@ class _recompageState extends State<recompage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => TimbreTestPage()),
+                                      builder: (context) => TimbreTestPage(cameFrom: 'recompage')),
                                 );
                               }
                             },
@@ -205,9 +210,10 @@ class _recompageState extends State<recompage> {
                     ],
                   )
                 else
+
                   FutureBuilder<List<dynamic>>(
                     future: timbreRecomApi.getTimbreBasedRecommendation(
-                        userData.userId, 30),
+                        userData.userId,31),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());

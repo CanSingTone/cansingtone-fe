@@ -171,14 +171,14 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
                 ),
                 IconButton(
                   icon: Icon(Icons.edit, color: Colors.black54),
-                  onPressed: () {
-                    // 음색 관리 또는 수정 페이지로 이동
-                    Navigator.push(
+                  onPressed: () async {
+                    final result = await Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => TimbreManagementScreen(),
-                      ),
+                      MaterialPageRoute(builder: (context) => TimbreManagementScreen()),
                     );
+                    if (result == true) {
+                      setState(() {});
+                    }
                   },
                 ),
               ],
