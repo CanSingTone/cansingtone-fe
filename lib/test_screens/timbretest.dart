@@ -131,11 +131,12 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
                 if (widget.cameFrom == 'timbre_management_screen') {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TimbreManagementScreen()),
-                  );
+                 // Navigator.pushReplacement(
+                 //   context,
+                 //   MaterialPageRoute(
+                  //      builder: (context) => TimbreManagementScreen()),
+                //  );
+                  Navigator.pop(context,true);
                 } else {
                   Navigator.pushReplacement(
                     context,
