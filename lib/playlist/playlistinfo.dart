@@ -63,6 +63,7 @@ class SongInPlaylist {
     );
   }
 }
+
 class PlaylistInfoPage extends StatefulWidget {
   final int playlistId;
   final String playlistName;
@@ -74,7 +75,6 @@ class PlaylistInfoPage extends StatefulWidget {
     required this.playlistName,
     required this.isPublic,
   }) : super(key: key);
-
 
   @override
   _PlaylistInfoPageState createState() => _PlaylistInfoPageState();
@@ -90,10 +90,12 @@ class _PlaylistInfoPageState extends State<PlaylistInfoPage> {
   }
 
   Future<List<SongInPlaylist>> fetchSongsInPlaylist(int playlistId) async {
-    final response = await http.get(Uri.parse('http://13.125.27.204:8080/songs-in-playlist/$playlistId'));
+    final response = await http.get(
+        Uri.parse('http://13.125.27.204:8080/songs-in-playlist/$playlistId'));
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes))['result'];
+      final List<dynamic> data =
+          jsonDecode(utf8.decode(response.bodyBytes))['result'];
       return data.map((json) => SongInPlaylist.fromJson(json)).toList();
     } else {
       throw Exception('노래를 불러오는데 실패했습니다.');
@@ -102,7 +104,8 @@ class _PlaylistInfoPageState extends State<PlaylistInfoPage> {
 
   Future<void> deleteSongInPlaylist(int songInPlaylistId) async {
     final response = await http.delete(
-      Uri.parse('http://13.125.27.204:8080/songs-in-playlist?song_in_playlist_id=$songInPlaylistId'),
+      Uri.parse(
+          'http://13.125.27.204:8080/songs-in-playlist?song_in_playlist_id=$songInPlaylistId'),
     );
     if (response.statusCode == 200) {
       print('삭제');
@@ -147,16 +150,25 @@ class _PlaylistInfoPageState extends State<PlaylistInfoPage> {
     final isPublicText = widget.isPublic == 1 ? '공개' : '비공개';
 
     return Scaffold(
+      backgroundColor: Color(0xFF241D27),
       appBar: AppBar(
+        backgroundColor: Color(0xFF241D27),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.playlistName),
+            Text(widget.playlistName,
+                style: TextStyle(fontSize: 20.0, color: Colors.white)),
             Text(
               isPublicText,
-              style: TextStyle(fontSize: 12.0),
+              style: TextStyle(fontSize: 12.0, color: Colors.white),
             ),
           ],
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white), // 뒤로가기 아이콘
+          onPressed: () {
+            Navigator.of(context).pop(); // 뒤로가기 버튼이 클릭되었을 때의 동작
+          },
         ),
       ),
       body: FutureBuilder<List<SongInPlaylist>>(
@@ -177,10 +189,15 @@ class _PlaylistInfoPageState extends State<PlaylistInfoPage> {
                 final id = songInPlaylist.songInPlaylistId;
                 return ListTile(
                   leading: Image.network(songInfo.albumImage),
-                  title: Text(songInfo.songTitle),
-                  subtitle: Text(songInfo.artist),
+                  title: Text(songInfo.songTitle,
+                      style: TextStyle(
+                          fontSize: 17.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold)),
+                  subtitle: Text(songInfo.artist,
+                      style: TextStyle(fontSize: 14.0, color: Colors.white)),
                   trailing: IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: Icon(Icons.delete, color: Colors.white),
                     onPressed: () {
                       _showDeleteDialog(context, id);
                     },

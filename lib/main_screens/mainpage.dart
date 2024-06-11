@@ -5,6 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
+import '../models/song.dart';
+import '../playlist/likeplaylistinfo.dart';
+import '../playlist/playlistinfo.dart';
 import '../service/chart_api.dart';
 import 'mypage.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +59,18 @@ class _mainpageState extends State<mainpage> {
     ['assets/images/home/banner/bubblegum.png', 6199],
     ['assets/images/home/banner/lovewinsall.png', 6198],
   ];
+
+  Future<List<Song>> fetchSongs(int playlistId) async {
+    final response = await http.get(
+        Uri.parse('http://13.125.27.204:8080/songs-in-playlist/${playlistId}'));
+    if (response.statusCode == 200) {
+      final List<dynamic> data =
+          jsonDecode(utf8.decode(response.bodyBytes))['result'];
+      return data.map((json) => Song.fromJson(json)).toList();
+    } else {
+      throw Exception('플레이리스트의 곡을 불러오는데 실패했습니다.');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -334,30 +349,26 @@ class _mainpageState extends State<mainpage> {
               child: Container(
                 child: Column(
                   children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Row(
-                        children: [
-                          Text(
-                            '음역대 비슷한 사람들의 플리 ',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 21,
-                              fontWeight: FontWeight.bold,
-                            ),
+                    Row(
+                      children: [
+                        Text(
+                          '음역대 비슷한 사람들의 플리 ',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 21,
+                            fontWeight: FontWeight.bold,
                           ),
-                          Image.asset(
-                            'assets/images/emoji/headphone.png',
-                            height: 25,
-                          ),
-                        ],
-                      ),
+                        ),
+                        Image.asset(
+                          'assets/images/emoji/headphone.png',
+                          height: 25,
+                        ),
+                      ],
                     ),
                     SizedBox(height: 10),
                     if (userData.vocalRangeHigh == 0 &&
                         userData.vocalRangeLow == 0)
                       Container(
-                        height: 100,
                         child: Center(
                           child: Text(
                             '음역대 정보가 없어 플레이리스트를 제공할 수 없습니다',
@@ -390,26 +401,15 @@ class _mainpageState extends State<mainpage> {
                             scrollDirection: Axis.horizontal,
                             child: Row(
                               children: playlists.map((playlist) {
-                                return Container(
-                                  width: 100,
-                                  height: 100,
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/playlist.png',
-                                          height: 70,
-                                        ),
-                                        SizedBox(height: 8),
-                                        Text(
-                                          playlist['playlistName'],
-                                          style: TextStyle(color: Colors.white),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ],
-                                    ),
+                                return SizedBox(
+                                  height: height * 0.2,
+                                  width: height * 0.2,
+                                  child: PlaylistItem(
+                                    title: playlist['playlistName'],
+                                    playlistId: playlist['playlistId'],
+                                    playlistName: playlist['playlistName'],
+                                    isPublic: playlist['isPublic'],
+                                    fetchSongs: fetchSongs,
                                   ),
                                 );
                               }).toList(),
@@ -603,6 +603,122 @@ class _KaraokeTopChartPanelState extends State<KaraokeTopChartPanel> {
             },
           ),
         ],
+      ),
+    );
+  }
+}
+
+class Song {
+  final String albumImageUrl;
+
+  Song({
+    required this.albumImageUrl,
+  });
+
+  factory Song.fromJson(Map<String, dynamic> json) {
+    return Song(
+      albumImageUrl: json['songInfo']['albumImage'],
+    );
+  }
+}
+
+class PlaylistItem extends StatelessWidget {
+  final String title;
+  final int playlistId;
+  final String playlistName;
+  final int isPublic;
+  final Future<List<Song>> Function(int) fetchSongs;
+
+  const PlaylistItem({
+    Key? key,
+    required this.title,
+    required this.playlistId,
+    required this.playlistName,
+    required this.isPublic,
+    required this.fetchSongs,
+  }) : super(key: key);
+
+  Future<String?> _getAlbumImageUrl() async {
+    List<Song> songs = await fetchSongs(playlistId);
+    if (songs.isNotEmpty) {
+      return songs[0].albumImageUrl;
+    }
+    return null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
+    return GestureDetector(
+      onTap: () {
+        if (playlistName == "좋아요 표시한 음악")
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LikePlaylistInfoPage(
+                playlistId: playlistId,
+                playlistName: playlistName,
+                isPublic: isPublic,
+              ),
+            ),
+          );
+        else
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PlaylistInfoPage(
+                playlistId: playlistId,
+                playlistName: playlistName,
+                isPublic: isPublic,
+              ),
+            ),
+          );
+      },
+      child: FutureBuilder<String?>(
+        future: _getAlbumImageUrl(),
+        builder: (context, snapshot) {
+          Widget displayWidget;
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            displayWidget = CircularProgressIndicator();
+          } else if (playlistName == "좋아요 표시한 음악") {
+            displayWidget = Image.asset(
+              'assets/images/liked_list.png',
+              height: height * 0.12,
+            );
+          } else if (snapshot.hasError ||
+              !snapshot.hasData ||
+              snapshot.data == null) {
+            displayWidget = Image.asset(
+              'assets/images/playlist.png',
+              height: height * 0.12,
+            );
+          } else {
+            displayWidget = ClipRRect(
+                borderRadius: BorderRadius.circular(10.0),
+                child: Image.network(snapshot.data!, fit: BoxFit.cover));
+          }
+
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              //border: Border.all(color: Colors.white),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(child: Center(child: displayWidget)),
+                SizedBox(height: 10.0),
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

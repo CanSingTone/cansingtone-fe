@@ -92,7 +92,8 @@ class _LikePlaylistInfoPageState extends State<LikePlaylistInfoPage> {
 
   Future<List<SongInPlaylist>> fetchSongsInPlaylist() async {
     String? userId = await UserDataShare.getUserId();
-    final response = await http.get(Uri.parse('http://13.125.27.204:8080/like/$userId'));
+    final response =
+        await http.get(Uri.parse('http://13.125.27.204:8080/like/$userId'));
 
     // 디버깅 로그 추가
     print('User ID: $userId');
@@ -101,7 +102,8 @@ class _LikePlaylistInfoPageState extends State<LikePlaylistInfoPage> {
     print('Response body: ${response.body}');
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes))['result'];
+      final List<dynamic> data =
+          jsonDecode(utf8.decode(response.bodyBytes))['result'];
       // 데이터 구조 확인
       print('Parsed data: $data');
       return data.map((json) => SongInPlaylist.fromJson(json)).toList();
@@ -157,16 +159,25 @@ class _LikePlaylistInfoPageState extends State<LikePlaylistInfoPage> {
     final isPublicText = widget.isPublic == 1 ? '공개' : '비공개';
 
     return Scaffold(
+      backgroundColor: Color(0xFF241D27),
       appBar: AppBar(
+        backgroundColor: Color(0xFF241D27),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.playlistName),
+            Text(widget.playlistName,
+                style: TextStyle(fontSize: 20.0, color: Colors.white)),
             Text(
               isPublicText,
-              style: TextStyle(fontSize: 12.0),
+              style: TextStyle(fontSize: 12.0, color: Colors.white),
             ),
           ],
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white), // 뒤로가기 아이콘
+          onPressed: () {
+            Navigator.of(context).pop(); // 뒤로가기 버튼이 클릭되었을 때의 동작
+          },
         ),
       ),
       body: FutureBuilder<List<SongInPlaylist>>(
@@ -193,10 +204,12 @@ class _LikePlaylistInfoPageState extends State<LikePlaylistInfoPage> {
                   leading: songInfo.albumImage.isNotEmpty
                       ? Image.network(songInfo.albumImage)
                       : Icon(Icons.music_note),
-                  title: Text(songInfo.songTitle),
-                  subtitle: Text(songInfo.artist),
+                  title: Text(songInfo.songTitle,
+                      style: TextStyle(color: Colors.white, fontSize: 17.0)),
+                  subtitle: Text(songInfo.artist,
+                      style: TextStyle(color: Colors.white)),
                   trailing: IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: Icon(Icons.delete, color: Colors.grey[400]),
                     onPressed: () {
                       _showDeleteDialog(context, id);
                     },
