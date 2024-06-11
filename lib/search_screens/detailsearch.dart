@@ -119,7 +119,7 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
                   Text(
                     '검색 조건',
                     style: TextStyle(
-                      fontSize: 18.0,
+                      fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -152,7 +152,9 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('장르', style: TextStyle(color: Colors.white)),
+                      Text('장르',
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 16.0)),
                       Checkbox(
                         value: isGenreEnabled,
                         onChanged: (bool? value) {
@@ -175,7 +177,9 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('음역대', style: TextStyle(color: Colors.white)),
+                      Text('음역대',
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 16.0)),
                       Checkbox(
                         value: isRangeEnabled,
                         onChanged: (bool? value) {
@@ -212,9 +216,10 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
                   SizedBox(height: 16.0),
                   ElevatedButton(
                     onPressed: _search,
-                    child: Text('검색', style: TextStyle(color: Colors.white)),
+                    child: Text('검색',
+                        style: TextStyle(color: Colors.white, fontSize: 17.0)),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.lightGreen,
+                      backgroundColor: Color(0xffAA83E2),
                       minimumSize: Size(double.infinity, 50),
                     ),
                   ),

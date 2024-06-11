@@ -138,6 +138,12 @@ class _MyPageState extends State<mypage> {
             // 로그아웃 기능
           },
         ),
+        Center(
+          child: Text(
+            'Icons by Icons8',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
       ],
     );
   }
