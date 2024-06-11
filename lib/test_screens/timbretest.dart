@@ -59,14 +59,20 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
       builder: (BuildContext context) {
         return Dialog(
           backgroundColor: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
+          child: Container(
+            height: 200,
+            width: 200,
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 spinner,
                 SizedBox(height: 16),
-                Text(message),
+                Text(message, style: TextStyle(fontSize: 17)),
+                SizedBox(height: 16),
+                Text(
+                  "분석에는 40-50초 정도 소용됩니다. ",
+                  style: TextStyle(fontSize: 13),
+                )
               ],
             ),
           ),
@@ -88,7 +94,7 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
         color: Colors.red,
         size: 50.0,
       ),
-      "데이터 전송중... ",
+      "데이터 전송중...",
       10,
       () {
         showLoadingDialog(
@@ -131,12 +137,12 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
                 if (widget.cameFrom == 'timbre_management_screen') {
-                 // Navigator.pushReplacement(
-                 //   context,
-                 //   MaterialPageRoute(
+                  // Navigator.pushReplacement(
+                  //   context,
+                  //   MaterialPageRoute(
                   //      builder: (context) => TimbreManagementScreen()),
-                //  );
-                  Navigator.pop(context,true);
+                  //  );
+                  Navigator.pop(context, true);
                 } else {
                   Navigator.pushReplacement(
                     context,
@@ -218,31 +224,6 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
         iconTheme: IconThemeData(
           color: Colors.white,
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.info_outline),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text('주의사항'),
-                    content: Text(
-                        '1. 조용한 환경에서 진행해주세요.\n2. 녹음 시간은 30초를 넘지 않게 해주세요.\n   처리 시간이 길어집니다.'),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text('확인'),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-          ),
-        ],
       ),
       body: Center(
         child: Column(
@@ -302,7 +283,7 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
                     ),
                     SizedBox(height: 30.0),
                     Text(
-                      '1. 조용한 환경에서 진행해주세요.\n2. 녹음 시간은 30초를 넘지 않게 해주세요.\n   처리 시간이 길어집니다.',
+                      '1. 조용한 환경에서 진행해주세요.\n2. 녹음은 10초 이상 진행해주세요.',
                       style: TextStyle(
                           color: Colors.white.withOpacity(0.7), fontSize: 16.0),
                     ),

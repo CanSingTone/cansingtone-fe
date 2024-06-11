@@ -9,6 +9,7 @@ import '../models/song.dart';
 import '../playlist/likeplaylistinfo.dart';
 import '../playlist/playlistinfo.dart';
 import '../service/chart_api.dart';
+import 'karaoke_top_chart_screen.dart';
 import 'mypage.dart';
 import 'package:flutter/material.dart';
 import '../songinfopage.dart';
@@ -170,7 +171,7 @@ class _mainpageState extends State<mainpage> {
                       child: Row(
                         children: [
                           Text(
-                            '20대 여자가 즐겨부르는 댄스곡 ',
+                            '${(userData.ages ~/ 10) * 10}대 ${userData.gender == 1 ? '남자' : '여자'}가 즐겨부르는 곡 ',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 22,
@@ -369,6 +370,7 @@ class _mainpageState extends State<mainpage> {
                     if (userData.vocalRangeHigh == 0 &&
                         userData.vocalRangeLow == 0)
                       Container(
+                        height: height * 0.15,
                         child: Center(
                           child: Text(
                             '음역대 정보가 없어 플레이리스트를 제공할 수 없습니다',
@@ -453,7 +455,7 @@ class _KaraokeTopChartPanelState extends State<KaraokeTopChartPanel> {
               child: Row(
                 children: [
                   Text(
-                    '노래방 TOP100 ',
+                    '노래방 TOP50 ',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 22,
@@ -464,6 +466,18 @@ class _KaraokeTopChartPanelState extends State<KaraokeTopChartPanel> {
                     'assets/images/emoji/fire.png',
                     height: 25,
                   ),
+                  SizedBox(width: 10),
+                  InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => KaraokeTopChartScreen(),
+                          ),
+                        );
+                      },
+                      child:
+                          Text("전체 보기", style: TextStyle(color: Colors.grey))),
                 ],
               ),
             ),

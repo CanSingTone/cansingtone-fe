@@ -177,44 +177,44 @@ class _recompageState extends State<recompage> {
                 else
                   Column(
                     children: [
-                      InkWell(
-                        onTap: () {
-                          if (userData.vocalRangeLow != 0 &&
-                              userData.vocalRangeHigh != 0)
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CombinedRecomScreen()),
-                            );
-                        },
-                        child: Row(
-                          children: [
-                            Text(
-                              '종합 추천 ',
+                      Row(
+                        children: [
+                          Text(
+                            '종합 추천 ',
+                            style: TextStyle(
+                              color: Color(0xFF241D27),
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 5),
+                            child: Image.asset(
+                              'assets/images/emoji/notes.png',
+                              height: 20,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        CombinedRecomScreen()),
+                              );
+                            },
+                            child: Text(
+                              '    상세 보기',
                               style: TextStyle(
-                                color: Color(0xFF241D27),
-                                fontSize: 20,
+                                color: Colors.black54,
+                                fontSize: 15,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 5),
-                              child: Image.asset(
-                                'assets/images/emoji/notes.png',
-                                height: 20,
-                              ),
-                            ),
-                            Text(
-                              '  >',
-                              style: TextStyle(
-                                color: Color(0xFF241D27),
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
+                      SizedBox(height: 5),
                       FutureBuilder<List<dynamic>>(
                         future: rangeRecomApi
                             .getRangeBasedRecommendation(userData.userId),
@@ -249,6 +249,7 @@ class _recompageState extends State<recompage> {
                                     );
                                   },
                                   child: ListTile(
+                                    visualDensity: VisualDensity.compact,
                                     contentPadding: EdgeInsets.symmetric(
                                         horizontal: 5.0, vertical: 1.0),
                                     leading: recommendation['albumImage'] !=
@@ -354,46 +355,43 @@ class _recompageState extends State<recompage> {
                     ],
                   )
                 else
-                  InkWell(
-                    onTap: () {
-                      print('isfirst value: $isfirst');
-                      if (isfirst == true) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TimbreBasedRecomScreen()),
-                        );
-                      }
-                    },
-                    child: Row(
-                      children: [
-                        Text(
-                          '음색 기반 추천 ',
+                  Row(
+                    children: [
+                      Text(
+                        '음색 기반 추천 ',
+                        style: TextStyle(
+                          color: Color(0xFF241D27),
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 5),
+                        child: Image.asset(
+                          'assets/images/emoji/voice.png',
+                          height: 25,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TimbreBasedRecomScreen()),
+                          );
+                        },
+                        child: Text(
+                          '   상세 보기',
                           style: TextStyle(
-                            color: Color(0xFF241D27),
-                            fontSize: 20,
+                            color: Colors.black54,
+                            fontSize: 15,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 5),
-                          child: Image.asset(
-                            'assets/images/emoji/voice.png',
-                            height: 25,
-                          ),
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          '>',
-                          style: TextStyle(
-                            color: Color(0xFF241D27),
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
+                SizedBox(height: 5),
                 FutureBuilder<List<dynamic>>(
                   future: firstTimbreId == null
                       ? null
@@ -427,7 +425,7 @@ class _recompageState extends State<recompage> {
                               );
                             },
                             child: ListTile(
-                              //visualDensity: VisualDensity.compact,
+                              visualDensity: VisualDensity.compact,
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 5.0, vertical: 1.0),
                               leading: songInfo['albumImage'] != null
@@ -465,45 +463,44 @@ class _recompageState extends State<recompage> {
                 if (userData.vocalRangeLow != 0 && userData.vocalRangeHigh != 0)
                   Column(
                     children: [
-                      InkWell(
-                        onTap: () {
-                          if (userData.vocalRangeLow != 0 &&
-                              userData.vocalRangeHigh != 0)
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      RangeBasedRecomScreen()),
-                            );
-                        },
-                        child: Row(
-                          children: [
-                            Text(
-                              '음역대 기반 추천 ',
+                      Row(
+                        children: [
+                          Text(
+                            '음역대 기반 추천 ',
+                            style: TextStyle(
+                              color: Color(0xFF241D27),
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 1),
+                            child: Image.asset(
+                              'assets/images/emoji/updown.png',
+                              height: 20,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        RangeBasedRecomScreen()),
+                              );
+                            },
+                            child: Text(
+                              '    상세 보기',
                               style: TextStyle(
-                                color: Color(0xFF241D27),
-                                fontSize: 20,
+                                color: Colors.black54,
+                                fontSize: 15,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 5),
-                              child: Image.asset(
-                                'assets/images/emoji/updown.png',
-                                height: 20,
-                              ),
-                            ),
-                            Text(
-                              '  >',
-                              style: TextStyle(
-                                color: Color(0xFF241D27),
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
+                      SizedBox(height: 5),
                       FutureBuilder<List<dynamic>>(
                         future: rangeRecomApi
                             .getRangeBasedRecommendation(userData.userId),
@@ -535,6 +532,7 @@ class _recompageState extends State<recompage> {
                                     );
                                   },
                                   child: ListTile(
+                                    visualDensity: VisualDensity.compact,
                                     contentPadding: EdgeInsets.symmetric(
                                         horizontal: 5.0, vertical: 1.0),
                                     leading: recommendation['albumImage'] !=

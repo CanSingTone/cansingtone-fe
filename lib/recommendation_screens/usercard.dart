@@ -85,11 +85,11 @@ class UserCard extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         Card(
-          margin: EdgeInsets.only(top: height * 0.04, left: 3.0, right: 3.0),
+          margin: EdgeInsets.only(top: height * 0.05, left: 3.0, right: 3.0),
           elevation: 5.0,
           color: Color(0xffAA83E2),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(15, 15, 15, 30),
+            padding: const EdgeInsets.fromLTRB(15, 10, 15, 30),
             child: Column(
               children: [
                 Row(
@@ -134,7 +134,11 @@ class UserCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: height * 0.03),
+                Container(
+                  height: 1,
+                  color: Colors.black,
+                  margin: EdgeInsets.only(top: 15, bottom: 15),
+                ),
                 Column(
                   children: [
                     Row(
@@ -317,11 +321,11 @@ class UserCard extends StatelessWidget {
           ),
         ),
         Positioned(
-          left: width * 0.03,
+          left: width * 0.04,
           top: -20,
           child: Image.asset(
             'assets/images/usercard/girl.png',
-            height: height * 0.17,
+            height: height * 0.18,
           ),
         ),
       ],

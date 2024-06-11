@@ -400,27 +400,6 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                   "키 낮춰야 함",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 18)),
-                          // ElevatedButton(
-                          //   onPressed: () {
-                          //     _showKeyRecommendationDialog(
-                          //       context,
-                          //       widget.songInfo['lowestNote'],
-                          //       widget.songInfo['highestNote'],
-                          //       userData.vocalRangeLow,
-                          //       userData.vocalRangeHigh,
-                          //     );
-                          //   },
-                          //   child: Text(
-                          //     '키 추천',
-                          //     style: TextStyle(
-                          //       fontSize: 16.0,
-                          //       color: Colors.white,
-                          //     ),
-                          //   ),
-                          //   style: ElevatedButton.styleFrom(
-                          //     backgroundColor: Colors.blue, // 버튼 색상
-                          //   ),
-                          // ),
                         ],
                       ),
                     ),

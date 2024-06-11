@@ -324,7 +324,7 @@ class _TutorialVocalRangeTestPage extends State<TutorialVocalRangeTestPage> {
                     ),
                     SizedBox(height: 30.0),
                     Text(
-                      '1. 조용한 환경에서 진행해주세요.\n2. 녹음 시간은 30초를 넘지 않게 해주세요.\n     처리 시간이 길어집니다.',
+                      '1. 조용한 환경에서 진행해주세요.\n2. 녹음 시간은 15초를 넘지 않게 해주세요.\n     처리 시간이 길어집니다.',
                       style: TextStyle(
                           color: Colors.white.withOpacity(0.7), fontSize: 16.0),
                     ),
