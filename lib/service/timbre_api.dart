@@ -15,7 +15,7 @@ class TimbreApi with ChangeNotifier {
       queryParameters: {'user_id': userId},
     );
     final result = (response.data)['result'];
-    return result;
+    return result ?? [];
   }
 }
 
