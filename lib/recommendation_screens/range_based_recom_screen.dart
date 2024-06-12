@@ -272,13 +272,13 @@ class _SongListTileState extends State<SongListTile> {
 
       // 서버 응답 처리
       if (response.statusCode == 200) {
-        print('Like request sent successfully');
-        print(url);
+       // print('Like request sent successfully');
+       // print(url);
       } else {
-        print('Failed to send like request: ${response.statusCode}');
+      //  print('Failed to send like request: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error sending like request: $e');
+     // print('Error sending like request: $e');
     }
   }
 
@@ -294,7 +294,7 @@ class _SongListTileState extends State<SongListTile> {
       // Dio 인스턴스를 생성하여 HTTP GET 요청을 보냅니다.
       Dio dio = Dio();
       Response response = await dio.get(url);
-      print(url);
+      //print(url);
       // 서버 응답 처리
       if (response.statusCode == 200) {
         // 좋아요 ID를 저장합니다.
@@ -303,16 +303,16 @@ class _SongListTileState extends State<SongListTile> {
             data['result'] != null &&
             data['result']['likeId'] != null) {
           likeId = data['result']['likeId'];
-          print(likeId);
+       //   print(likeId);
           _deleteLikeRequest(likeId!);
         } else {
-          print('Failed to get likeId');
+       //   print('Failed to get likeId');
         }
       } else {
-        print('Failed to get likeId: ${response.statusCode}');
+      //  print('Failed to get likeId: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error getting likeId: $e');
+     // print('Error getting likeId: $e');
     }
   }
 
@@ -321,19 +321,19 @@ class _SongListTileState extends State<SongListTile> {
     try {
       // 서버 URL을 구성합니다.
       String url = 'http://13.125.27.204:8080/like?like_id=$likeId';
-      print(url);
+      //print(url);
       // Dio 인스턴스를 생성하여 HTTP DELETE 요청을 보냅니다.
       Dio dio = Dio();
       Response response = await dio.delete(url);
 
       // 서버 응답 처리
       if (response.statusCode == 200) {
-        print('Delete like request sent successfully');
+       // print('Delete like request sent successfully');
       } else {
-        print('Failed to send delete like request: ${response.statusCode}');
+      //  print('Failed to send delete like request: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error sending delete like request: $e');
+     // print('Error sending delete like request: $e');
     }
   }
 
@@ -349,7 +349,7 @@ class _SongListTileState extends State<SongListTile> {
       // Dio 인스턴스를 생성하여 HTTP GET 요청을 보냅니다.
       Dio dio = Dio();
       Response response = await dio.get(url);
-      print(response);
+      //print(response);
       // 서버 응답 처리
       if (response.statusCode == 200) {
         // isSuccess 값이 true일 때만 좋아요 상태를 업데이트합니다.
@@ -360,7 +360,7 @@ class _SongListTileState extends State<SongListTile> {
               isLiked = true;
             });
           }
-          print('업데이트완료');
+         // print('업데이트완료');
         } else {
           print('Failed to get like status: ${response.data['message']}');
           if (isLiked == true) {
@@ -370,10 +370,10 @@ class _SongListTileState extends State<SongListTile> {
           }
         }
       } else {
-        print('Failed to get like status: ${response.statusCode}');
+       // print('Failed to get like status: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error getting like status: $e');
+    //  print('Error getting like status: $e');
     }
   }
 
