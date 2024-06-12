@@ -285,7 +285,7 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                             child: Text(
                               widget.songInfo['songTitle'],
                               style: TextStyle(
-                                fontSize: 20.0,
+                                fontSize: 22.0,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),
@@ -295,7 +295,7 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                         SizedBox(height: 8.0),
                         Padding(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0), // 양쪽 끝에 여유 공간 추가
+                              horizontal: 20.0), // 양쪽 끝에 여유 공간 추가
                           child: Expanded(
                             child: Text(
                               '${widget.songInfo['artist']}',
@@ -310,9 +310,11 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                               horizontal: 16.0), // 양쪽 끝에 여유 공간 추가
                           child: Expanded(
                             child: Text(
-                              '노래방 번호: ${widget.songInfo['karaokeNum'] ?? ''}',
+                              '노래방 번호: ${widget.songInfo['karaoke_num']}',
                               style: TextStyle(
-                                  fontSize: 16.0, color: Colors.white),
+                                fontSize: 17.0,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
@@ -324,9 +326,9 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                         Text(
                           "음원 영상 ",
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 17,
-                          ),
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 5),
@@ -454,17 +456,17 @@ class KeyAdjustmentGuide extends StatelessWidget {
     if (highestNoteGap == 0) {
       high_description += '곡의 최고음이 음역대와 일치합니다.';
     } else if (highestNoteGap > 0) {
-      high_description += '곡의 최고음이 ${highestNoteGap}키 높습니다.';
+      high_description += '곡의 최고음이 음역대보다 ${highestNoteGap}키 높습니다.';
     } else if (highestNoteGap < 0) {
-      high_description += '곡의 최고음이 ${-highestNoteGap}키 낮습니다.';
+      high_description += '곡의 최고음이 음역대보다 ${-highestNoteGap}키 낮습니다.';
     }
 
     if (lowestNoteGap == 0) {
       low_description += '곡의 최저음이 음역대와 일치합니다.';
     } else if (lowestNoteGap > 0) {
-      low_description += '곡의 최저음이 ${lowestNoteGap}키 높습니다.';
+      low_description += '곡의 최저음이 음역대보다 ${lowestNoteGap}키 높습니다.';
     } else if (lowestNoteGap < 0) {
-      low_description += '곡의 최저음이 ${-lowestNoteGap}키 낮습니다.';
+      low_description += '곡의 최저음이 음역대보다 ${-lowestNoteGap}키 낮습니다.';
     }
 
     if (highestNoteGap <= 0 && lowestNoteGap >= 0) {
@@ -528,7 +530,7 @@ class KeyAdjustmentGuide extends StatelessWidget {
               rangeColor: Color(0xffE365CF),
             ),
           ),
-          SizedBox(height: height * 0.05),
+          SizedBox(height: height * 0.06),
           Text(
             high_description,
             style: TextStyle(color: Colors.white, fontSize: 17),
@@ -538,7 +540,7 @@ class KeyAdjustmentGuide extends StatelessWidget {
             style: TextStyle(color: Colors.white, fontSize: 17),
           ),
           SizedBox(
-            height: height * 0.02,
+            height: height * 0.03,
           ),
           guide == '음역대 조정이 어려운 노래입니다'
               ? Row(

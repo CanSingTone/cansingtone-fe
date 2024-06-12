@@ -13,6 +13,7 @@ class CharApi with ChangeNotifier {
       "$_API_PREFIX/songs/karaoke-top-chart",
     );
     final result = (response.data)['result'];
+    //print(result);
     return result;
   }
 

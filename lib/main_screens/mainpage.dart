@@ -9,6 +9,7 @@ import '../models/song.dart';
 import '../playlist/likeplaylistinfo.dart';
 import '../playlist/playlistinfo.dart';
 import '../service/chart_api.dart';
+import '../song_detail_screen.dart';
 import 'karaoke_top_chart_screen.dart';
 import 'mypage.dart';
 import 'package:flutter/material.dart';
@@ -241,8 +242,8 @@ class _mainpageState extends State<mainpage> {
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
-                                                          SongInfoPage(
-                                                        songId: song['songId'],
+                                                          SongDetailScreen(
+                                                        songInfo: song,
                                                       ),
                                                     ),
                                                   );
