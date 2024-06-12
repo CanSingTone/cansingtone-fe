@@ -19,16 +19,23 @@ class CharApi with ChangeNotifier {
   Future<List<dynamic>> fetchPersonalizedChart(
       int preferAge, int preferGender) async {
     Response response;
+
     Dio dio = new Dio();
-    response = await dio.get(
-      "$_API_PREFIX/songs/personalized-chart",
-      queryParameters: {
-        'prefer_age': preferAge,
-        'prefer_gender': preferGender,
-      },
-    );
-    final result = (response.data)['result'];
-    return result;
+    try {
+      response = await dio.get(
+        "$_API_PREFIX/songs/personalized-chart",
+        queryParameters: {
+          'age': preferAge,
+          'gender': preferGender,
+        },
+      );
+      final result = response.data['result'];
+
+      return result;
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
   }
 }
 

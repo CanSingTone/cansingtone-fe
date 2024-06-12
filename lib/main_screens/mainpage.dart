@@ -188,7 +188,8 @@ class _mainpageState extends State<mainpage> {
                   ),
                   SizedBox(height: 5),
                   FutureBuilder<List<dynamic>>(
-                    future: chartApi.fetchKaraokeTopChart(),
+                    future: chartApi.fetchPersonalizedChart(
+                        (userData.ages ~/ 10) * 10, userData.gender),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return SizedBox(
