@@ -398,7 +398,17 @@ class _mainpageState extends State<mainpage> {
                               child: Text('Error: ${snapshot.error}'));
                         } else if (!snapshot.hasData ||
                             snapshot.data!.isEmpty) {
-                          return Center(child: Text('플레이리스트를 찾지 못했습니다.'));
+                          return Container(
+                            height: height * 0.15,
+                            child: Center(
+                                child: Text('플레이리스트를 찾지 못했습니다.',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16))),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          );
                         } else {
                           final playlists = snapshot.data!;
                           return SingleChildScrollView(

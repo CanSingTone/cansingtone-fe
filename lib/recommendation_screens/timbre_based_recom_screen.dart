@@ -63,7 +63,7 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
               children: [
                 SpinKitWave(
                   color: Color(0xffAA83E2),
-                  size: 60.0,
+                  size: 50.0,
                 ),
                 SizedBox(height: 20),
                 Text("추천곡을 받아오는 중입니다...", style: TextStyle(fontSize: 17)),
@@ -146,7 +146,7 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
                                 padding: EdgeInsets.symmetric(horizontal: 15),
                                 decoration: BoxDecoration(
                                   color: isSelected
-                                      ? Colors.black
+                                      ? Color(0xffAA83E2)
                                       : Colors.grey[300],
                                   borderRadius: BorderRadius.circular(10),
                                 ),
@@ -174,7 +174,8 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
                   onPressed: () async {
                     final result = await Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => TimbreManagementScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => TimbreManagementScreen()),
                     );
                     if (result == true) {
                       setState(() {});
@@ -190,8 +191,9 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
             height: height * 0.01,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              SizedBox(width: 10),
               SizedBox(
                 width: width * 0.45,
                 child: ElevatedButton(
@@ -206,9 +208,14 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    side: BorderSide(
+                      color: Color(0xFF1A0C0C),
+                      width: 1.0,
                     ),
                     padding: EdgeInsets.symmetric(
                       vertical: 9.0,
@@ -224,29 +231,29 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
                   ),
                 ),
               ),
-              SizedBox(width: 10),
-              SizedBox(
-                width: width * 0.45,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: width * 0.05,
-                    ),
-                  ),
-                  child: Text(
-                    '음색 테스트 다시 하기',
-                    style: TextStyle(
-                      color: Color(0xFF1A0C0C),
-                      fontSize: 15.0,
-                    ),
-                  ),
-                ),
-              ),
+              // SizedBox(width: 10),
+              // SizedBox(
+              //   width: width * 0.45,
+              //   child: ElevatedButton(
+              //     onPressed: () {},
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(10.0),
+              //       ),
+              //       padding: EdgeInsets.symmetric(
+              //         horizontal: width * 0.05,
+              //       ),
+              //     ),
+              //     child: Text(
+              //       '음색 테스트 다시 하기',
+              //       style: TextStyle(
+              //         color: Color(0xFF1A0C0C),
+              //         fontSize: 15.0,
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
           Expanded(

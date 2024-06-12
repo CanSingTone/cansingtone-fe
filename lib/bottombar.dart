@@ -1,6 +1,7 @@
 import 'package:cansingtone_front/search_screens/detailsearch.dart';
 import 'package:cansingtone_front/recommendation_screens/recompage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'main_screens/mainpage.dart';
@@ -29,6 +30,8 @@ class _AnimatedBarExampleState extends State<AnimatedBarExample> {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
     return Scaffold(
       extendBody: true, //to make floating action button notch transparent
 
@@ -36,78 +39,107 @@ class _AnimatedBarExampleState extends State<AnimatedBarExample> {
       // when a soft keyboard is displayed
       // resizeToAvoidBottomInset: false,
 
-      bottomNavigationBar: StylishBottomBar(
-        option: DotBarOptions(
-          dotStyle: DotStyle.tile,
-          gradient: const LinearGradient(
-            colors: [
-              Colors.deepPurple,
-              Colors.pink,
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
+      bottomNavigationBar: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          StylishBottomBar(
+            option: DotBarOptions(
+              dotStyle: DotStyle.tile,
+              gradient: const LinearGradient(
+                colors: [
+                  Colors.deepPurple,
+                  Colors.pink,
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
 
-        items: [
-          BottomBarItem(
-            icon: const Icon(
-              Icons.house_outlined,
-            ),
-            selectedIcon: const Icon(Icons.house_rounded),
-            selectedColor: Colors.teal,
-            unSelectedColor: Colors.grey,
-            title: const Text('홈'),
+            items: [
+              BottomBarItem(
+                icon: const Icon(
+                  Icons.house_outlined,
+                ),
+                selectedIcon: const Icon(Icons.house_rounded),
+                selectedColor: Colors.teal,
+                unSelectedColor: Colors.grey,
+                title: const Text('홈'),
+              ),
+              BottomBarItem(
+                icon: const Icon(
+                  Icons.search,
+                ),
+                selectedIcon: const Icon(
+                  Icons.search,
+                ),
+                selectedColor: Colors.deepOrangeAccent,
+                title: const Text('검색'),
+              ),
+              BottomBarItem(
+                icon: const Icon(Icons.queue_music),
+                selectedIcon: const Icon(Icons.queue_music),
+                selectedColor: Colors.red,
+                title: const Text('플레이리스트'),
+              ),
+              BottomBarItem(
+                icon: SizedBox(),
+                selectedColor: Colors.deepPurple,
+                title: const Text('추천'),
+              ),
+            ],
+            hasNotch: true,
+            //fabLocation: StylishBarFabLocation.end,
+            currentIndex: selected,
+            notchStyle: NotchStyle.square,
+            onTap: (index) {
+              if (index == selected) return;
+              setState(() {
+                selected = index;
+              });
+            },
           ),
-          BottomBarItem(
-            icon: const Icon(
-              Icons.search,
+          Positioned(
+            bottom: height * 0.04,
+            left: width * 0.79,
+            child: SizedBox(
+              height: 55,
+              width: 55,
+              child: FloatingActionButton(
+                  onPressed: () {
+                    setState(() {
+                      selected = 3;
+                      //heart = !heart;
+                    });
+                  },
+                  backgroundColor: Colors.white,
+                  child: Image.asset(
+                    'assets/images/micro.png',
+                    width: 40,
+                  )
+
+                  // Icon(
+                  //   heart ? CupertinoIcons.heart_fill : CupertinoIcons.heart_fill,
+                  //   color: Colors.purple,
+                  // ),
+                  ),
             ),
-            selectedIcon: const Icon(
-              Icons.search,
-            ),
-            selectedColor: Colors.deepOrangeAccent,
-            title: const Text('검색'),
-          ),
-          BottomBarItem(
-            icon: const Icon(Icons.queue_music),
-            selectedIcon: const Icon(Icons.queue_music),
-            selectedColor: Colors.red,
-            title: const Text('플레이리스트'),
-          ),
-          BottomBarItem(
-            icon: Icon(
-              recommend ? Icons.recommend_rounded : Icons.recommend,
-            ),
-            selectedColor: Colors.deepPurple,
-            title: const Text('추천'),
           ),
         ],
-        hasNotch: true,
-        //fabLocation: StylishBarFabLocation.end,
-        currentIndex: selected,
-        notchStyle: NotchStyle.square,
-        onTap: (index) {
-          if (index == selected) return;
-          setState(() {
-            selected = index;
-          });
-        },
       ),
-      // floatingActionButton:
-      //      FloatingActionButton(
-      //   onPressed: () {
-      //     setState(() {
-      //       selected = 3;
-      //     });
-      //   },
-      //    backgroundColor: Colors.white,
-      //   child: Icon(
-      //      heart ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
-      //      color: Colors.red,
+      // floatingActionButton: Positioned(
+      //   child: FloatingActionButton(
+      //     onPressed: () {
+      //       setState(() {
+      //         selected = 3;
+      //       });
+      //     },
+      //     backgroundColor: Colors.white,
+      //     child: Icon(
+      //       heart ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
+      //       color: Colors.red,
+      //     ),
       //   ),
-      // )
-      //     ,
+      // ),
       // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       body: SafeArea(
         child: _getBody(selected),

@@ -84,10 +84,20 @@ class UserCard extends StatelessWidget {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        Card(
-          margin: EdgeInsets.only(top: height * 0.05, left: 3.0, right: 3.0),
-          elevation: 5.0,
-          color: Color(0xffAA83E2),
+        Container(
+          decoration: BoxDecoration(
+            color: Color(0xffAA83E2),
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.8),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
+          margin: EdgeInsets.only(top: height * 0.05),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(15, 10, 15, 30),
             child: Column(

@@ -75,8 +75,11 @@ class _CombinedRecomScreenState extends State<CombinedRecomScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                SizedBox(
+                  width: 10,
+                ),
                 SizedBox(
                   width: width * 0.45,
                   child: ElevatedButton(
@@ -86,11 +89,16 @@ class _CombinedRecomScreenState extends State<CombinedRecomScreen> {
                       setState(() {}); // 화면을 새로 고침
                     },
                     style: ElevatedButton.styleFrom(
+                      side: BorderSide(
+                        color: Colors.black,
+                        width: 1,
+                      ),
+                      elevation: 0,
                       backgroundColor:
                           Theme.of(context).scaffoldBackgroundColor,
                       shape: RoundedRectangleBorder(
                         borderRadius:
-                            BorderRadius.circular(10.0), // 버튼의 모서리를 둥글게 만듦
+                            BorderRadius.circular(5.0), // 버튼의 모서리를 둥글게 만듦
                       ),
                       padding: EdgeInsets.symmetric(
                         horizontal: width * 0.03,
@@ -105,37 +113,37 @@ class _CombinedRecomScreenState extends State<CombinedRecomScreen> {
                     ),
                   ),
                 ),
-                SizedBox(width: width * 0.02),
-                SizedBox(
-                  width: width * 0.45,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => VocalRangeTestPage()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Theme.of(context).scaffoldBackgroundColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(10.0), // 버튼의 모서리를 둥글게 만듦
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: width * 0.03,
-                      ), // 버튼의 내부 패딩
-                    ),
-                    child: Text(
-                      '음역대 테스트 다시 하기',
-                      style: TextStyle(
-                        color: Color(0xFF1A0C0C), // 버튼 텍스트 색상
-                        fontSize: 15.0, // 버튼 텍스트 크기
-                      ),
-                    ),
-                  ),
-                ),
+                // SizedBox(width: width * 0.02),
+                // SizedBox(
+                //   width: width * 0.45,
+                //   child: ElevatedButton(
+                //     onPressed: () {
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //             builder: (context) => VocalRangeTestPage()),
+                //       );
+                //     },
+                //     style: ElevatedButton.styleFrom(
+                //       backgroundColor:
+                //           Theme.of(context).scaffoldBackgroundColor,
+                //       shape: RoundedRectangleBorder(
+                //         borderRadius:
+                //             BorderRadius.circular(10.0), // 버튼의 모서리를 둥글게 만듦
+                //       ),
+                //       padding: EdgeInsets.symmetric(
+                //         horizontal: width * 0.03,
+                //       ), // 버튼의 내부 패딩
+                //     ),
+                //     child: Text(
+                //       '음역대 테스트 다시 하기',
+                //       style: TextStyle(
+                //         color: Color(0xFF1A0C0C), // 버튼 텍스트 색상
+                //         fontSize: 15.0, // 버튼 텍스트 크기
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
             Expanded(

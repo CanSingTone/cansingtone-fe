@@ -4,7 +4,9 @@ import 'package:cansingtone_front/recommendation_screens/range_based_recom_scree
 import 'package:cansingtone_front/song_detail_screen.dart';
 import 'package:cansingtone_front/recommendation_screens/timbre_based_recom_screen.dart';
 import 'package:cansingtone_front/test_screens/timbretest.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import '../service/range_recom_api.dart';
 import '../service/timbre_api.dart';
 import '../service/timbre_recom_api.dart';
@@ -109,8 +111,19 @@ class _recompageState extends State<recompage> {
           isEditing: false,
         ),
         SizedBox(height: height * 0.02),
-        Card(
-          color: Colors.white,
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.8),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -282,9 +295,19 @@ class _recompageState extends State<recompage> {
           ),
         ),
         SizedBox(height: height * 0.02),
-        Card(
-          elevation: 5.0,
-          color: Colors.white,
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.8),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -453,8 +476,19 @@ class _recompageState extends State<recompage> {
           ),
         ),
         SizedBox(height: height * 0.02),
-        Card(
-          color: Colors.white,
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.8),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(

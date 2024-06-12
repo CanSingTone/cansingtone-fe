@@ -88,11 +88,16 @@ class _RangeBasedRecomScreenState extends State<RangeBasedRecomScreen> {
                       setState(() {}); // 화면을 새로 고침
                     },
                     style: ElevatedButton.styleFrom(
+                      side: BorderSide(
+                        color: Colors.black,
+                        width: 1,
+                      ),
+                      elevation: 0,
                       backgroundColor:
                           Theme.of(context).scaffoldBackgroundColor,
                       shape: RoundedRectangleBorder(
                         borderRadius:
-                            BorderRadius.circular(10.0), // 버튼의 모서리를 둥글게 만듦
+                            BorderRadius.circular(5.0), // 버튼의 모서리를 둥글게 만듦
                       ),
                       padding: EdgeInsets.symmetric(
                         horizontal: width * 0.03,
@@ -123,8 +128,13 @@ class _RangeBasedRecomScreenState extends State<RangeBasedRecomScreen> {
                           Theme.of(context).scaffoldBackgroundColor,
                       shape: RoundedRectangleBorder(
                         borderRadius:
-                            BorderRadius.circular(10.0), // 버튼의 모서리를 둥글게 만듦
+                            BorderRadius.circular(5.0), // 버튼의 모서리를 둥글게 만듦
                       ),
+                      side: BorderSide(
+                        color: Colors.black,
+                        width: 1,
+                      ),
+                      elevation: 0,
                       padding: EdgeInsets.symmetric(
                         horizontal: width * 0.03,
                       ), // 버튼의 내부 패딩
