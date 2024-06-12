@@ -402,6 +402,7 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
                                     await audioUploader.uploadAudioFile(file);
                                     UserDataService.fetchAndSaveUserDataS(
                                         context, userId);
+                                    await Future.delayed(Duration(seconds: 2));
                                     Navigator.of(context)
                                         .pop(); // Close the loading dialog
                                     showCompleteDialog(

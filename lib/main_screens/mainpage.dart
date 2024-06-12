@@ -1,3 +1,4 @@
+import 'package:cansingtone_front/playlist/otherplaylistinfo.dart';
 import 'package:cansingtone_front/service/playlist_api.dart';
 import 'package:cansingtone_front/userdata.dart';
 import 'package:dio/dio.dart';
@@ -409,6 +410,7 @@ class _mainpageState extends State<mainpage> {
                                   height: height * 0.2,
                                   width: height * 0.2,
                                   child: PlaylistItem(
+                                    id: playlist['userId'],
                                     title: playlist['playlistName'],
                                     playlistId: playlist['playlistId'],
                                     playlistName: playlist['playlistName'],
@@ -644,6 +646,7 @@ class PlaylistItem extends StatelessWidget {
   final String playlistName;
   final int isPublic;
   final Future<List<Song>> Function(int) fetchSongs;
+  final String id;
 
   const PlaylistItem({
     Key? key,
@@ -652,6 +655,7 @@ class PlaylistItem extends StatelessWidget {
     required this.playlistName,
     required this.isPublic,
     required this.fetchSongs,
+    required this.id,
   }) : super(key: key);
 
   Future<String?> _getAlbumImageUrl() async {
@@ -683,8 +687,9 @@ class PlaylistItem extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => PlaylistInfoPage(
+              builder: (context) => OtherPlaylistInfoPage(
                 playlistId: playlistId,
+                userId : id,
                 playlistName: playlistName,
                 isPublic: isPublic,
               ),
