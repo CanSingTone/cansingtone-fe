@@ -126,6 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Provider.of<UserData>(context, listen: false)
                               .updateUserId(id);
                           await UserDataShare.saveUserId(id);
+                          await Future.delayed(Duration(seconds: 1));
                           print('Set userId: $id');
                           //setLogin(); // js: 로그인하고 나갔다 들어왔을 때 다시 로그인 안 하게 하려고 쓰는 부분입니다. 나중에 주석 푸시면 될 듯
                           Navigator.of(context).pushReplacementNamed('/home');
@@ -133,10 +134,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           // 존재하지 않는 사용자의 경우, 튜토리얼 페이지로 이동
                           await UserDataShare.saveUserId(id);
                           print('Set userId: $id');
-                          Navigator.of(context)
-                              .pushReplacementNamed('/tutorial', arguments: id);
+
                           Provider.of<UserData>(context, listen: false)
                               .updateUserId(id);
+
+                          await Future.delayed(Duration(seconds: 2));
+                          Navigator.of(context)
+                              .pushReplacementNamed('/tutorial', arguments: id);
                           print(id);
                         } // js: id를 튜토리얼 페이지로 넘겨주면서 이동해야 할 것 같아요. 튜토리얼 페이지에서 아이디 저장하는 거 연결해주세요
                       }
