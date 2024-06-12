@@ -94,10 +94,12 @@ class _OtherPlaylistInfoPageState extends State<OtherPlaylistInfoPage> {
   }
 
   Future<List<SongInPlaylist>> fetchSongsInPlaylist(int playlistId) async {
-    final response = await http.get(Uri.parse('http://13.125.27.204:8080/songs-in-playlist/$playlistId'));
+    final response = await http.get(
+        Uri.parse('http://13.125.27.204:8080/songs-in-playlist/$playlistId'));
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes))['result'];
+      final List<dynamic> data =
+          jsonDecode(utf8.decode(response.bodyBytes))['result'];
       print('Fetched data: $data'); // 디버깅용 프린트
       return data.map((json) => SongInPlaylist.fromJson(json)).toList();
     } else {
@@ -128,10 +130,14 @@ class _OtherPlaylistInfoPageState extends State<OtherPlaylistInfoPage> {
       ),
       body: Column(
         children: [
-          OtherUserCard(
-            userId: widget.userId, // 하드코딩된 userId를 widget.userId로 변경
-           onEditPressed: () {},
-           isEditing: false,
+          SizedBox(height: height * 0.03),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: OtherUserCard(
+              userId: widget.userId, // 하드코딩된 userId를 widget.userId로 변경
+              onEditPressed: () {},
+              isEditing: false,
+            ),
           ),
           SizedBox(height: height * 0.02),
           Expanded(
@@ -159,7 +165,8 @@ class _OtherPlaylistInfoPageState extends State<OtherPlaylistInfoPage> {
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold)),
                         subtitle: Text(songInfo.artist,
-                            style: TextStyle(fontSize: 14.0, color: Colors.white)),
+                            style:
+                                TextStyle(fontSize: 14.0, color: Colors.white)),
                         onTap: () {
                           Navigator.push(
                             context,

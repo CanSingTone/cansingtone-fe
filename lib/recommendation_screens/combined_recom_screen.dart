@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:cansingtone_front/song_detail_screen.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import '../service/combined_recom_api.dart';
 import '../service/range_recom_api.dart';
 import '../test_screens/vocalrangetest.dart';
 import 'package:http/http.dart' as http;
@@ -84,8 +85,9 @@ class _CombinedRecomScreenState extends State<CombinedRecomScreen> {
                   width: width * 0.45,
                   child: ElevatedButton(
                     onPressed: () async {
-                      await recomeSong(userData.userId, userData.vocalRangeHigh,
-                          userData.vocalRangeLow);
+                      await combinedRecomApi
+                          .requestCombinedRecommendation(userData.userId);
+
                       setState(() {}); // 화면을 새로 고침
                     },
                     style: ElevatedButton.styleFrom(
@@ -148,9 +150,8 @@ class _CombinedRecomScreenState extends State<CombinedRecomScreen> {
             ),
             Expanded(
               child: FutureBuilder<List<dynamic>>(
-                future: rangeRecomApi.getRangeBasedRecommendation(
-                  userData.userId,
-                ),
+                future:
+                    combinedRecomApi.getCombinedRecommendation(userData.userId),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());

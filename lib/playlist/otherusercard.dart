@@ -118,10 +118,12 @@ class _OtherUserCardState extends State<OtherUserCard> {
   }
 
   Future<UserData> fetchUserData(String userId) async {
-    final response = await http.get(Uri.parse('http://13.125.27.204:8080/users/$userId'));
+    final response =
+        await http.get(Uri.parse('http://13.125.27.204:8080/users/$userId'));
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> data = jsonDecode(utf8.decode(response.bodyBytes))['result'];
+      final Map<String, dynamic> data =
+          jsonDecode(utf8.decode(response.bodyBytes))['result'];
       return UserData.fromJson(data);
     } else {
       throw Exception('사용자 정보를 불러오는데 실패했습니다.');
@@ -158,10 +160,21 @@ class _OtherUserCardState extends State<OtherUserCard> {
           return Stack(
             clipBehavior: Clip.none,
             children: [
-              Card(
-                margin: EdgeInsets.only(top: height * 0.05, left: 3.0, right: 3.0),
-                elevation: 5.0,
-                color: Color(0xffAA83E2),
+              Container(
+                decoration: BoxDecoration(
+                  color: Color(0xffAA83E2),
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.8),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                margin:
+                    EdgeInsets.only(top: height * 0.05, left: 3.0, right: 3.0),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(15, 10, 15, 30),
                   child: Column(
@@ -219,7 +232,8 @@ class _OtherUserCardState extends State<OtherUserCard> {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(40),
                                   child: Container(
-                                    padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     color: Colors.black,
                                     child: Center(
                                       child: Text(
@@ -234,7 +248,8 @@ class _OtherUserCardState extends State<OtherUserCard> {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(40),
                                   child: Container(
-                                    padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     color: Colors.black,
                                     child: Center(
                                       child: Text(
@@ -249,7 +264,8 @@ class _OtherUserCardState extends State<OtherUserCard> {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(40),
                                   child: Container(
-                                    padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     color: Colors.black,
                                     child: Center(
                                       child: Text(
@@ -303,8 +319,8 @@ class _OtherUserCardState extends State<OtherUserCard> {
                                             children: [
                                               SizedBox(height: 10),
                                               Text("남자 평균 음역대",
-                                                  style:
-                                                  TextStyle(color: Colors.white)),
+                                                  style: TextStyle(
+                                                      color: Colors.white)),
                                               CustomPaint(
                                                 size: Size(300, 30),
                                                 painter: VocalRangePainter(
@@ -314,8 +330,8 @@ class _OtherUserCardState extends State<OtherUserCard> {
                                               ),
                                               SizedBox(height: 50),
                                               Text("여자 평균 음역대",
-                                                  style:
-                                                  TextStyle(color: Colors.white)),
+                                                  style: TextStyle(
+                                                      color: Colors.white)),
                                               CustomPaint(
                                                 size: Size(300, 30),
                                                 painter: VocalRangePainter(
@@ -324,18 +340,20 @@ class _OtherUserCardState extends State<OtherUserCard> {
                                                     rangeColor: Colors.pink),
                                               ),
                                               SizedBox(height: 50),
-                                              Text("당신의 음역대",
-                                                  style:
-                                                  TextStyle(color: Colors.white)),
+                                              Text("${userData.nickname}님의 음역대",
+                                                  style: TextStyle(
+                                                      color: Colors.white)),
                                               if (userData.vocalRangeLow != 0 &&
                                                   userData.vocalRangeHigh != 0)
                                                 CustomPaint(
                                                   size: Size(300, 30),
                                                   painter: VocalRangePainter(
-                                                      lowNote: userData.vocalRangeLow,
-                                                      highNote:
-                                                      userData.vocalRangeHigh,
-                                                      rangeColor: Color(0xffE365CF)),
+                                                      lowNote: userData
+                                                          .vocalRangeLow,
+                                                      highNote: userData
+                                                          .vocalRangeHigh,
+                                                      rangeColor:
+                                                          Color(0xffE365CF)),
                                                 )
                                               else
                                                 Text(
@@ -355,7 +373,8 @@ class _OtherUserCardState extends State<OtherUserCard> {
                                               },
                                               child: Text(
                                                 '닫기',
-                                                style: TextStyle(color: Colors.white),
+                                                style: TextStyle(
+                                                    color: Colors.white),
                                               ),
                                             ),
                                           ],

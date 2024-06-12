@@ -181,7 +181,7 @@ class _mainpageState extends State<mainpage> {
                             ),
                           ),
                           Image.asset(
-                            'assets/images/emoji/mirrorball.png',
+                            'assets/images/emoji/shine.png',
                             height: 25,
                           ),
                         ],
@@ -699,7 +699,7 @@ class PlaylistItem extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => OtherPlaylistInfoPage(
                 playlistId: playlistId,
-                userId : id,
+                userId: id,
                 playlistName: playlistName,
                 isPublic: isPublic,
               ),

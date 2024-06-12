@@ -333,10 +333,15 @@ class UserCard extends StatelessWidget {
         Positioned(
           left: width * 0.04,
           top: -20,
-          child: Image.asset(
-            'assets/images/usercard/girl.png',
-            height: height * 0.18,
-          ),
+          child: userData.gender == 2
+              ? Image.asset(
+                  'assets/images/usercard/girl.png',
+                  height: height * 0.18,
+                )
+              : Image.asset(
+                  'assets/images/usercard/boy.png', // 다른 이미지를 여기에 넣으세요
+                  height: height * 0.18,
+                ),
         ),
       ],
     );

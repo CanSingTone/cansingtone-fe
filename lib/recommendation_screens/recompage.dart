@@ -7,6 +7,7 @@ import 'package:cansingtone_front/test_screens/timbretest.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import '../service/combined_recom_api.dart';
 import '../service/range_recom_api.dart';
 import '../service/timbre_api.dart';
 import '../service/timbre_recom_api.dart';
@@ -153,84 +154,16 @@ class _recompageState extends State<recompage> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(horizontal: 48.0),
-                      //   child: SizedBox(
-                      //     width: double.infinity,
-                      //     child: ElevatedButton(
-                      //       onPressed: () {
-                      //         Navigator.push(
-                      //           context,
-                      //           MaterialPageRoute(
-                      //               builder: (context) => VocalRangeTestPage()),
-                      //         );
-                      //       },
-                      //       child: Text(
-                      //         '테스트하기',
-                      //         style: TextStyle(
-                      //           color: Colors.white,
-                      //           fontSize: 18.0,
-                      //         ),
-                      //       ),
-                      //       style: ElevatedButton.styleFrom(
-                      //         backgroundColor: Color(0xFFB290E4),
-                      //         shape: RoundedRectangleBorder(
-                      //           borderRadius: BorderRadius.circular(12.0),
-                      //         ),
-                      //         padding: EdgeInsets.symmetric(vertical: 16.0),
-                      //         minimumSize: Size(0, 48),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
                       SizedBox(height: height * 0.05),
                     ],
                   )
                 else
                   Column(
                     children: [
-                      Row(
-                        children: [
-                          Text(
-                            '종합 추천 ',
-                            style: TextStyle(
-                              color: Color(0xFF241D27),
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 5),
-                            child: Image.asset(
-                              'assets/images/emoji/notes.png',
-                              height: 20,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        CombinedRecomScreen()),
-                              );
-                            },
-                            child: Text(
-                              '    상세 보기',
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                       SizedBox(height: 5),
                       FutureBuilder<List<dynamic>>(
-                        future: rangeRecomApi
-                            .getRangeBasedRecommendation(userData.userId),
+                        future: combinedRecomApi
+                            .getCombinedRecommendation(userData.userId),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
@@ -243,45 +176,139 @@ class _recompageState extends State<recompage> {
                                 child: Text('오류 발생: ${snapshot.error}'));
                           } else if (snapshot.hasData) {
                             List<dynamic> recommendations = snapshot.data!;
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: 4,
-                              itemBuilder: (context, index) {
-                                var recommendation =
-                                    recommendations[index]['songInfo'];
-                                return GestureDetector(
-                                  onTap: () {
-                                    // 곡 상세 정보 페이지로 이동하는 코드 추가
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SongDetailScreen(
-                                            songInfo: recommendation),
+                            if (recommendations.isEmpty) {
+                              return Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Container(
+                                  child: Column(
+                                    children: [
+                                      Text('이제 종합 추천을 받을 수 있습니다.',
+                                          style: TextStyle(fontSize: 19.0)),
+                                      SizedBox(height: 15.0),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 48.0),
+                                        child: SizedBox(
+                                          width: double.infinity,
+                                          child: ElevatedButton(
+                                            onPressed: () async {
+                                              combinedRecomApi
+                                                  .requestCombinedRecommendation(
+                                                      userData.userId);
+
+                                              setState(() {});
+                                            },
+                                            child: Text(
+                                              '추천 받기',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18.0,
+                                              ),
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  Color(0xFFB290E4),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
+                                              ),
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 16.0),
+                                              minimumSize: Size(0, 48),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
+                            return Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      '종합 추천 ',
+                                      style: TextStyle(
+                                        color: Color(0xFF241D27),
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 5),
+                                      child: Image.asset(
+                                        'assets/images/emoji/notes.png',
+                                        height: 20,
+                                      ),
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CombinedRecomScreen()),
+                                        );
+                                      },
+                                      child: Text(
+                                        '    상세 보기',
+                                        style: TextStyle(
+                                          color: Colors.black54,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: 4,
+                                  itemBuilder: (context, index) {
+                                    var recommendation =
+                                        recommendations[index]['songInfo'];
+                                    return GestureDetector(
+                                      onTap: () {
+                                        // 곡 상세 정보 페이지로 이동하는 코드 추가
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                SongDetailScreen(
+                                                    songInfo: recommendation),
+                                          ),
+                                        );
+                                      },
+                                      child: ListTile(
+                                        visualDensity: VisualDensity.compact,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 5.0, vertical: 1.0),
+                                        leading: recommendation['albumImage'] !=
+                                                null
+                                            ? ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                child: Image.network(
+                                                    recommendation[
+                                                        'albumImage']))
+                                            : Icon(Icons.music_note),
+                                        title:
+                                            Text(recommendation['songTitle']),
+                                        subtitle:
+                                            Text(recommendation['artist']),
+                                        trailing: recommendation[
+                                                    'karaokeNum'] !=
+                                                null
+                                            ? Text(recommendation['karaokeNum'])
+                                            : null,
                                       ),
                                     );
                                   },
-                                  child: ListTile(
-                                    visualDensity: VisualDensity.compact,
-                                    contentPadding: EdgeInsets.symmetric(
-                                        horizontal: 5.0, vertical: 1.0),
-                                    leading: recommendation['albumImage'] !=
-                                            null
-                                        ? ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                            child: Image.network(
-                                                recommendation['albumImage']))
-                                        : Icon(Icons.music_note),
-                                    title: Text(recommendation['songTitle']),
-                                    subtitle: Text(recommendation['artist']),
-                                    trailing:
-                                        recommendation['karaokeNum'] != null
-                                            ? Text(recommendation['karaokeNum'])
-                                            : null,
-                                  ),
-                                );
-                              },
+                                ),
+                              ],
                             );
                           } else {
                             return Center(child: Text('데이터 없음'));
