@@ -87,6 +87,9 @@ flutter:
     - assets/images/start/
     - assets/images/start/kakao_login.png
     - assets/images/start/splash.png
+    - assets/images/start/note1.png
+    - assets/images/start/note2.png
+    - assets/images/start/note3.png
     - assets/images/tutorial/
     - assets/images/tutorial/ballad.png
     - assets/images/test/timbre_recording.png

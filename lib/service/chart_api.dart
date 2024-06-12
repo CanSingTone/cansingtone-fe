@@ -10,7 +10,7 @@ class CharApi with ChangeNotifier {
     Response response;
     Dio dio = new Dio();
     response = await dio.get(
-      "$_API_PREFIX/songs/karaoke-top-chart",
+      "$_API_PREFIX/charts/karaoke-top-chart",
     );
     final result = (response.data)['result'];
     //print(result);
@@ -24,7 +24,7 @@ class CharApi with ChangeNotifier {
     Dio dio = new Dio();
     try {
       response = await dio.get(
-        "$_API_PREFIX/songs/personalized-chart",
+        "$_API_PREFIX/charts/personalized-chart",
         queryParameters: {
           'age': preferAge,
           'gender': preferGender,

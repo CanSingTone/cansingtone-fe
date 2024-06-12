@@ -10,7 +10,9 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<double> _animation;
+  late Animation<double> _note3Animation;
+  late Animation<double> _note2Animation;
+  late Animation<double> _note1Animation;
 
   @override
   void initState() {
@@ -19,9 +21,23 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(seconds: 3),
       vsync: this,
     );
-    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+
+    _note3Animation =
+        Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
       parent: _controller,
-      curve: Curves.easeIn,
+      curve: Interval(0.0, 0.5, curve: Curves.easeIn),
+    ));
+
+    _note2Animation =
+        Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Interval(0.5, 0.75, curve: Curves.easeIn),
+    ));
+
+    _note1Animation =
+        Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Interval(0.75, 1.0, curve: Curves.easeIn),
     ));
 
     _controller.forward();
@@ -59,18 +75,54 @@ class _SplashScreenState extends State<SplashScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: width, // 원하는 너비 설정
-              height: height * 0.7, // 원하는 높이 설정
-              child: ClipRect(
-                child: FadeTransition(
-                  opacity: _animation,
-                  child: FittedBox(
-                    fit: BoxFit.cover,
-                    child: Image.asset('assets/images/start/splash.png'),
+            SizedBox(height: 50.0),
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  width: width, // 원하는 너비 설정
+                  height: height * 0.66, // 원하는 높이 설정
+                  child: ClipRect(
+                    child: FittedBox(
+                      fit: BoxFit.cover,
+                      child: Image.asset('assets/images/start/splash.png'),
+                    ),
                   ),
                 ),
-              ),
+                Positioned(
+                    top: -height * 0.2,
+                    left: width * 0.6,
+                    child: FadeTransition(
+                      opacity: _note1Animation,
+                      child: Image.asset(
+                        'assets/images/start/note1.png',
+                        width: width * 0.4,
+                        height: height * 0.4,
+                      ),
+                    )),
+                Positioned(
+                    top: height * 0.01,
+                    left: width * 0.03,
+                    child: FadeTransition(
+                      opacity: _note2Animation,
+                      child: Image.asset(
+                        'assets/images/start/note2.png',
+                        width: width * 0.25,
+                        height: height * 0.25,
+                      ),
+                    )),
+                Positioned(
+                    top: height * 0.4,
+                    left: width * 0.7,
+                    child: FadeTransition(
+                      opacity: _note3Animation,
+                      child: Image.asset(
+                        'assets/images/start/note3.png',
+                        width: width * 0.17,
+                        height: height * 0.17,
+                      ),
+                    )),
+              ],
             ),
             SizedBox(height: height * 0.1),
           ],

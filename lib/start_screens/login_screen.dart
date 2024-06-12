@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cansingtone_front/service/users_api.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 import 'package:cansingtone_front/playlist//playlistpage.dart';
@@ -56,15 +57,45 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: width, // 원하는 너비 설정
-              height: height * 0.7, // 원하는 높이 설정
-              child: ClipRect(
-                child: FittedBox(
-                  fit: BoxFit.cover,
-                  child: Image.asset('assets/images/start/splash.png'),
+            SizedBox(height: 50.0),
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  width: width, // 원하는 너비 설정
+                  height: height * 0.66, // 원하는 높이 설정
+                  child: ClipRect(
+                    child: FittedBox(
+                      fit: BoxFit.cover,
+                      child: Image.asset('assets/images/start/splash.png'),
+                    ),
+                  ),
                 ),
-              ),
+                Positioned(
+                    top: -height * 0.2,
+                    left: width * 0.6,
+                    child: Image.asset(
+                      'assets/images/start/note1.png',
+                      width: width * 0.4,
+                      height: height * 0.4,
+                    )),
+                Positioned(
+                    top: height * 0.01,
+                    left: width * 0.03,
+                    child: Image.asset(
+                      'assets/images/start/note2.png',
+                      width: width * 0.25,
+                      height: height * 0.25,
+                    )),
+                Positioned(
+                    top: height * 0.4,
+                    left: width * 0.7,
+                    child: Image.asset(
+                      'assets/images/start/note3.png',
+                      width: width * 0.17,
+                      height: height * 0.17,
+                    )),
+              ],
             ),
             SizedBox(height: 10.0),
             InkWell(
