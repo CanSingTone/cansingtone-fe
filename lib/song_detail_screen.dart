@@ -153,42 +153,37 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
     }
   }
 
-  void _showKeyRecommendationDialog(BuildContext context, int songLow,
-      int songHigh, int userLow, int userHigh) {
-    String message;
-    if ((songHigh - songLow) > (userHigh - userLow)) {
-      message = '부르기 힘든 곡입니다 ㅠㅠ';
-    } else {
-      int lowkeyDifference = songLow - userLow;
-      int highkeyDifference = songHigh - userHigh;
-      message =
-          '나의 음역대와 노래의 음역대의 가장 낮은 음의 차이: ${lowkeyDifference} 키\n 나의 음역대와 노래의 음역대의 가장 높은 음의 차이: ${highkeyDifference} 키';
-    }
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('키 추천'),
-          content: Text(message),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('확인'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     final userData = Provider.of<UserData>(context);
+
+    String _getKeyAdjustmentAdvice() {
+      int lowestNoteGap =
+          widget.songInfo['lowestNote'] - userData.vocalRangeLow;
+      int highestNoteGap =
+          widget.songInfo['highestNote'] - userData.vocalRangeHigh;
+
+      if (lowestNoteGap < 0 && highestNoteGap > 0) {
+        // 노래 음역대가 사용자 음역대보다 전체적으로 높은 경우
+        return '노래 키를 낮춰야 합니다.';
+      } else if (lowestNoteGap > 0 && highestNoteGap < 0) {
+        // 노래 음역대가 사용자 음역대보다 전체적으로 낮은 경우
+        return '노래 키를 높여야 합니다.';
+      } else {
+        // 그 외의 경우에는 최고음과 최저음 중 더 큰 간격을 기준으로 조언
+        int largerGap = lowestNoteGap.abs() > highestNoteGap.abs()
+            ? lowestNoteGap
+            : highestNoteGap;
+        if (largerGap > 0) {
+          return '노래 키를 높여야 합니다.';
+        } else {
+          return '노래 키를 낮춰야 합니다.';
+        }
+      }
+    }
+
     return WillPopScope(
       onWillPop: () async {
         setState(() {
@@ -352,56 +347,9 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                         ),
                       ),
                     SizedBox(height: height * 0.04),
-                    Container(
-                      padding: EdgeInsets.all(16.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            '노래의 음역대',
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              color: Colors.white,
-                            ),
-                          ),
-                          SizedBox(width: 16.0), // 텍스트 사이의 간격
-                          CustomPaint(
-                            size: Size(width, 50),
-                            painter: VocalRangePainter(
-                              lowNote: widget.songInfo['lowestNote'],
-                              highNote: widget.songInfo['highestNote'],
-                              lineColor: Colors.white,
-                              rangeColor: Colors.blue,
-                            ),
-                          ),
-                          SizedBox(height: height * 0.04),
-                          Text(
-                            '나의 음역대',
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              color: Colors.white,
-                            ),
-                          ),
-                          CustomPaint(
-                            size: Size(width, 50),
-                            painter: VocalRangePainter(
-                              lowNote: userData.vocalRangeLow,
-                              highNote: userData.vocalRangeHigh,
-                              lineColor: Colors.white,
-                              rangeColor: Color(0xffE365CF),
-                            ),
-                          ),
-                          SizedBox(height: height * 0.03),
-                          Text(
-                              "내가 부르려면 " +
-                                  (widget.songInfo['highestNote'] -
-                                          userData.vocalRangeHigh)
-                                      .abs()
-                                      .toString() +
-                                  "키 낮춰야 함",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18)),
-                        ],
-                      ),
+                    KeyAdjustmentGuide(
+                      songInfo: widget.songInfo,
+                      userData: userData,
                     ),
                     SizedBox(height: height * 0.04),
                     if (widget.songInfo['mrVidUrl'] != null)
@@ -481,4 +429,142 @@ String midiNumberToNoteName(int midiNumber) {
 
   String noteName = notes[noteIndex] + octave.toString();
   return noteName;
+}
+
+class KeyAdjustmentGuide extends StatelessWidget {
+  const KeyAdjustmentGuide({
+    super.key,
+    required this.songInfo,
+    required this.userData,
+  });
+
+  final Map<String, dynamic> songInfo;
+  final UserData userData;
+
+  @override
+  Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
+    int lowestNoteGap = songInfo['lowestNote'] - userData.vocalRangeLow;
+    int highestNoteGap = songInfo['highestNote'] - userData.vocalRangeHigh;
+
+    String low_description = '';
+    String high_description = '';
+    String guide = '';
+    if (highestNoteGap == 0) {
+      high_description += '곡의 최고음이 음역대와 일치합니다.';
+    } else if (highestNoteGap > 0) {
+      high_description += '곡의 최고음이 ${highestNoteGap}키 높습니다.';
+    } else if (highestNoteGap < 0) {
+      high_description += '곡의 최고음이 ${-highestNoteGap}키 낮습니다.';
+    }
+
+    if (lowestNoteGap == 0) {
+      low_description += '곡의 최저음이 음역대와 일치합니다.';
+    } else if (lowestNoteGap > 0) {
+      low_description += '곡의 최저음이 ${lowestNoteGap}키 높습니다.';
+    } else if (lowestNoteGap < 0) {
+      low_description += '곡의 최저음이 ${-lowestNoteGap}키 낮습니다.';
+    }
+
+    if (highestNoteGap <= 0 && lowestNoteGap >= 0) {
+      // 노래의 고음이 사용자의 고음보다 낮고 노래의 저음이 사용자의 저음보다 높은 경우. 즉 곡의 음역대가 사용자의 음역대 안에 있는 경우
+      guide = '${userData.nickname}님의 음역대에 잘 맞는 곡입니다. \n한 번 불러보세요!';
+    } else if (highestNoteGap > 0 &&
+        (userData.vocalRangeLow <=
+            songInfo['lowestNote'] - highestNoteGap.abs())) {
+      // 사용자의 고음보다 곡의 고음이 높으면 조정. 단, 조정 후 곡의 최저음이 사용자의 최저음보다 높아야 함
+      guide =
+          '${highestNoteGap.abs()}~${highestNoteGap.abs() + 1}키 낮추는 것을 추천합니다.';
+    } else if (lowestNoteGap < 0 &&
+        (userData.vocalRangeHigh >=
+            songInfo['highestNote'] + lowestNoteGap.abs())) {
+      // 사용자의 저음보다 곡의 저음이 낮으면 조정. 단, 조정 후 곡의 최고음이 사용자의 최고음보다 낮아야 함
+      guide =
+          '${lowestNoteGap.abs() - 1}~${lowestNoteGap.abs()}키 높이는 것을 추천합니다.';
+    } else {
+      guide = '음역대 조정이 어려운 노래입니다';
+    }
+
+    return Container(
+      padding: EdgeInsets.all(20.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: Colors.black54.withOpacity(0.3),
+      ),
+      child: Column(
+        children: [
+          Text(
+            '노래의 음역대',
+            style: TextStyle(
+              fontSize: 18.0,
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(width: 16.0), // 텍스트 사이의 간격
+          CustomPaint(
+            size: Size(width, 50),
+            painter: VocalRangePainter(
+              lowNote: songInfo['lowestNote'],
+              highNote: songInfo['highestNote'],
+              lineColor: Colors.white,
+              rangeColor: Colors.blue,
+            ),
+          ),
+          SizedBox(height: height * 0.05),
+          Text(
+            '나의 음역대',
+            style: TextStyle(
+              fontSize: 18.0,
+              color: Colors.white,
+            ),
+          ),
+          CustomPaint(
+            size: Size(width, 50),
+            painter: VocalRangePainter(
+              lowNote: userData.vocalRangeLow,
+              highNote: userData.vocalRangeHigh,
+              lineColor: Colors.white,
+              rangeColor: Color(0xffE365CF),
+            ),
+          ),
+          SizedBox(height: height * 0.05),
+          Text(
+            high_description,
+            style: TextStyle(color: Colors.white, fontSize: 17),
+          ),
+          Text(
+            low_description,
+            style: TextStyle(color: Colors.white, fontSize: 17),
+          ),
+          SizedBox(
+            height: height * 0.02,
+          ),
+          guide == '음역대 조정이 어려운 노래입니다'
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      guide,
+                      style: TextStyle(color: Colors.white, fontSize: 19),
+                    ),
+                    SizedBox(width: 2.0),
+                    Image.asset(
+                      'assets/images/emoji/cry.png',
+                      width: 20,
+                      height: 20,
+                    ),
+                  ],
+                )
+              : Text(
+                  guide,
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+          SizedBox(
+            height: height * 0.01,
+          )
+        ],
+      ),
+    );
+  }
 }
