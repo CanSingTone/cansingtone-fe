@@ -52,7 +52,7 @@ class _RangeBasedRecomScreenState extends State<RangeBasedRecomScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white), // 뒤로가기 아이콘
+          icon: Icon(Icons.arrow_back, color: Colors.black), // 뒤로가기 아이콘
           onPressed: () {
             Navigator.of(context).pop(); // 뒤로가기 버튼이 클릭되었을 때의 동작
           },

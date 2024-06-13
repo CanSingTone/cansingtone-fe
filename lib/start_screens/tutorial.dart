@@ -334,7 +334,12 @@ class _TutorialPageState extends State<TutorialPage> {
                 borderRadius: BorderRadius.circular(45), // 모서리를 둥글게
               ),
             ),
-            onPressed: _nameController.text.isNotEmpty ? _nextPage : null,
+            onPressed: _nameController.text.isNotEmpty
+                ? () {
+                    FocusScope.of(context).unfocus();
+                    _nextPage();
+                  }
+                : null,
             child: Text('다음',
                 style: TextStyle(
                   color: Color(0xFF241D27),
@@ -575,7 +580,12 @@ class _TutorialPageState extends State<TutorialPage> {
                     )),
               ),
               ElevatedButton(
-                onPressed: _agesController.text.isNotEmpty ? _nextPage : null,
+                onPressed: _agesController.text.isNotEmpty
+                    ? () {
+                        FocusScope.of(context).unfocus();
+                        _nextPage();
+                      }
+                    : null,
                 child: Text('다음',
                     style: TextStyle(
                       color: Color(0xFF241D27),
@@ -611,7 +621,7 @@ class _TutorialPageState extends State<TutorialPage> {
           SizedBox(height: 100),
           Text(
             '노래방에서 부를 때 선호하는 장르를 \n선택해주세요! (최대 3개)',
-            style: TextStyle(fontSize: 24, color: Colors.white),
+            style: TextStyle(fontSize: 22, color: Colors.white),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 16),

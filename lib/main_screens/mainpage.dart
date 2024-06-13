@@ -377,7 +377,7 @@ class _mainpageState extends State<mainpage> {
                         child: Center(
                           child: Text(
                             '음역대 정보가 없어 플레이리스트를 제공할 수 없습니다',
-                            style: TextStyle(color: Colors.white, fontSize: 16),
+                            style: TextStyle(color: Colors.white, fontSize: 15),
                           ),
                         ),
                         decoration: BoxDecoration(

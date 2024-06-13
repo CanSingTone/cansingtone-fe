@@ -176,7 +176,7 @@ class _OtherUserCardState extends State<OtherUserCard> {
                 margin:
                     EdgeInsets.only(top: height * 0.05, left: 3.0, right: 3.0),
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 10, 15, 30),
+                  padding: const EdgeInsets.fromLTRB(15, 10, 5, 30),
                   child: Column(
                     children: [
                       Row(

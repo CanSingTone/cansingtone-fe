@@ -87,6 +87,12 @@ class _TimbreBasedRecomScreenState extends State<TimbreBasedRecomScreen> {
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black), // 뒤로가기 아이콘
+          onPressed: () {
+            Navigator.of(context).pop(); // 뒤로가기 버튼이 클릭되었을 때의 동작
+          },
+        ),
         centerTitle: true,
         title: Row(
           children: [
@@ -381,10 +387,10 @@ class _SongListTileState extends State<SongListTile> {
 
       // 서버 응답 처리
       if (response.statusCode == 200) {
-      //  print('Like request sent successfully');
-       // print(url);
+        //  print('Like request sent successfully');
+        // print(url);
       } else {
-      //  print('Failed to send like request: ${response.statusCode}');
+        //  print('Failed to send like request: ${response.statusCode}');
       }
     } catch (e) {
       print('Error sending like request: $e');
@@ -415,10 +421,10 @@ class _SongListTileState extends State<SongListTile> {
           //print(likeId);
           _deleteLikeRequest(likeId!);
         } else {
-      //    print('Failed to get likeId');
+          //    print('Failed to get likeId');
         }
       } else {
-      //  print('Failed to get likeId: ${response.statusCode}');
+        //  print('Failed to get likeId: ${response.statusCode}');
       }
     } catch (e) {
       print('Error getting likeId: $e');
@@ -437,9 +443,9 @@ class _SongListTileState extends State<SongListTile> {
 
       // 서버 응답 처리
       if (response.statusCode == 200) {
-       // print('Delete like request sent successfully');
+        // print('Delete like request sent successfully');
       } else {
-       // print('Failed to send delete like request: ${response.statusCode}');
+        // print('Failed to send delete like request: ${response.statusCode}');
       }
     } catch (e) {
       print('Error sending delete like request: $e');
@@ -469,7 +475,7 @@ class _SongListTileState extends State<SongListTile> {
               isLiked = true;
             });
           }
-         // print('업데이트완료');
+          // print('업데이트완료');
         } else {
           //print('Failed to get like status: ${response.data['message']}');
           if (isLiked == true) {

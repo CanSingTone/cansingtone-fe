@@ -99,7 +99,7 @@ class UserCard extends StatelessWidget {
           ),
           margin: EdgeInsets.only(top: height * 0.05),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(15, 10, 15, 30),
+            padding: const EdgeInsets.fromLTRB(15, 10, 5, 30),
             child: Column(
               children: [
                 Row(
@@ -243,7 +243,7 @@ class UserCard extends StatelessWidget {
                               ),
                           ],
                         ),
-                        SizedBox(width: 13),
+                        SizedBox(width: 10),
                         Tooltip(
                           message: '음역대 정보',
                           child: IconButton(
