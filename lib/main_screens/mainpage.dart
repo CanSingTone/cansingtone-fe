@@ -384,56 +384,73 @@ class _mainpageState extends State<mainpage> {
                           color: Colors.grey.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(15),
                         ),
-                      ),
-                    FutureBuilder<List<dynamic>>(
-                      future: playlistApi.fetchPlaylistWithSimilarVocalRange(
+                      )
+                    else
+                      FutureBuilder<List<dynamic>>(
+                        future: playlistApi.fetchPlaylistWithSimilarVocalRange(
                           userData.userId,
                           userData.vocalRangeHigh,
-                          userData.vocalRangeLow),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Center(
-                              child: Text('Error: ${snapshot.error}'));
-                        } else if (!snapshot.hasData ||
-                            snapshot.data!.isEmpty) {
-                          return Container(
-                            height: height * 0.15,
-                            child: Center(
-                                child: Text('플레이리스트를 찾지 못했습니다.',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 16))),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                          );
-                        } else {
-                          final playlists = snapshot.data!;
-                          return SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: playlists.map((playlist) {
-                                return SizedBox(
-                                  height: height * 0.2,
-                                  width: height * 0.2,
-                                  child: PlaylistItem(
-                                    id: playlist['userId'],
-                                    title: playlist['playlistName'],
-                                    playlistId: playlist['playlistId'],
-                                    playlistName: playlist['playlistName'],
-                                    isPublic: playlist['isPublic'],
-                                    fetchSongs: fetchSongs,
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                          );
-                        }
-                      },
-                    ),
+                          userData.vocalRangeLow,
+                        ),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return Container(
+                              height: height * 0.15,
+                              child: Center(
+                                child: Text(
+                                  'Error: ${snapshot.error}',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16),
+                                ),
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            );
+                          } else if (!snapshot.hasData ||
+                              snapshot.data!.isEmpty) {
+                            return Container(
+                              height: height * 0.15,
+                              child: Center(
+                                child: Text(
+                                  '플레이리스트를 찾지 못했습니다.',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16),
+                                ),
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            );
+                          } else {
+                            final playlists = snapshot.data!;
+                            return SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: playlists.map((playlist) {
+                                  return SizedBox(
+                                    height: height * 0.2,
+                                    width: height * 0.2,
+                                    child: PlaylistItem(
+                                      id: playlist['userId'],
+                                      title: playlist['playlistName'],
+                                      playlistId: playlist['playlistId'],
+                                      playlistName: playlist['playlistName'],
+                                      isPublic: playlist['isPublic'],
+                                      fetchSongs: fetchSongs,
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            );
+                          }
+                        },
+                      ),
                   ],
                 ),
               ),

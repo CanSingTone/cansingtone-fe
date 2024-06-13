@@ -453,6 +453,32 @@ class KeyAdjustmentGuide extends StatelessWidget {
     String low_description = '';
     String high_description = '';
     String guide = '';
+
+    if (userData.vocalRangeLow == 0 && userData.vocalRangeHigh == 0) {
+      return Container(
+        width: width,
+        padding: EdgeInsets.all(20.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          color: Colors.black54.withOpacity(0.3),
+        ),
+        child: Column(
+          children: [
+            Text(
+              '음역대 정보가 없어 키 조정 가이드를\n제공할 수 없습니다.',
+              style: TextStyle(fontSize: 17, color: Colors.white),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 10.0),
+            Text(
+              '음역대 테스트를 진행해주세요.',
+              style: TextStyle(fontSize: 20, color: Colors.white),
+            ),
+          ],
+        ),
+      );
+    }
+
     if (highestNoteGap == 0) {
       high_description += '곡의 최고음이 음역대와 일치합니다.';
     } else if (highestNoteGap > 0) {
