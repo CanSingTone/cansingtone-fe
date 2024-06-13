@@ -171,6 +171,7 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
               ),
             ],
           ),
+          // 돌아가기 버튼의 코드
           actions: [
             TextButton(
               onPressed: () {
@@ -178,7 +179,9 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
                 Navigator.of(context).pop();
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AnimatedBarExample()),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          AnimatedBarExample(initialSelectedTab: 3)),
                 );
               },
               child: Text(

@@ -150,7 +150,8 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => AnimatedBarExample()),
+                        builder: (context) =>
+                            AnimatedBarExample(initialSelectedTab: 3)),
                   );
                   // Navigator.pop(context, true);
                 }

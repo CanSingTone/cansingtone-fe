@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:cansingtone_front/song_detail_screen.dart';
 import 'package:cansingtone_front/test_screens/timbretest.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../service/range_recom_api.dart';
 import '../service/timbre_recom_api.dart';
@@ -185,6 +186,16 @@ class _RangeBasedRecomScreenState extends State<RangeBasedRecomScreen> {
                     return ListView(
                       shrinkWrap: true,
                       children: groupedRecommendations.keys.map((date) {
+                        // UST 시간 받아오기
+                        var ustDate = DateTime.parse(date);
+
+                        // 한국 시간으로 변환 (UST + 9시간)
+                        var koreanDate = ustDate.add(Duration(hours: 9));
+
+                        // 원하는 형식으로 출력
+                        var formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss')
+                            .format(koreanDate);
+
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -192,7 +203,7 @@ class _RangeBasedRecomScreenState extends State<RangeBasedRecomScreen> {
                               padding:
                                   const EdgeInsets.only(left: 16.0, top: 16.0),
                               child: Text(
-                                date, // recommendation_date 표시
+                                formattedDate, // 한국 시간 출력
                                 style: TextStyle(
                                     fontSize: 16, color: Colors.black54),
                               ),
@@ -205,6 +216,7 @@ class _RangeBasedRecomScreenState extends State<RangeBasedRecomScreen> {
                                 var recommendation =
                                     groupedRecommendations[date]![index];
                                 var songInfo = recommendation['songInfo'];
+
                                 return GestureDetector(
                                   onTap: () {
                                     // 곡 상세 정보 페이지로 이동하는 코드 추가
