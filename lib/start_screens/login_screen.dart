@@ -63,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Container(
                   width: width, // 원하는 너비 설정
-                  height: height * 0.66, // 원하는 높이 설정
+                  height: height * 0.57, // 원하는 높이 설정
                   child: ClipRect(
                     child: FittedBox(
                       fit: BoxFit.cover,
@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: height * 0.25,
                     )),
                 Positioned(
-                    top: height * 0.4,
+                    top: height * 0.33,
                     left: width * 0.7,
                     child: Image.asset(
                       'assets/images/start/note3.png',

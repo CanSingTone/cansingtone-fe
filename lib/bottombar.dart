@@ -84,7 +84,7 @@ class _AnimatedBarExampleState extends State<AnimatedBarExample> {
               BottomBarItem(
                 icon: SizedBox(),
                 selectedColor: Colors.deepPurple,
-                title: const Text('추천'),
+                title: const Text(''),
               ),
             ],
             hasNotch: true,

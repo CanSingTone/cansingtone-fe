@@ -9,6 +9,7 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import '../bottombar.dart';
 import '../service/uploadert.dart';
 import '../start_screens/tutorial.dart';
 import 'package:file_picker/file_picker.dart';
@@ -135,20 +136,23 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                Navigator.of(context).pop();
+
                 if (widget.cameFrom == 'timbre_management_screen') {
                   // Navigator.pushReplacement(
                   //   context,
                   //   MaterialPageRoute(
                   //      builder: (context) => TimbreManagementScreen()),
                   //  );
+                  Navigator.of(context).pop();
                   Navigator.pop(context, true);
                 } else {
-                  Navigator.pushReplacement(
+                  Navigator.pop(context, true);
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => TimbreBasedRecomScreen()),
+                        builder: (context) => AnimatedBarExample()),
                   );
+                  // Navigator.pop(context, true);
                 }
               },
               child: Text("돌아가기"),
@@ -211,6 +215,12 @@ class _TimbreTestPageState extends State<TimbreTestPage> {
     return Scaffold(
       backgroundColor: Color(0xFF241D27),
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white), // 뒤로가기 아이콘
+          onPressed: () {
+            Navigator.of(context).pop(); // 뒤로가기 버튼이 클릭되었을 때의 동작
+          },
+        ),
         title: Text(
           '음색 측정',
           style: TextStyle(

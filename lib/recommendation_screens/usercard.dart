@@ -105,7 +105,7 @@ class UserCard extends StatelessWidget {
                 Row(
                   children: [
                     SizedBox(
-                      width: width * 0.32,
+                      width: width * 0.35,
                     ),
                     Expanded(
                       child: Column(
@@ -130,17 +130,6 @@ class UserCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ),
-                    IconButton(
-                      icon: isEditing ? Icon(Icons.save) : Icon(Icons.edit),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EditUserData()),
-                        );
-                      },
-                      color: Colors.black,
                     ),
                   ],
                 ),
@@ -206,6 +195,17 @@ class UserCard extends StatelessWidget {
                               ),
                             ),
                           ),
+                        IconButton(
+                          icon: isEditing ? Icon(Icons.save) : Icon(Icons.edit),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EditUserData()),
+                            );
+                          },
+                          color: Colors.black,
+                        ),
                       ],
                     ),
                     Row(
@@ -222,6 +222,15 @@ class UserCard extends StatelessWidget {
                         SizedBox(width: 20),
                         Column(
                           children: [
+                            if (userData.vocalRangeLow == 0 &&
+                                userData.vocalRangeHigh == 0)
+                              SizedBox(
+                                width: width * 0.5,
+                                child: Text(
+                                  "미측정",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ),
                             if (userData.vocalRangeLow != 0 &&
                                 userData.vocalRangeHigh != 0)
                               CustomPaint(
@@ -234,7 +243,7 @@ class UserCard extends StatelessWidget {
                               ),
                           ],
                         ),
-                        SizedBox(width: 5),
+                        SizedBox(width: 13),
                         Tooltip(
                           message: '음역대 정보',
                           child: IconButton(
@@ -332,15 +341,15 @@ class UserCard extends StatelessWidget {
         ),
         Positioned(
           left: width * 0.04,
-          top: -20,
+          top: -16,
           child: userData.gender == 2
               ? Image.asset(
                   'assets/images/usercard/girl.png',
-                  height: height * 0.18,
+                  height: height * 0.16,
                 )
               : Image.asset(
                   'assets/images/usercard/boy.png', // 다른 이미지를 여기에 넣으세요
-                  height: height * 0.18,
+                  height: height * 0.16,
                 ),
         ),
       ],

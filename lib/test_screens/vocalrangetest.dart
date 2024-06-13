@@ -10,6 +10,7 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import '../bottombar.dart';
 import '../service/uploader.dart';
 import '../start_screens/tutorial.dart';
 import 'package:file_picker/file_picker.dart';
@@ -175,10 +176,10 @@ class _VocalRangeTestPageState extends State<VocalRangeTestPage> {
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => RangeBasedRecomScreen()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AnimatedBarExample()),
+                );
               },
               child: Text(
                 "돌아가기",

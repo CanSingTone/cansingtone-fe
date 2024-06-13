@@ -313,43 +313,43 @@ class _TutorialVocalRangeTestPage extends State<TutorialVocalRangeTestPage> {
                 padding: const EdgeInsets.only(top: 50.0),
                 child: Column(
                   children: [
-                  Text(
-                  '마이크를 클릭하고 편안하게 낼 수 있는\n 최저음과 최고음을 내주세요.',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 30.0),
-                Text(
-                  '1. 조용한 환경에서 진행해주세요.\n2. 녹음 시간은 15초를 넘지 않게 해주세요.\n     처리 시간이 길어집니다.',
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.7),
-                    fontSize: 16.0,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: height * 0.05),
-                InkWell(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TutorialTimbreTestPage(),
+                    Text(
+                      '마이크를 클릭하고 편안하게 낼 수 있는\n 최저음과 최고음을 내주세요.',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
                       ),
-                    );
-                  },
-                  child: Text(
-                    "나중에 하기 >",
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.7),
-                      fontSize: 16.0,
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
+                    SizedBox(height: 15.0),
+                    Text(
+                      '1. 조용한 환경에서 진행해주세요.\n2. 녹음 시간은 15초를 넘지 않게 해주세요.\n     처리 시간이 길어집니다.',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.7),
+                        fontSize: 16.0,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                )
+                    SizedBox(height: height * 0.02),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TutorialTimbreTestPage(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        "나중에 하기 >",
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.7),
+                          fontSize: 16.0,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    )
                   ],
                 ),
               ),

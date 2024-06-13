@@ -21,7 +21,6 @@ import 'package:http/http.dart' as http;
 
 import 'combined_recom_screen.dart';
 
-
 class RecompageState {
   static const String _isFirstKey = 'isFirst';
 
@@ -40,6 +39,7 @@ class RecompageState {
     await prefs.setBool(_isFirstKey, false);
   }
 }
+
 class recompage extends StatefulWidget {
   const recompage({Key? key}) : super(key: key);
 
@@ -74,9 +74,8 @@ class _recompageState extends State<recompage> {
         });
       }
 
-
-      final response =
-          await http.get(Uri.parse('http://13.125.27.204:8080/timbre?user_id=$userId'));
+      final response = await http
+          .get(Uri.parse('http://13.125.27.204:8080/timbre?user_id=$userId'));
       final Map<String, dynamic> data =
           json.decode(response.body) as Map<String, dynamic>;
       if (timbres != []) {
@@ -90,21 +89,19 @@ class _recompageState extends State<recompage> {
           isfirst = false;
         });
         print(isfirst);
+      } else {
+        print(isfirst);
+        setState(() {
+          isfirst = true;
+        });
       }
-      else
-        {
-          print(isfirst);
-          setState(() {
-            isfirst = true;
-          });
-        }
 
       setState(() {
         isLoading = false;
       });
 
-  return true;
-} catch (e) {
+      return true;
+    } catch (e) {
       print('Error: $e');
 
       setState(() {
@@ -158,7 +155,7 @@ class _recompageState extends State<recompage> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: <Widget>[
-                if (isfirst == false ||
+                if (isfirst == true ||
                     (userData.vocalRangeLow == 0 &&
                         userData.vocalRangeHigh == 0))
                   Column(
@@ -352,22 +349,21 @@ class _recompageState extends State<recompage> {
         ),
         SizedBox(height: height * 0.02),
         Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.8),
-                spreadRadius: 2,
-                blurRadius: 5,
-                offset: Offset(0, 3),
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: <Widget>[
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.8),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(children: <Widget>[
                 if (isfirst == true)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -433,108 +429,111 @@ class _recompageState extends State<recompage> {
                       SizedBox(height: height * 0.05),
                     ],
                   )
-          else
-          Column(
-          children: [
-          Row(
-          children: [
-          Text(
-          '음색 기반 추천 ',
-          style: TextStyle(
-            color: Color(0xFF241D27),
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 5),
-          child: Image.asset(
-            'assets/images/emoji/voice.png',
-            height: 25,
-          ),
-        ),
-        InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => TimbreBasedRecomScreen()),
-            );
-          },
-          child: Text(
-            '   상세 보기',
-            style: TextStyle(
-              color: Colors.black54,
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ],
-      ),
-      SizedBox(height: 5),
-      FutureBuilder<List<dynamic>>(
-        future: firstTimbreId == null
-            ? Future.value([])  // null 대신 빈 리스트를 반환하도록 처리
-            : timbreRecomApi.getTimbreBasedRecommendation(
-            userData.userId, firstTimbreId!),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return SizedBox(
-                height: height * 0.4,
-                child: Center(child: CircularProgressIndicator()));
-          } else if (snapshot.hasError) {
-            return Center(child: Text('오류 발생: ${snapshot.error}'));
-          } else if (snapshot.hasData) {
-            List<dynamic> recommendations = snapshot.data!;
-            return ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: 4,
-              itemBuilder: (context, index) {
-                var recommendation = recommendations[index];
-                var songInfo = recommendation['songInfo'];
-                return GestureDetector(
-                  onTap: () {
-                    // 곡 상세 정보 페이지로 이동하는 코드 추가
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            SongDetailScreen(songInfo: songInfo),
+                else
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            '음색 기반 추천 ',
+                            style: TextStyle(
+                              color: Color(0xFF241D27),
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 5),
+                            child: Image.asset(
+                              'assets/images/emoji/voice.png',
+                              height: 25,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        TimbreBasedRecomScreen()),
+                              );
+                            },
+                            child: Text(
+                              '   상세 보기',
+                              style: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    );
-                  },
-                  child: ListTile(
-                    visualDensity: VisualDensity.compact,
-                    contentPadding: EdgeInsets.symmetric(
-                        horizontal: 5.0, vertical: 1.0),
-                    leading: songInfo['albumImage'] != null
-                        ? ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child:
-                        Image.network(songInfo['albumImage']))
-                        : Icon(Icons.music_note),
-                    title: Text(songInfo['songTitle']),
-                    subtitle: Text(songInfo['artist']),
-                    trailing: songInfo['karaokeNum'] != null
-                        ? Text(songInfo['karaokeNum'])
-                        : null,
+                      SizedBox(height: 5),
+                      FutureBuilder<List<dynamic>>(
+                        future: firstTimbreId == null
+                            ? Future.value([]) // null 대신 빈 리스트를 반환하도록 처리
+                            : timbreRecomApi.getTimbreBasedRecommendation(
+                                userData.userId, firstTimbreId!),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return SizedBox(
+                                height: height * 0.4,
+                                child:
+                                    Center(child: CircularProgressIndicator()));
+                          } else if (snapshot.hasError) {
+                            return Center(
+                                child: Text('오류 발생: ${snapshot.error}'));
+                          } else if (snapshot.hasData) {
+                            List<dynamic> recommendations = snapshot.data!;
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: 4,
+                              itemBuilder: (context, index) {
+                                var recommendation = recommendations[index];
+                                var songInfo = recommendation['songInfo'];
+                                return GestureDetector(
+                                  onTap: () {
+                                    // 곡 상세 정보 페이지로 이동하는 코드 추가
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SongDetailScreen(
+                                            songInfo: songInfo),
+                                      ),
+                                    );
+                                  },
+                                  child: ListTile(
+                                    visualDensity: VisualDensity.compact,
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 5.0, vertical: 1.0),
+                                    leading: songInfo['albumImage'] != null
+                                        ? ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                            child: Image.network(
+                                                songInfo['albumImage']))
+                                        : Icon(Icons.music_note),
+                                    title: Text(songInfo['songTitle']),
+                                    subtitle: Text(songInfo['artist']),
+                                    trailing: songInfo['karaokeNum'] != null
+                                        ? Text(songInfo['karaokeNum'])
+                                        : null,
+                                  ),
+                                );
+                              },
+                            );
+                          } else {
+                            return Center(child: Text('데이터 없음'));
+                          }
+                        },
+                      ),
+                    ],
                   ),
-                );
-              },
-            );
-          } else {
-            return Center(child: Text('데이터 없음'));
-                    }
-                  },
-                ),
-              ],
-            ),
-    ]
-    ),
-          )
-        ),
+              ]),
+            )),
         SizedBox(height: height * 0.02),
         Container(
           decoration: BoxDecoration(

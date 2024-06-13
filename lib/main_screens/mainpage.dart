@@ -157,11 +157,11 @@ class _mainpageState extends State<mainpage> {
           SliverToBoxAdapter(
             child: KaraokeTopChartPanel(),
           ),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: 15,
-            ),
-          ),
+          // SliverToBoxAdapter(
+          //   child: SizedBox(
+          //     height: 15,
+          //   ),
+          // ),
           SliverToBoxAdapter(
             child: Container(
               child: Column(
@@ -203,7 +203,7 @@ class _mainpageState extends State<mainpage> {
                         final songs = snapshot.data!;
                         return Align(
                           child: Container(
-                            height: height * 0.47,
+                            height: height * 0.42,
                             child: PageView.builder(
                               controller:
                                   PageController(viewportFraction: 0.98),
@@ -528,7 +528,7 @@ class _KaraokeTopChartPanelState extends State<KaraokeTopChartPanel> {
                 final songs = snapshot.data!;
                 return Align(
                   child: Container(
-                    height: height * 0.47,
+                    height: height * 0.43,
                     child: PageView.builder(
                       controller: PageController(viewportFraction: 0.98),
                       itemCount: pageCount,

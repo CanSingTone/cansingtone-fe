@@ -81,7 +81,7 @@ class _SplashScreenState extends State<SplashScreen>
               children: [
                 Container(
                   width: width, // 원하는 너비 설정
-                  height: height * 0.66, // 원하는 높이 설정
+                  height: height * 0.57, // 원하는 높이 설정
                   child: ClipRect(
                     child: FittedBox(
                       fit: BoxFit.cover,
@@ -112,7 +112,7 @@ class _SplashScreenState extends State<SplashScreen>
                       ),
                     )),
                 Positioned(
-                    top: height * 0.4,
+                    top: height * 0.33,
                     left: width * 0.7,
                     child: FadeTransition(
                       opacity: _note3Animation,
