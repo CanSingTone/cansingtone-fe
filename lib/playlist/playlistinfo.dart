@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cansingtone_front/bottombar.dart';
 import 'package:cansingtone_front/songinfopage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -167,7 +168,12 @@ class _PlaylistInfoPageState extends State<PlaylistInfoPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white), // 뒤로가기 아이콘
           onPressed: () {
-            Navigator.of(context).pop(); // 뒤로가기 버튼이 클릭되었을 때의 동작
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                builder: (context) => AnimatedBarExample(initialSelectedTab: 2),
+            ),
+            );// 뒤로가기 버튼이 클릭되었을 때의 동작
           },
         ),
       ),
