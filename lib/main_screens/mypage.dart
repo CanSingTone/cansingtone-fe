@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../userdata.dart';
 import 'package:provider/provider.dart';
-import '../recommendation_screens/usercard.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../userdata.dart';
 
 class mypage extends StatefulWidget {
   const mypage({Key? key}) : super(key: key);
@@ -24,6 +25,51 @@ class _MyPageState extends State<mypage> {
     });
   }
 
+  Future<void> _logout() async {
+    try {
+
+      await UserApi.instance.logout();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.clear(); // SharedPreferences 초기화
+      Provider.of<UserData>(context, listen: false)
+          .updateVocalRange(0, 0);
+
+      print('로그아웃 성공');
+      // 로그아웃 후 로그인 페이지로 이동
+      Navigator.of(context).pushReplacementNamed('/login');
+
+    } catch (error) {
+      print('로그아웃 실패 $error');
+    }
+  }
+
+  void _showLogoutDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("로그아웃"),
+          content: Text("정말 로그아웃하시겠습니까?"),
+          actions: <Widget>[
+            TextButton(
+              child: Text("취소"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text("확인"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _logout();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,33 +77,26 @@ class _MyPageState extends State<mypage> {
       appBar: AppBar(
         title: Text(
           _currentIndex == 0
-              ? '마이페이지'
+              ? '설정'
               : _currentIndex == 1
-                  ? '앱 정보'
-                  : _currentIndex == 2
-                      ? '앱 설정'
-                      : '추천기록',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-          ),
+              ? '앱 정보'
+              : '앱 설정',
         ),
         centerTitle: true,
         backgroundColor: Color(0xFF241D27),
         leading: _currentIndex != 0
             ? IconButton(
-                icon: Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () {
-                  _navigateToPage(0);
-                },
-              )
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            _navigateToPage(0);
+          },
+        )
             : IconButton(
-                icon: Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: _buildPageContent(),
     );
@@ -110,7 +149,7 @@ class _MyPageState extends State<mypage> {
             _navigateToPage(2);
           },
         ),
-        Divider(),
+  /*      Divider(),
         ListTile(
           leading: Icon(Icons.receipt_outlined),
           title: Text(
@@ -124,7 +163,7 @@ class _MyPageState extends State<mypage> {
             _navigateToPage(3);
           },
         ),
-        Divider(),
+  */      Divider(),
         ListTile(
           leading: Icon(Icons.logout),
           title: Text(
@@ -135,9 +174,10 @@ class _MyPageState extends State<mypage> {
             ),
           ),
           onTap: () {
-            // 로그아웃 기능
+            _showLogoutDialog();
           },
         ),
+        Divider(),
         Center(
           child: Text(
             'Icons by Icons8',

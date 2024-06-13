@@ -19,25 +19,6 @@ class CombinedRecomScreen extends StatefulWidget {
   State<CombinedRecomScreen> createState() => _CombinedRecomScreenState();
 }
 
-Future<String> recomeSong(
-    String userId, int vocal_range_high, int vocal_range_low) async {
-  final response = await http.post(Uri.parse(
-      'http://13.125.27.204:8080/range-based-recommendations?user_id=$userId&vocal_range_high=$vocal_range_high&vocal_range_low=$vocal_range_low'));
-
-  if (response.statusCode == 200) {
-    final Map<String, dynamic> data = jsonDecode(response.body);
-    final bool isSuccess = data['isSuccess'];
-    final String message = data['message'];
-
-    if (isSuccess) {
-      return message;
-    } else {
-      throw Exception('요청에 실패했습니다: $message');
-    }
-  } else {
-    throw Exception('서버 요청 중 오류가 발생했습니다: ${response.statusCode}');
-  }
-}
 
 class _CombinedRecomScreenState extends State<CombinedRecomScreen> {
   List<dynamic>? recommendations;
@@ -269,13 +250,13 @@ class _SongListTileState extends State<SongListTile> {
 
       // 서버 응답 처리
       if (response.statusCode == 200) {
-        print('Like request sent successfully');
-        print(url);
+       // print('Like request sent successfully');
+       // print(url);
       } else {
-        print('Failed to send like request: ${response.statusCode}');
+       // print('Failed to send like request: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error sending like request: $e');
+     // print('Error sending like request: $e');
     }
   }
 
@@ -291,7 +272,7 @@ class _SongListTileState extends State<SongListTile> {
       // Dio 인스턴스를 생성하여 HTTP GET 요청을 보냅니다.
       Dio dio = Dio();
       Response response = await dio.get(url);
-      print(url);
+      //print(url);
       // 서버 응답 처리
       if (response.statusCode == 200) {
         // 좋아요 ID를 저장합니다.
@@ -300,16 +281,16 @@ class _SongListTileState extends State<SongListTile> {
             data['result'] != null &&
             data['result']['likeId'] != null) {
           likeId = data['result']['likeId'];
-          print(likeId);
+         // print(likeId);
           _deleteLikeRequest(likeId!);
         } else {
-          print('Failed to get likeId');
+        //  print('Failed to get likeId');
         }
       } else {
-        print('Failed to get likeId: ${response.statusCode}');
+       // print('Failed to get likeId: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error getting likeId: $e');
+     // print('Error getting likeId: $e');
     }
   }
 
@@ -325,12 +306,12 @@ class _SongListTileState extends State<SongListTile> {
 
       // 서버 응답 처리
       if (response.statusCode == 200) {
-        print('Delete like request sent successfully');
+      //  print('Delete like request sent successfully');
       } else {
-        print('Failed to send delete like request: ${response.statusCode}');
+       // print('Failed to send delete like request: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error sending delete like request: $e');
+     // print('Error sending delete like request: $e');
     }
   }
 
@@ -346,7 +327,7 @@ class _SongListTileState extends State<SongListTile> {
       // Dio 인스턴스를 생성하여 HTTP GET 요청을 보냅니다.
       Dio dio = Dio();
       Response response = await dio.get(url);
-      print(response);
+     // print(response);
       // 서버 응답 처리
       if (response.statusCode == 200) {
         // isSuccess 값이 true일 때만 좋아요 상태를 업데이트합니다.
@@ -357,9 +338,9 @@ class _SongListTileState extends State<SongListTile> {
               isLiked = true;
             });
           }
-          print('업데이트완료');
+         // print('업데이트완료');
         } else {
-          print('Failed to get like status: ${response.data['message']}');
+        //  print('Failed to get like status: ${response.data['message']}');
           if (isLiked == true) {
             setState(() {
               isLiked = false;
@@ -367,10 +348,10 @@ class _SongListTileState extends State<SongListTile> {
           }
         }
       } else {
-        print('Failed to get like status: ${response.statusCode}');
+        //print('Failed to get like status: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error getting like status: $e');
+    //  print('Error getting like status: $e');
     }
   }
 

@@ -100,7 +100,7 @@ class _mainpageState extends State<mainpage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: IconButton(
-                  icon: Icon(Icons.person),
+                  icon: Icon(Icons.settings),
                   onPressed: () {
                     Navigator.push(
                       context,

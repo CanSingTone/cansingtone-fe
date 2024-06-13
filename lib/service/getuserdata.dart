@@ -47,7 +47,7 @@ class UserDataService {
       if (response.statusCode == 200) {
         final String responseBody = response.body;
         if (responseBody.isNotEmpty) {
-          final Map<String, dynamic> userDataMap = jsonDecode(responseBody);
+          final Map<String, dynamic> userDataMap = jsonDecode(utf8.decode(response.bodyBytes));
           context.read<UserData>().updateFromJson(userDataMap);
           print('User ID: ${Provider.of<UserData>(context, listen: false).userId}');
           print('Nickname: ${Provider.of<UserData>(context, listen: false).nickname}');
