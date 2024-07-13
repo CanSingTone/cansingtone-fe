@@ -1,9 +1,9 @@
 // api_provider.dart
 import 'package:dio/dio.dart';
 import '../models/recommendation.dart';
+import '../server_addr.dart';
 
-const String _API_PREFIX =
-    "http://13.125.27.204:8080/timbre-based-recommendations";
+const String _API_PREFIX = "http://$SERVER_ADDR/timbre-based-recommendations";
 
 class TimbreRecomApi {
   final Dio _dio = Dio();

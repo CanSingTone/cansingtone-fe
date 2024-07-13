@@ -7,7 +7,7 @@ import 'start_screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:flutter/cupertino.dart';
-import './bottombar.dart';
+import 'widgets/bottombar.dart';
 import 'start_screens/tutorial.dart';
 import 'dart:convert';
 

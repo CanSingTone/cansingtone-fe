@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:cansingtone_front/recommendation_screens/usercard.dart';
+import 'package:cansingtone_front/server_addr.dart';
 import 'package:cansingtone_front/widgets/vocal_range_painter.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
@@ -59,8 +60,8 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
 
   Future<List<Playlist>> fetchPlaylists() async {
     String? userId = await UserDataShare.getUserId();
-    final response = await http
-        .get(Uri.parse('http://13.125.27.204:8080/playlists/${userId}'));
+    final response =
+        await http.get(Uri.parse('http://$SERVER_ADDR/playlists/${userId}'));
     if (response.statusCode == 200) {
       final List<dynamic> data =
           jsonDecode(utf8.decode(response.bodyBytes))['result'];
@@ -104,7 +105,7 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
         String songId = widget.songInfo['songId'].toString();
         final response = await http.post(
           Uri.parse(
-              'http://13.125.27.204:8080/songs-in-playlist?playlist_id=$selectedPlaylist&song_id=$songId'),
+              'http://$SERVER_ADDR/songs-in-playlist?playlist_id=$selectedPlaylist&song_id=$songId'),
         );
         final Map<String, dynamic> responseBody =
             jsonDecode(utf8.decode(response.bodyBytes));

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../server_addr.dart';
 import '../userdata.dart';
 import 'package:provider/provider.dart';
 import '../service/getuserdata.dart';
@@ -47,7 +48,7 @@ class _EditUserDataState extends State<EditUserData> {
         .updatePrefGenres(prefGenre1, prefGenre2, prefGenre3);
 
     final url = Uri.parse(
-        'http://13.125.27.204:8080/users/$userId?nickname=$nickname&ages=$ages&pref_genre1=$prefGenre1&pref_genre2=$prefGenre2&pref_genre3=$prefGenre3');
+        'http://$SERVER_ADDR/users/$userId?nickname=$nickname&ages=$ages&pref_genre1=$prefGenre1&pref_genre2=$prefGenre2&pref_genre3=$prefGenre3');
 
     final response = await http.patch(url);
     UserDataService.fetchAndSaveUserDataS(context, userId);

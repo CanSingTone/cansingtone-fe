@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
+import '../server_addr.dart';
+
 String mapGenre(int genre) {
   switch (genre) {
     case 1:
@@ -119,7 +121,7 @@ class _OtherUserCardState extends State<OtherUserCard> {
 
   Future<UserData> fetchUserData(String userId) async {
     final response =
-        await http.get(Uri.parse('http://13.125.27.204:8080/users/$userId'));
+        await http.get(Uri.parse('http://$SERVER_ADDR/users/$userId'));
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data =

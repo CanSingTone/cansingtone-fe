@@ -4,6 +4,8 @@ import 'package:cansingtone_front/userdata.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../server_addr.dart';
+
 class SongInfo {
   final int songId;
   final String songTitle;
@@ -93,11 +95,11 @@ class _LikePlaylistInfoPageState extends State<LikePlaylistInfoPage> {
   Future<List<SongInPlaylist>> fetchSongsInPlaylist() async {
     String? userId = await UserDataShare.getUserId();
     final response =
-        await http.get(Uri.parse('http://13.125.27.204:8080/like/$userId'));
+        await http.get(Uri.parse('http://$SERVER_ADDR/like/$userId'));
 
     // 디버깅 로그 추가
     print('User ID: $userId');
-    print('Request URL: http://13.125.27.204:8080/like/$userId');
+    print('Request URL: http://$SERVER_ADDR/like/$userId');
     print('Response status code: ${response.statusCode}');
     print('Response body: ${response.body}');
 
@@ -114,7 +116,7 @@ class _LikePlaylistInfoPageState extends State<LikePlaylistInfoPage> {
 
   Future<void> deleteLikeSongInPlaylist(int likeId) async {
     final response = await http.delete(
-      Uri.parse('http://13.125.27.204:8080/like?like_id=$likeId'),
+      Uri.parse('http://$SERVER_ADDR/like?like_id=$likeId'),
     );
     if (response.statusCode == 200) {
       print('삭제');

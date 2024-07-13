@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../server_addr.dart';
+
 class DetailSearchPage extends StatefulWidget {
   @override
   _DetailSearchPageState createState() => _DetailSearchPageState();
@@ -47,7 +49,7 @@ class _DetailSearchPageState extends State<DetailSearchPage> {
     int lowestNote = isRangeEnabled ? selectedRange.start.round() : -1;
     int highestNote = isRangeEnabled ? selectedRange.end.round() : -1;
 
-    String url = 'http://13.125.27.204:8080/songs/search?'
+    String url = 'http://$SERVER_ADDR/songs/search?'
         '$genresQuery&'
         'highest_note=$highestNote&'
         'lowest_note=$lowestNote&'

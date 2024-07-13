@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
-const _API_PREFIX = "http://13.125.27.204:8080";
+import '../server_addr.dart';
 
 class CharApi with ChangeNotifier {
   Future<List<dynamic>> fetchKaraokeTopChart() async {
     Response response;
     Dio dio = new Dio();
     response = await dio.get(
-      "$_API_PREFIX/charts/karaoke-top-chart",
+      "http://$SERVER_ADDR/charts/karaoke-top-chart",
     );
     final result = (response.data)['result'];
     //print(result);
@@ -24,7 +24,7 @@ class CharApi with ChangeNotifier {
     Dio dio = new Dio();
     try {
       response = await dio.get(
-        "$_API_PREFIX/charts/personalized-chart",
+        "http://$SERVER_ADDR/charts/personalized-chart",
         queryParameters: {
           'age': preferAge,
           'gender': preferGender,

@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
-const _API_PREFIX = "http://13.125.27.204:8080/timbre";
+import '../server_addr.dart';
+
+const _API_PREFIX = "http://$SERVER_ADDR/timbre";
 
 class TimbreApi with ChangeNotifier {
   Future<List<dynamic>> fetchTimbres(String userId) async {

@@ -1,8 +1,10 @@
 import 'dart:convert';
-import 'package:cansingtone_front/bottombar.dart';
+import 'package:cansingtone_front/widgets/bottombar.dart';
 import 'package:cansingtone_front/songinfopage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+import 'package:cansingtone_front/server_addr.dart';
 
 class SongInfo {
   final int songId;
@@ -91,8 +93,8 @@ class _PlaylistInfoPageState extends State<PlaylistInfoPage> {
   }
 
   Future<List<SongInPlaylist>> fetchSongsInPlaylist(int playlistId) async {
-    final response = await http.get(
-        Uri.parse('http://13.125.27.204:8080/songs-in-playlist/$playlistId'));
+    final response = await http
+        .get(Uri.parse('http://$SERVER_ADDR/songs-in-playlist/$playlistId'));
 
     if (response.statusCode == 200) {
       final List<dynamic> data =
@@ -106,7 +108,7 @@ class _PlaylistInfoPageState extends State<PlaylistInfoPage> {
   Future<void> deleteSongInPlaylist(int songInPlaylistId) async {
     final response = await http.delete(
       Uri.parse(
-          'http://13.125.27.204:8080/songs-in-playlist?song_in_playlist_id=$songInPlaylistId'),
+          'http://$SERVER_ADDR/songs-in-playlist?song_in_playlist_id=$songInPlaylistId'),
     );
     if (response.statusCode == 200) {
       print('삭제');
@@ -169,11 +171,11 @@ class _PlaylistInfoPageState extends State<PlaylistInfoPage> {
           icon: Icon(Icons.arrow_back, color: Colors.white), // 뒤로가기 아이콘
           onPressed: () {
             Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
+              context,
+              MaterialPageRoute(
                 builder: (context) => AnimatedBarExample(initialSelectedTab: 2),
-            ),
-            );// 뒤로가기 버튼이 클릭되었을 때의 동작
+              ),
+            ); // 뒤로가기 버튼이 클릭되었을 때의 동작
           },
         ),
       ),

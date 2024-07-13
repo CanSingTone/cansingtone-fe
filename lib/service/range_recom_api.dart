@@ -1,8 +1,7 @@
 // api_provider.dart
 import 'package:dio/dio.dart';
 import '../models/recommendation.dart';
-
-const String _API_PREFIX = "http://13.125.27.204:8080";
+import '../server_addr.dart';
 
 class RangeRecomApi {
   final Dio _dio = Dio();
@@ -10,7 +9,7 @@ class RangeRecomApi {
   Future<List<dynamic>> getRangeBasedRecommendation(String userId) async {
     try {
       Response response = await _dio.get(
-        "$_API_PREFIX/range-based-recommendations/$userId",
+        "http://$SERVER_ADDR/range-based-recommendations/$userId",
       );
 
       if (response.statusCode == 200) {

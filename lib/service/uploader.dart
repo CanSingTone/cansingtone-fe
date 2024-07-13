@@ -3,11 +3,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:path/path.dart';
 
+import '../server_addr.dart';
 import '../userdata.dart';
 import 'package:provider/provider.dart';
 
 class AudioUploader {
-  final String serverUrl = 'http://13.125.27.204:8080/test/vocal-range?';
+  final String serverUrl = 'http://$SERVER_ADDR/test/vocal-range?';
   final BuildContext context;
   final String userId;
 

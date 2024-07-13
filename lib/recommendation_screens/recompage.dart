@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../server_addr.dart';
 import '../service/combined_recom_api.dart';
 import '../service/range_recom_api.dart';
 import '../service/timbre_api.dart';
@@ -75,7 +76,7 @@ class _recompageState extends State<recompage> {
       }
 
       final response = await http
-          .get(Uri.parse('http://13.125.27.204:8080/timbre?user_id=$userId'));
+          .get(Uri.parse('http://$SERVER_ADDR/timbre?user_id=$userId'));
       final Map<String, dynamic> data =
           json.decode(response.body) as Map<String, dynamic>;
       if (timbres != []) {

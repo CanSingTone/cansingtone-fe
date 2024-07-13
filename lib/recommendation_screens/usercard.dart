@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../userdata.dart';
-import 'edituserdata.dart';
+import 'edituserdata_screen.dart';
 
 String mapGenre(int genre) {
   switch (genre) {

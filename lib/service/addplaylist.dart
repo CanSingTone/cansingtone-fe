@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import '../server_addr.dart';
+
 Future<String> addSongToPlaylist(int playlistId, int songId) async {
-  final response = await http.get(Uri.parse('http://13.125.27.204:8080/songs-in-playlist?playlist_id=$playlistId&song_id=$songId'));
+  final response = await http.get(Uri.parse(
+      'http://$SERVER_ADDR/songs-in-playlist?playlist_id=$playlistId&song_id=$songId'));
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> data = jsonDecode(response.body);

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:cansingtone_front/playlist/addplaylist.dart';
+import 'package:cansingtone_front/service/addplaylist.dart';
 import 'package:cansingtone_front/recommendation_screens/timbre_management_screen.dart';
 import 'package:cansingtone_front/userdata.dart';
 import 'package:dio/dio.dart';
@@ -10,6 +10,7 @@ import 'package:cansingtone_front/song_detail_screen.dart';
 import 'package:cansingtone_front/test_screens/timbretest.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
+import '../server_addr.dart';
 import '../service/timbre_recom_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -378,8 +379,7 @@ class _SongListTileState extends State<SongListTile> {
       String userId = Provider.of<UserData>(context, listen: false).getUserId();
 
       // 서버 URL을 구성합니다.
-      String url =
-          'http://13.125.27.204:8080/like?user_id=$userId&song_id=$songId';
+      String url = 'http://$SERVER_ADDR/like?user_id=$userId&song_id=$songId';
 
       // Dio 인스턴스를 생성하여 HTTP GET 요청을 보냅니다.
       Dio dio = Dio();
@@ -403,8 +403,7 @@ class _SongListTileState extends State<SongListTile> {
       String userId = Provider.of<UserData>(context, listen: false).getUserId();
 
       // 서버 URL을 구성합니다.
-      String url =
-          'http://13.125.27.204:8080/like?user_id=$userId&song_id=$songId';
+      String url = 'http://$SERVER_ADDR/like?user_id=$userId&song_id=$songId';
 
       // Dio 인스턴스를 생성하여 HTTP GET 요청을 보냅니다.
       Dio dio = Dio();
@@ -435,7 +434,7 @@ class _SongListTileState extends State<SongListTile> {
   Future<void> _deleteLikeRequest(int likeId) async {
     try {
       // 서버 URL을 구성합니다.
-      String url = 'http://13.125.27.204:8080/like?like_id=$likeId';
+      String url = 'http://$SERVER_ADDR/like?like_id=$likeId';
       //print(url);
       // Dio 인스턴스를 생성하여 HTTP DELETE 요청을 보냅니다.
       Dio dio = Dio();
@@ -458,8 +457,7 @@ class _SongListTileState extends State<SongListTile> {
       String userId = Provider.of<UserData>(context, listen: false).getUserId();
 
       // 서버 URL을 구성합니다.
-      String url =
-          'http://13.125.27.204:8080/like?user_id=$userId&song_id=$songId';
+      String url = 'http://$SERVER_ADDR/like?user_id=$userId&song_id=$songId';
 
       // Dio 인스턴스를 생성하여 HTTP GET 요청을 보냅니다.
       Dio dio = Dio();

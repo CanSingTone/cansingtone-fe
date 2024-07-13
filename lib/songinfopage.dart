@@ -1,3 +1,4 @@
+import 'package:cansingtone_front/server_addr.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -25,7 +26,7 @@ class _SongInfoPageState extends State<SongInfoPage> {
     try {
       final dio = Dio();
       final response = await dio.get(
-        'http://13.125.27.204:8080/songs/${widget.songId}',
+        'http://$SERVER_ADDR/songs/${widget.songId}',
       );
       if (response.statusCode == 200) {
         Map<String, dynamic> songInfo = response.data['result'];

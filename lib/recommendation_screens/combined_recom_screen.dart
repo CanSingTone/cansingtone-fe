@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:cansingtone_front/song_detail_screen.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import '../server_addr.dart';
 import '../service/combined_recom_api.dart';
 import '../service/range_recom_api.dart';
 import '../test_screens/vocalrangetest.dart';
@@ -18,7 +19,6 @@ class CombinedRecomScreen extends StatefulWidget {
   @override
   State<CombinedRecomScreen> createState() => _CombinedRecomScreenState();
 }
-
 
 class _CombinedRecomScreenState extends State<CombinedRecomScreen> {
   List<dynamic>? recommendations;
@@ -241,8 +241,7 @@ class _SongListTileState extends State<SongListTile> {
       String userId = Provider.of<UserData>(context, listen: false).getUserId();
 
       // 서버 URL을 구성합니다.
-      String url =
-          'http://13.125.27.204:8080/like?user_id=$userId&song_id=$songId';
+      String url = 'http://$SERVER_ADDR/like?user_id=$userId&song_id=$songId';
 
       // Dio 인스턴스를 생성하여 HTTP GET 요청을 보냅니다.
       Dio dio = Dio();
@@ -250,13 +249,13 @@ class _SongListTileState extends State<SongListTile> {
 
       // 서버 응답 처리
       if (response.statusCode == 200) {
-       // print('Like request sent successfully');
-       // print(url);
+        // print('Like request sent successfully');
+        // print(url);
       } else {
-       // print('Failed to send like request: ${response.statusCode}');
+        // print('Failed to send like request: ${response.statusCode}');
       }
     } catch (e) {
-     // print('Error sending like request: $e');
+      // print('Error sending like request: $e');
     }
   }
 
@@ -266,8 +265,7 @@ class _SongListTileState extends State<SongListTile> {
       String userId = Provider.of<UserData>(context, listen: false).getUserId();
 
       // 서버 URL을 구성합니다.
-      String url =
-          'http://13.125.27.204:8080/like?user_id=$userId&song_id=$songId';
+      String url = 'http://$SERVER_ADDR/like?user_id=$userId&song_id=$songId';
 
       // Dio 인스턴스를 생성하여 HTTP GET 요청을 보냅니다.
       Dio dio = Dio();
@@ -281,16 +279,16 @@ class _SongListTileState extends State<SongListTile> {
             data['result'] != null &&
             data['result']['likeId'] != null) {
           likeId = data['result']['likeId'];
-         // print(likeId);
+          // print(likeId);
           _deleteLikeRequest(likeId!);
         } else {
-        //  print('Failed to get likeId');
+          //  print('Failed to get likeId');
         }
       } else {
-       // print('Failed to get likeId: ${response.statusCode}');
+        // print('Failed to get likeId: ${response.statusCode}');
       }
     } catch (e) {
-     // print('Error getting likeId: $e');
+      // print('Error getting likeId: $e');
     }
   }
 
@@ -298,7 +296,7 @@ class _SongListTileState extends State<SongListTile> {
   Future<void> _deleteLikeRequest(int likeId) async {
     try {
       // 서버 URL을 구성합니다.
-      String url = 'http://13.125.27.204:8080/like?like_id=$likeId';
+      String url = 'http://$SERVER_ADDR/like?like_id=$likeId';
       print(url);
       // Dio 인스턴스를 생성하여 HTTP DELETE 요청을 보냅니다.
       Dio dio = Dio();
@@ -306,12 +304,12 @@ class _SongListTileState extends State<SongListTile> {
 
       // 서버 응답 처리
       if (response.statusCode == 200) {
-      //  print('Delete like request sent successfully');
+        //  print('Delete like request sent successfully');
       } else {
-       // print('Failed to send delete like request: ${response.statusCode}');
+        // print('Failed to send delete like request: ${response.statusCode}');
       }
     } catch (e) {
-     // print('Error sending delete like request: $e');
+      // print('Error sending delete like request: $e');
     }
   }
 
@@ -321,13 +319,12 @@ class _SongListTileState extends State<SongListTile> {
       String userId = Provider.of<UserData>(context, listen: false).getUserId();
 
       // 서버 URL을 구성합니다.
-      String url =
-          'http://13.125.27.204:8080/like?user_id=$userId&song_id=$songId';
+      String url = 'http://$SERVER_ADDR/like?user_id=$userId&song_id=$songId';
 
       // Dio 인스턴스를 생성하여 HTTP GET 요청을 보냅니다.
       Dio dio = Dio();
       Response response = await dio.get(url);
-     // print(response);
+      // print(response);
       // 서버 응답 처리
       if (response.statusCode == 200) {
         // isSuccess 값이 true일 때만 좋아요 상태를 업데이트합니다.
@@ -338,9 +335,9 @@ class _SongListTileState extends State<SongListTile> {
               isLiked = true;
             });
           }
-         // print('업데이트완료');
+          // print('업데이트완료');
         } else {
-        //  print('Failed to get like status: ${response.data['message']}');
+          //  print('Failed to get like status: ${response.data['message']}');
           if (isLiked == true) {
             setState(() {
               isLiked = false;
@@ -351,7 +348,7 @@ class _SongListTileState extends State<SongListTile> {
         //print('Failed to get like status: ${response.statusCode}');
       }
     } catch (e) {
-    //  print('Error getting like status: $e');
+      //  print('Error getting like status: $e');
     }
   }
 

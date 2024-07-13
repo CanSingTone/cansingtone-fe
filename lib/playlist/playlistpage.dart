@@ -4,6 +4,8 @@ import 'package:cansingtone_front/playlist/otherplaylistinfo.dart';
 import 'package:cansingtone_front/userdata.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+import 'package:cansingtone_front/server_addr.dart';
 import './playlistinfo.dart';
 
 class Playlist {
@@ -61,8 +63,8 @@ class _PlaylistPageState extends State<PlaylistPage> {
 
   Future<List<Playlist>> fetchPlaylists() async {
     String? userId = await UserDataShare.getUserId();
-    final response = await http
-        .get(Uri.parse('http://13.125.27.204:8080/playlists/${userId}'));
+    final response =
+        await http.get(Uri.parse('http://$SERVER_ADDR/playlists/${userId}'));
     if (response.statusCode == 200) {
       final List<dynamic> data =
           jsonDecode(utf8.decode(response.bodyBytes))['result'];
@@ -73,8 +75,8 @@ class _PlaylistPageState extends State<PlaylistPage> {
   }
 
   Future<List<Song>> fetchSongs(int playlistId) async {
-    final response = await http.get(
-        Uri.parse('http://13.125.27.204:8080/songs-in-playlist/${playlistId}'));
+    final response = await http
+        .get(Uri.parse('http://$SERVER_ADDR/songs-in-playlist/${playlistId}'));
     if (response.statusCode == 200) {
       final List<dynamic> data =
           jsonDecode(utf8.decode(response.bodyBytes))['result'];
@@ -88,7 +90,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
       String userId, String playlistName, int isPublic) async {
     String? userId = await UserDataShare.getUserId();
     final response = await http.post(
-      Uri.parse('http://13.125.27.204:8080/playlists'),
+      Uri.parse('http://$SERVER_ADDR/playlists'),
       body: {
         'user_id': userId,
         'playlist_name': playlistName,

@@ -5,6 +5,8 @@ import 'package:cansingtone_front/songinfopage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../server_addr.dart';
+
 class SongInfo {
   final int songId;
   final String songTitle;
@@ -94,8 +96,8 @@ class _OtherPlaylistInfoPageState extends State<OtherPlaylistInfoPage> {
   }
 
   Future<List<SongInPlaylist>> fetchSongsInPlaylist(int playlistId) async {
-    final response = await http.get(
-        Uri.parse('http://13.125.27.204:8080/songs-in-playlist/$playlistId'));
+    final response = await http
+        .get(Uri.parse('http://$SERVER_ADDR/songs-in-playlist/$playlistId'));
 
     if (response.statusCode == 200) {
       final List<dynamic> data =

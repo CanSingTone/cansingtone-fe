@@ -7,7 +7,7 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import '../bottombar.dart';
+import '../widgets/bottombar.dart';
 import '../service/uploadert.dart';
 import '../start_screens/tutorial.dart';
 import 'package:file_picker/file_picker.dart';

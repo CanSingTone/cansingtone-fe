@@ -100,85 +100,117 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(height: 10.0),
             InkWell(
                 onTap: () async {
-                  //print(await KakaoSdk.origin);
-                  if (await isKakaoTalkInstalled()) {
-                    // 카카오톡이 설치되어 있는 경우
-                    try {
-                      await UserApi.instance.loginWithKakaoTalk();
-                      print('카카오톡으로 로그인 성공');
-                      _get_user_info();
-                      setLogin();
-                      Navigator.of(context).pushReplacementNamed('/nickname');
-                    } catch (error) {
-                      print('카카오톡으로 로그인 실패 $error');
-                      // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
-                      try {
-                        await UserApi.instance.loginWithKakaoAccount();
-                        print('카카오계정으로 로그인 성공');
-                        String? id = await _get_user_info(); // 사용자 아이디 가져오기
-                        if (id != null) {
-                          bool result = await usersApi.userExists(id);
-                          if (result) {
-                            // 이미 존재하는 사용자의 경우, 로그인 상태 저장 후 index 페이지로 이동
-                            UserDataService.fetchAndSaveUserDataS(context, id);
-                            await UserDataShare.saveUserId(id);
-                            print('Set userId: $id');
-                            // js: 이 부분에서 '회원 ID로 정보조회' API 사용해서 사용자 정보를 가져와서 앱에 저장해야 합니다. provider 쓰신 거 같은데 그거 여기서도 이용하면 될 듯
-                            //setLogin(); // js: 로그인하고 나갔다 들어왔을 때 다시 로그인 안 하게 하려고 쓰는 부분입니다. 나중에 주석 푸시면 될 듯
-                            Navigator.of(context).pushReplacementNamed('/home');
-                          } else {
-                            await UserDataShare.saveUserId(id);
-                            print('Set userId: $id');
-                            // 존재하지 않는 사용자의 경우, 튜토리얼 페이지로 이동
-                            Navigator.of(context).pushReplacementNamed(
-                                '/tutorial',
-                                arguments:
-                                    id); // js: id를 튜토리얼 페이지로 넘겨주면서 이동해야 할 것 같아요. 튜토리얼 페이지에서 아이디 저장하는 거 연결해주세요
-                            UserData user = UserData();
-                            user.updateUserId(id);
-                          }
-                        }
-                      } catch (error) {
-                        print('카카오계정으로 로그인 실패 $error');
+                  try {
+                    await UserApi.instance.loginWithKakaoAccount();
+                    print('카카오계정으로 로그인 성공!');
+                    String? id = await _get_user_info(); // 사용자 아이디 가져오기
+                    if (id != null) {
+                      bool result = await usersApi.userExists(id);
+                      if (result) {
+                        // 이미 존재하는 사용자의 경우, 로그인 상태 저장 후 메인 페이지로 이동
+                        UserDataService.fetchAndSaveUserDataS(context, id);
+                        Provider.of<UserData>(context, listen: false)
+                            .updateUserId(id);
+                        await UserDataShare.saveUserId(id);
+                        await Future.delayed(Duration(seconds: 1));
+                        print('Set userId: $id');
+                        //setLogin();
+                        Navigator.of(context).pushReplacementNamed('/home');
+                      } else {
+                        // 존재하지 않는 사용자의 경우, 튜토리얼 페이지로 이동
+                        await UserDataShare.saveUserId(id);
+                        print('Set userId: $id');
+
+                        Provider.of<UserData>(context, listen: false)
+                            .updateUserId(id);
+
+                        await Future.delayed(Duration(seconds: 2));
+                        Navigator.of(context)
+                            .pushReplacementNamed('/tutorial', arguments: id);
+                        print(id);
                       }
                     }
-                  } else {
-                    // 카카오톡이 설치되어 있지 않은 경우
-                    try {
-                      await UserApi.instance.loginWithKakaoAccount();
-                      print('카카오계정으로 로그인 성공!');
-                      String? id = await _get_user_info(); // 사용자 아이디 가져오기
-                      if (id != null) {
-                        bool result = await usersApi.userExists(id);
-                        if (result) {
-                          // 이미 존재하는 사용자의 경우, 로그인 상태 저장 후 메인 페이지로 이동
-                          // js: 이 부분에서 '회원 ID로 정보조회' API 사용해서 사용자 정보를 DB에서 가져와서 앱에 저장해야 합니다. provider 쓰신 거 같은데 그거 여기서도 이용하면 될 듯
-                          UserDataService.fetchAndSaveUserDataS(context, id);
-                          Provider.of<UserData>(context, listen: false)
-                              .updateUserId(id);
-                          await UserDataShare.saveUserId(id);
-                          await Future.delayed(Duration(seconds: 1));
-                          print('Set userId: $id');
-                          //setLogin(); // js: 로그인하고 나갔다 들어왔을 때 다시 로그인 안 하게 하려고 쓰는 부분입니다. 나중에 주석 푸시면 될 듯
-                          Navigator.of(context).pushReplacementNamed('/home');
-                        } else {
-                          // 존재하지 않는 사용자의 경우, 튜토리얼 페이지로 이동
-                          await UserDataShare.saveUserId(id);
-                          print('Set userId: $id');
-
-                          Provider.of<UserData>(context, listen: false)
-                              .updateUserId(id);
-
-                          await Future.delayed(Duration(seconds: 2));
-                          Navigator.of(context)
-                              .pushReplacementNamed('/tutorial', arguments: id);
-                          print(id);
-                        } // js: id를 튜토리얼 페이지로 넘겨주면서 이동해야 할 것 같아요. 튜토리얼 페이지에서 아이디 저장하는 거 연결해주세요
-                      }
-                    } catch (error) {
-                      print('카카오계정으로 로그인 실패 $error');
-                    }
+                  } catch (error) {
+                    print('카카오계정으로 로그인 실패 $error');
                   }
+
+                  // if (await isKakaoTalkInstalled()) {
+                  //   // 카카오톡이 설치되어 있는 경우
+                  //   try {
+                  //     await UserApi.instance.loginWithKakaoTalk();
+                  //     print('카카오톡으로 로그인 성공');
+                  //     _get_user_info();
+                  //     setLogin();
+                  //     Navigator.of(context).pushReplacementNamed('/nickname');
+                  //   } catch (error) {
+                  //     print('카카오톡으로 로그인 실패 $error');
+                  //     // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
+                  //     try {
+                  //       await UserApi.instance.loginWithKakaoAccount();
+                  //       print('카카오계정으로 로그인 성공');
+                  //       String? id = await _get_user_info(); // 사용자 아이디 가져오기
+                  //       if (id != null) {
+                  //         bool result = await usersApi.userExists(id);
+                  //         if (result) {
+                  //           // 이미 존재하는 사용자의 경우, 로그인 상태 저장 후 index 페이지로 이동
+                  //           UserDataService.fetchAndSaveUserDataS(context, id);
+                  //           await UserDataShare.saveUserId(id);
+                  //           print('Set userId: $id');
+                  //           // js: 이 부분에서 '회원 ID로 정보조회' API 사용해서 사용자 정보를 가져와서 앱에 저장해야 합니다. provider 쓰신 거 같은데 그거 여기서도 이용하면 될 듯
+                  //           //setLogin(); // js: 로그인하고 나갔다 들어왔을 때 다시 로그인 안 하게 하려고 쓰는 부분입니다. 나중에 주석 푸시면 될 듯
+                  //           Navigator.of(context).pushReplacementNamed('/home');
+                  //         } else {
+                  //           await UserDataShare.saveUserId(id);
+                  //           print('Set userId: $id');
+                  //           // 존재하지 않는 사용자의 경우, 튜토리얼 페이지로 이동
+                  //           Navigator.of(context).pushReplacementNamed(
+                  //               '/tutorial',
+                  //               arguments:
+                  //                   id); // js: id를 튜토리얼 페이지로 넘겨주면서 이동해야 할 것 같아요. 튜토리얼 페이지에서 아이디 저장하는 거 연결해주세요
+                  //           UserData user = UserData();
+                  //           user.updateUserId(id);
+                  //         }
+                  //       }
+                  //     } catch (error) {
+                  //       print('카카오계정으로 로그인 실패 $error');
+                  //     }
+                  //   }
+                  // } else {
+                  //   // 카카오톡이 설치되어 있지 않은 경우
+                  //   try {
+                  //     await UserApi.instance.loginWithKakaoAccount();
+                  //     print('카카오계정으로 로그인 성공!');
+                  //     String? id = await _get_user_info(); // 사용자 아이디 가져오기
+                  //     if (id != null) {
+                  //       bool result = await usersApi.userExists(id);
+                  //       if (result) {
+                  //         // 이미 존재하는 사용자의 경우, 로그인 상태 저장 후 메인 페이지로 이동
+                  //         UserDataService.fetchAndSaveUserDataS(context, id);
+                  //         Provider.of<UserData>(context, listen: false)
+                  //             .updateUserId(id);
+                  //         await UserDataShare.saveUserId(id);
+                  //         await Future.delayed(Duration(seconds: 1));
+                  //         print('Set userId: $id');
+                  //         //setLogin();
+                  //         Navigator.of(context).pushReplacementNamed('/home');
+                  //       } else {
+                  //         // 존재하지 않는 사용자의 경우, 튜토리얼 페이지로 이동
+                  //         await UserDataShare.saveUserId(id);
+                  //         print('Set userId: $id');
+                  //
+                  //         Provider.of<UserData>(context, listen: false)
+                  //             .updateUserId(id);
+                  //
+                  //         await Future.delayed(Duration(seconds: 2));
+                  //         Navigator.of(context)
+                  //             .pushReplacementNamed('/tutorial', arguments: id);
+                  //         print(id);
+                  //       }
+                  //     }
+                  //   } catch (error) {
+                  //     print('카카오계정으로 로그인 실패 $error');
+                  //   }
+                  // }
                 },
                 child: Image.asset('assets/images/start/kakao_login.png')),
           ],

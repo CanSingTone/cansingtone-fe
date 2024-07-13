@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../models/song.dart';
 import '../playlist/likeplaylistinfo.dart';
 import '../playlist/playlistinfo.dart';
+import '../server_addr.dart';
 import '../service/chart_api.dart';
 import '../song_detail_screen.dart';
 import 'karaoke_top_chart_screen.dart';
@@ -27,7 +28,7 @@ Future<List<dynamic>> fetchSongs(start) async {
 
   try {
     for (int i = start; i <= start + 20; i++) {
-      Response response = await _dio.get('http://13.125.27.204:8080/songs/$i');
+      Response response = await _dio.get('http://$SERVER_ADDR/songs/$i');
 
       if (response.statusCode == 200) {
         songs.add(response.data['result']);
@@ -64,8 +65,8 @@ class _mainpageState extends State<mainpage> {
   ];
 
   Future<List<Song>> fetchSongs(int playlistId) async {
-    final response = await http.get(
-        Uri.parse('http://13.125.27.204:8080/songs-in-playlist/${playlistId}'));
+    final response = await http
+        .get(Uri.parse('http://$SERVER_ADDR/songs-in-playlist/${playlistId}'));
     if (response.statusCode == 200) {
       final List<dynamic> data =
           jsonDecode(utf8.decode(response.bodyBytes))['result'];

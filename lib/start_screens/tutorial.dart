@@ -5,10 +5,11 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import '../main_screens/mainpage.dart';
+import '../server_addr.dart';
 import '../userdata.dart';
 import 'package:provider/provider.dart';
 
-import '../bottombar.dart';
+import '../widgets/bottombar.dart';
 import '../service/getuserdata.dart';
 
 class User {
@@ -66,7 +67,7 @@ Future<http.Response> createUser(User user) async {
     'pref_genre3': user.prefGenre3.toString(),
   };
 
-  final Uri uri = Uri.http('13.125.27.204:8080', '/users', queryParams);
+  final Uri uri = Uri.http(SERVER_ADDR, '/users', queryParams);
 
   print('Request URL: $uri');
 
@@ -87,8 +88,7 @@ Future<http.Response> createUser(User user) async {
 
 Future<bool> checkUserIdAvailability(int userId) async {
   final response = await http.get(
-    Uri.http(
-        '13.125.27.204:8080', '/users/exists', {'user_id': userId.toString()}),
+    Uri.http(SERVER_ADDR, '/users/exists', {'user_id': userId.toString()}),
   );
 
   if (response.statusCode == 200) {
@@ -103,8 +103,8 @@ Future<bool> checkUserIdAvailability(int userId) async {
 
 Future<List<Playlist>> fetchPlaylists() async {
   String? userId = await UserDataShare.getUserId(); // userId를 상태 클래스 내에 정의합니다.
-  final response = await http
-      .get(Uri.parse('http://13.125.27.204:8080/playlists/${userId}'));
+  final response =
+      await http.get(Uri.parse('http://$SERVER_ADDR/playlists/${userId}'));
   if (response.statusCode == 200) {
     final List<dynamic> data =
         jsonDecode(utf8.decode(response.bodyBytes))['result'];
@@ -116,7 +116,7 @@ Future<List<Playlist>> fetchPlaylists() async {
 
 Future<void> createFirstPlaylist(String userId) async {
   final response = await http.post(
-    Uri.parse('http://13.125.27.204:8080/playlists'),
+    Uri.parse('http://$SERVER_ADDR/playlists'),
     body: {
       'user_id': userId,
       'playlist_name': "좋아요 표시한 음악",
@@ -170,7 +170,7 @@ class _TutorialPageState extends State<TutorialPage> {
   Future<void> _fetchAndSaveUserData(int userId) async {
     try {
       final response = await http.get(
-        Uri.http('13.125.27.204:8080', '/users/$userId'),
+        Uri.http(SERVER_ADDR, '/users/$userId'),
       );
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');
@@ -350,65 +350,6 @@ class _TutorialPageState extends State<TutorialPage> {
       ),
     );
   }
-
-  // Widget _buildGenderPage() {
-  //   return Container(
-  //     color: Color(0xFF241D27),
-  //     padding: const EdgeInsets.all(16.0),
-  //     child: Column(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       crossAxisAlignment: CrossAxisAlignment.stretch,
-  //       children: [
-  //         Text(
-  //           '성별을 선택해주세요.',
-  //           style: TextStyle(fontSize: 24, color: Colors.white),
-  //           textAlign: TextAlign.center,
-  //         ),
-  //         SizedBox(height: 16),
-  //         DropdownButtonFormField<String>(
-  //           style: TextStyle(color: Color(0xFF241D27), fontSize: 18),
-  //           value: _genderController.text.isNotEmpty
-  //               ? _genderController.text
-  //               : null,
-  //           onChanged: (value) {
-  //             setState(() {
-  //               _genderController.text = value!;
-  //             });
-  //           },
-  //           items: ['남성', '여성']
-  //               .map((gender) =>
-  //                   DropdownMenuItem(value: gender, child: Text(gender)))
-  //               .toList(),
-  //           decoration: InputDecoration(
-  //             border: OutlineInputBorder(),
-  //           ),
-  //         ),
-  //         SizedBox(height: 16),
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             ElevatedButton(
-  //               onPressed: _prevPage,
-  //               child: Text('이전',
-  //                   style: TextStyle(
-  //                     color: Colors.black,
-  //                     fontSize: 18,
-  //                   )),
-  //             ),
-  //             ElevatedButton(
-  //               onPressed: _genderController.text.isNotEmpty ? _nextPage : null,
-  //               child: Text('다음',
-  //                   style: TextStyle(
-  //                     color: Color(0xFF241D27),
-  //                     fontSize: 18,
-  //                   )),
-  //             ),
-  //           ],
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   Widget _buildGenderPage() {
     final double width = MediaQuery.of(context).size.width;
